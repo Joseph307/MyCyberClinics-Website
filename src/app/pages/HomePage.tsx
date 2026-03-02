@@ -70,6 +70,7 @@ export default function HomePage() {
 
   const whatsappNumber = (siteSettings.contactPhone || "+2348012345678").replace(/\D/g, "");
   const whatsappLink =
+    siteSettings.socialWhatsApp ||
     `https://wa.me/${whatsappNumber}?text=Hello%20MyCyber%20Clinics%2C%20I%20need%20help%20with%20a%20consultation.`;
 
   return (

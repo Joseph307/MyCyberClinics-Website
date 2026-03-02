@@ -123,6 +123,7 @@ function defaultSettingsForm(): CmsSiteSettings {
     socialTwitter: "",
     socialYouTube: "",
     socialTikTok: "",
+    socialWhatsApp: "",
     metaTitleDefault: "",
     metaDescriptionDefault: "",
     canonicalBaseUrl: "",
@@ -970,6 +971,7 @@ function SiteSettingsManager({ role }: { role: AdminRole }) {
             ["Twitter", "socialTwitter"],
             ["YouTube", "socialYouTube"],
             ["TikTok", "socialTikTok"],
+            ["WhatsApp", "socialWhatsApp"],
           ].map(([label, key]) => (
             <label key={key} className="text-sm text-[#2C3E50]">
               {label}
