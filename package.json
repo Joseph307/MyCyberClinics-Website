@@ -8,7 +8,7 @@
     "start": "next start",
     "export": "next build && next export",
     "deploy:static": "npm run export && firebase deploy --only hosting",
-    "lint": "eslint"
+    "lint": "eslint",
     "sanity": "sanity dev"
   },
   "dependencies": {
