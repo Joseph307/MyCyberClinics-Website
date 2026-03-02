@@ -1,7 +1,19 @@
 import Image from "next/image";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { Button } from "../components/ui/button";
-import { Calendar, User, ArrowLeft, Clock, Share2, Facebook, Twitter, Linkedin } from "lucide-react";
+import {
+  Calendar,
+  User,
+  ArrowLeft,
+  Clock,
+  Share2,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Instagram,
+  Youtube,
+  Music2,
+} from "lucide-react";
 import { Footer } from "../components/Footer";
 import { Link, useParams } from "react-router";
 import logoImage from "../../assets/log_o-removebg-cropped.png";
@@ -195,6 +207,48 @@ const allArticles = [
 export default function BlogPostPage() {
   const { id } = useParams();
   const article = allArticles.find(a => a.id === Number(id));
+  const articleUrl =
+    typeof window !== "undefined"
+      ? window.location.href
+      : `https://mycyberclinics.com/blog/${id ?? ""}`;
+  const shareText = `${article?.title ?? "Health Article"} | MyCyber Clinics`;
+
+  const openSharePopup = (url: string) => {
+    if (typeof window === "undefined") return;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const copyArticleLink = async (platform: string) => {
+    try {
+      await navigator.clipboard.writeText(articleUrl);
+      window.alert(`Article link copied. Paste it in ${platform} to share.`);
+    } catch {
+      window.alert("Could not copy automatically. Please copy the page URL from your browser.");
+    }
+  };
+
+  const shareOn = async (platform: "facebook" | "x" | "linkedin" | "instagram" | "youtube" | "tiktok") => {
+    const encodedUrl = encodeURIComponent(articleUrl);
+    const encodedText = encodeURIComponent(shareText);
+
+    if (platform === "facebook") {
+      openSharePopup(`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`);
+      return;
+    }
+
+    if (platform === "x") {
+      openSharePopup(`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`);
+      return;
+    }
+
+    if (platform === "linkedin") {
+      openSharePopup(`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`);
+      return;
+    }
+
+    // Instagram / YouTube / TikTok don't provide simple web share URLs for arbitrary links.
+    await copyArticleLink(platform === "instagram" ? "Instagram" : platform === "youtube" ? "YouTube" : "TikTok");
+  };
 
   if (!article) {
     return (
@@ -340,22 +394,52 @@ export default function BlogPostPage() {
                 </div>
                 <div className="flex items-center gap-3">
                   <button
+                    type="button"
+                    onClick={() => void shareOn("facebook")}
                     className="p-2 rounded-full border border-[#E4E5F6] hover:bg-[#7D1FFF] hover:text-white hover:border-[#7D1FFF] transition-colors"
                     aria-label="Share on Facebook"
                   >
                     <Facebook className="w-5 h-5" />
                   </button>
                   <button
+                    type="button"
+                    onClick={() => void shareOn("x")}
                     className="p-2 rounded-full border border-[#E4E5F6] hover:bg-[#7D1FFF] hover:text-white hover:border-[#7D1FFF] transition-colors"
-                    aria-label="Share on Twitter"
+                    aria-label="Share on X"
                   >
                     <Twitter className="w-5 h-5" />
                   </button>
                   <button
+                    type="button"
+                    onClick={() => void shareOn("linkedin")}
                     className="p-2 rounded-full border border-[#E4E5F6] hover:bg-[#7D1FFF] hover:text-white hover:border-[#7D1FFF] transition-colors"
                     aria-label="Share on LinkedIn"
                   >
                     <Linkedin className="w-5 h-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => void shareOn("instagram")}
+                    className="p-2 rounded-full border border-[#E4E5F6] hover:bg-[#7D1FFF] hover:text-white hover:border-[#7D1FFF] transition-colors"
+                    aria-label="Share on Instagram"
+                  >
+                    <Instagram className="w-5 h-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => void shareOn("youtube")}
+                    className="p-2 rounded-full border border-[#E4E5F6] hover:bg-[#7D1FFF] hover:text-white hover:border-[#7D1FFF] transition-colors"
+                    aria-label="Share on YouTube"
+                  >
+                    <Youtube className="w-5 h-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => void shareOn("tiktok")}
+                    className="p-2 rounded-full border border-[#E4E5F6] hover:bg-[#7D1FFF] hover:text-white hover:border-[#7D1FFF] transition-colors"
+                    aria-label="Share on TikTok"
+                  >
+                    <Music2 className="w-5 h-5" />
                   </button>
                 </div>
               </div>
