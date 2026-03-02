@@ -5,7 +5,20 @@ import { Link } from "react-router";
 import { useBlogArticles, useSiteSettings } from "@/sanity/lib/hooks";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { Button } from "../components/ui/button";
+import {
+  Calendar,
+  User,
+  ArrowRight,
+  Clock,
+  ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
+  Search,
+} from "lucide-react";
 import { Footer } from "../components/Footer";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { FormEvent } from "react";
+import { Link } from "react-router";
 import logoImage from "../../assets/log_o-removebg-cropped.png";
 
 export default function BlogPage() {
@@ -13,6 +26,9 @@ export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState("All Articles");
   const allArticles = useBlogArticles(12);
   const siteSettings = useSiteSettings();
+  const categoryTabsRef = useRef<HTMLDivElement | null>(null);
+  const [canScrollTabsLeft, setCanScrollTabsLeft] = useState(false);
+  const [canScrollTabsRight, setCanScrollTabsRight] = useState(false);
 
   const normalizedQuery = useMemo(
     () => searchQuery.trim().toLowerCase(),
@@ -47,8 +63,72 @@ export default function BlogPage() {
   const featuredArticle = filteredArticles[0] ?? null;
   const remainingArticles = useMemo(() => filteredArticles.slice(1), [filteredArticles]);
 
+  const openEmailComposer = (subject: string, body: string) => {
+    const to = "support@mycyberclinics.com";
+    const encodedSubject = encodeURIComponent(subject);
+    const encodedBody = encodeURIComponent(body);
+    const gmailComposeUrl =
+      `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}` +
+      `&su=${encodedSubject}&body=${encodedBody}`;
+    const mailtoUrl = `mailto:${to}?subject=${encodedSubject}&body=${encodedBody}`;
+
+    const popup = window.open(gmailComposeUrl, "_blank", "noopener,noreferrer");
+    if (!popup) {
+      window.location.href = mailtoUrl;
+    }
+  };
+
+  const handleNewsletterSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get("newsletterEmail") ?? "").trim();
+    const subject = "Newsletter Subscription Request";
+    const body =
+      `Please subscribe this email to MyCyber Clinics health updates:\n\n${email}`;
+    openEmailComposer(subject, body);
+    event.currentTarget.reset();
+  };
+
+  const updateTabArrowState = useCallback(() => {
+    const container = categoryTabsRef.current;
+    if (!container) return;
+
+    const hasLeft = container.scrollLeft > 4;
+    const hasRight =
+      container.scrollLeft + container.clientWidth < container.scrollWidth - 4;
+
+    setCanScrollTabsLeft(hasLeft);
+    setCanScrollTabsRight(hasRight);
+  }, []);
+
+  const scrollCategoryTabs = (direction: "left" | "right") => {
+    const container = categoryTabsRef.current;
+    if (!container) return;
+
+    const distance = direction === "right" ? 240 : -240;
+    container.scrollBy({ left: distance, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    updateTabArrowState();
+
+    const container = categoryTabsRef.current;
+    if (!container) return;
+
+    const handleScroll = () => updateTabArrowState();
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [updateTabArrowState]);
+
   return (
-    <div className="min-h-screen bg-white" lang="en">
+    <div className="min-h-screen bg-white overflow-x-hidden" lang="en">
+      {/* Header */}
       <header
         className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4"
         role="banner"
@@ -57,6 +137,7 @@ export default function BlogPage() {
           className="flex items-center justify-between"
           aria-label="Blog navigation"
         >
+          {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
             <Image
               src={logoImage}
@@ -76,6 +157,7 @@ export default function BlogPage() {
       </header>
 
       <main>
+        {/* Hero Section */}
         <section className="py-16 lg:py-20 px-6 lg:px-32 bg-gradient-to-br from-[#1C227A] to-[#36427A]">
           <div className="max-w-4xl mx-auto text-center text-white">
             <h1 className="font-display font-bold text-4xl lg:text-5xl mb-6">
@@ -86,6 +168,7 @@ export default function BlogPage() {
               verified doctors
             </p>
 
+            {/* Search Bar */}
             <div className="relative max-w-xl mx-auto">
               <Search
                 className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#7E5BA1]"
@@ -103,33 +186,60 @@ export default function BlogPage() {
           </div>
         </section>
 
+        {/* Categories */}
         <section className="py-8 px-6 lg:px-32 bg-[#F1F2FB] border-b border-[#E4E5F6]">
           <div className="max-w-7xl mx-auto">
-            <div
-              className="hide-scrollbar flex items-center gap-3 overflow-x-auto pb-2"
-              role="tablist"
-              aria-label="Article categories"
-            >
-              {categories.map((category) => (
+            <div className="relative overflow-hidden">
+              {canScrollTabsLeft && (
                 <button
-                  key={category}
                   type="button"
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                    selectedCategory === category
-                      ? "bg-[#7D1FFF] text-white"
-                      : "bg-white text-[#1C227A] hover:bg-[#7D1FFF] hover:text-white border border-[#E4E5F6]"
-                  }`}
-                  role="tab"
-                  aria-selected={selectedCategory === category}
+                  onClick={() => scrollCategoryTabs("left")}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white border border-[#E4E5F6] text-[#1C227A] shadow-sm hover:bg-[#7D1FFF] hover:text-white transition-colors"
+                  aria-label="Show previous categories"
                 >
-                  {category}
+                  <ChevronLeft className="w-4 h-4 mx-auto" aria-hidden="true" />
                 </button>
-              ))}
+              )}
+
+              <div
+                ref={categoryTabsRef}
+                className="hide-scrollbar flex items-center gap-3 overflow-x-auto scroll-smooth px-10 pb-4 -mb-4"
+                role="tablist"
+                aria-label="Article categories"
+              >
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    type="button"
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                      selectedCategory === category
+                        ? "bg-[#7D1FFF] text-white"
+                        : "bg-white text-[#1C227A] hover:bg-[#7D1FFF] hover:text-white border border-[#E4E5F6]"
+                    }`}
+                    role="tab"
+                    aria-selected={selectedCategory === category}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+
+              {canScrollTabsRight && (
+                <button
+                  type="button"
+                  onClick={() => scrollCategoryTabs("right")}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white border border-[#E4E5F6] text-[#1C227A] shadow-sm hover:bg-[#7D1FFF] hover:text-white transition-colors"
+                  aria-label="Show more categories"
+                >
+                  <ChevronRight className="w-4 h-4 mx-auto" aria-hidden="true" />
+                </button>
+              )}
             </div>
           </div>
         </section>
 
+        {/* Featured Article */}
         <section
           className="py-12 px-6 lg:px-32 bg-white"
           aria-labelledby="featured-heading"
@@ -204,7 +314,6 @@ export default function BlogPage() {
             >
               All Articles
             </h2>
-
             {remainingArticles.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                 {remainingArticles.map((article) => (
@@ -265,6 +374,47 @@ export default function BlogPage() {
                 No articles match your search.
               </div>
             )}
+          </div>
+        </section>
+
+        {/* Newsletter Signup */}
+        <section
+          className="py-16 px-6 lg:px-32 bg-[#F1F2FB]"
+          aria-labelledby="newsletter-heading"
+        >
+          <div className="max-w-4xl mx-auto text-center">
+            <h2
+              id="newsletter-heading"
+              className="font-display font-bold text-3xl text-[#1C227A] mb-4"
+            >
+              Stay Updated on Health Topics
+            </h2>
+            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+              Get the latest health insights and medical advice delivered to
+              your inbox
+            </p>
+            <form
+              className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto items-center "
+              onSubmit={handleNewsletterSubmit}
+            >
+              <input
+                type="email"
+                name="newsletterEmail"
+                placeholder="Enter your email"
+                className="flex-1 px-6 py-4 rounded-lg border border-[#E4E5F6] focus:outline-none focus:ring-2 focus:ring-[#7D1FFF] bg-white text-[#1C227A] caret-[#1C227A] placeholder:text-[#7A8594]"
+                aria-label="Email address for newsletter"
+                required
+              />
+              <Button
+                type="submit"
+                className="bg-[#7D1FFF] hover:bg-[#6B1AD9] text-white px-8 py-4"
+              >
+                Subscribe
+              </Button>
+            </form>
+            <p className="text-xs text-gray-500 mt-4">
+              We respect your privacy. Unsubscribe at any time.
+            </p>
           </div>
         </section>
       </main>

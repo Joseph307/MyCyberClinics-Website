@@ -96,3 +96,13 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Hide scrollbars while preserving scroll interaction (mouse/touch/trackpad). */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and old Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
