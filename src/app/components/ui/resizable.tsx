@@ -9,7 +9,7 @@ import { cn } from "./utils";
 function ResizablePanelGroup({
   className,
   ...props
-}: any) {
+}: React.ComponentProps<typeof ResizablePrimitive.Group>) {
   return (
     <ResizablePrimitive.Group
       data-slot="resizable-panel-group"
@@ -24,7 +24,7 @@ function ResizablePanelGroup({
 
 function ResizablePanel({
   ...props
-}: any) {
+}: React.ComponentProps<typeof ResizablePrimitive.Panel>) {
   return <ResizablePrimitive.Panel data-slot="resizable-panel" {...props} />;
 }
 
@@ -32,7 +32,7 @@ function ResizableHandle({
   withHandle,
   className,
   ...props
-}: any & {
+}: React.ComponentProps<typeof ResizablePrimitive.Separator> & {
   withHandle?: boolean;
 }) {
   return (

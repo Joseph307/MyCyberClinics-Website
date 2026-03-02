@@ -9,7 +9,7 @@ const teamMembers = [
     mdcn: "MDCN/2015/48392",
     qualifications: "MBBS, MPH",
     experience: "8 years",
-    image: "https://i.postimg.cc/PfCPGGJj/doctor1.png",
+    image: "/images/team/doctor-adaeze.jpg",
     altText: "Dr. Adaeze Okonkwo, General Practitioner specializing in Family Medicine with 8 years of experience"
   },
   {
@@ -19,7 +19,7 @@ const teamMembers = [
     mdcn: "MDCN/2012/35187",
     qualifications: "MBBS, FWACP",
     experience: "12 years",
-    image: "https://i.postimg.cc/3x7QYp8K/doctor2.png",
+    image: "/images/team/doctor-chinedu.jpg",
     altText: "Dr. Chinedu Eze, Consultant Physician specializing in Internal Medicine with 12 years of experience"
   },
   {
@@ -29,7 +29,7 @@ const teamMembers = [
     mdcn: "MDCN/2010/29456",
     qualifications: "MBBS, FMCDS",
     experience: "14 years",
-    image: "https://i.postimg.cc/4y9jTvmb/doctor3.png",
+    image: "/images/team/doctor-oluwaseun.jpg",
     altText: "Dr. Oluwaseun Adeleke, Dermatology Specialist with 14 years of experience"
   }
 ];
@@ -64,6 +64,8 @@ export function Team() {
                 src={member.image}
                 alt={member.altText}
                 className="w-full h-full object-cover"
+                sizes="(min-width: 1024px) 360px, (min-width: 768px) 33vw, 100vw"
+                loading={index < 3 ? "eager" : "lazy"}
               />
               {/* Verification Badge */}
               <div className="absolute top-4 right-4 bg-[#14A9CC] text-white px-3 py-1 rounded-full flex items-center gap-1">
@@ -156,3 +158,4 @@ export function Team() {
     </section>
   );
 }
+

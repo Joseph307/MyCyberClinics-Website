@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
 import { Facebook, Twitter, Instagram, Mail, Shield } from "lucide-react";
+import { Link } from "react-router";
 import logoImage from "../../assets/log_oo-removebg-cropped.png";
 
 export function Footer() {
@@ -9,7 +9,7 @@ export function Footer() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         {/* Brand */}
         <div>
-          <Link href="/" className="inline-flex items-center mb-4">
+          <Link to="/" className="inline-flex items-center mb-4">
             <Image
               src={logoImage}
               alt="MyCyber Clinics - Healthcare meets Technology"
@@ -72,7 +72,7 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <Link href="/blog" className="hover:text-[#FFC857] transition-colors">
+              <Link to="/blog" className="hover:text-[#FFC857] transition-colors">
                 Health Blog
               </Link>
             </li>

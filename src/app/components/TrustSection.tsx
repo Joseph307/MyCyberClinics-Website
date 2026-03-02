@@ -1,4 +1,5 @@
-import { Shield, DollarSign, Lock, CheckCircle } from "lucide-react";
+import Image from "next/image";
+import { DollarSign, Lock, CheckCircle } from "lucide-react";
 import AdaezeImg from "../../assets/review1.png";
 import ChidiImg from "../../assets/review4.png";
 import FunmiImg from "../../assets/review3.png";
@@ -114,14 +115,16 @@ export function TrustSection() {
 
             {/* Quote */}
             <p className="text-gray-700 mb-6 leading-relaxed italic">
-              "{testimonial.text}"
+              &ldquo;{testimonial.text}&rdquo;
             </p>
 
             {/* Author with avatar */}
             <div className="flex items-center gap-4 mt-2">
-              <img
-                src={testimonial.avatar.src}
+              <Image
+                src={testimonial.avatar}
                 alt={`${testimonial.name} avatar`}
+                width={48}
+                height={48}
                 className="w-12 h-12 rounded-full object-cover flex-shrink-0"
               />
               <div>

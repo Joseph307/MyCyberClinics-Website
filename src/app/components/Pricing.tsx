@@ -18,7 +18,6 @@ const plans = [
       "CHIOMA chat: 10 messages/month after activation, up to 30/month with active pay-as-you-go use",
       "72-hour follow-up window with up to 3 patient messages per consultation; further questions require a new consultation or concierge upgrade"
     ],
-    cta: "Get Started",
     highlighted: false
   },
   {
@@ -36,7 +35,6 @@ const plans = [
       "Up to 10 patient messages per consultation",
       "CHIOMA chat: unlimited (fair use)"
     ],
-    cta: "Get Started",
     highlighted: true
   },
   {
@@ -53,7 +51,6 @@ const plans = [
       "Up to 20 patient messages per consultation",
       "CHIOMA chat: unlimited + priority routing (fair use)"
     ],
-    cta: "Get Started",
     highlighted: false
   }
 ];
@@ -110,21 +107,19 @@ export function Pricing() {
               ))}
             </ul>
 
-            <Button
-              className={`btn-glow w-full py-6 mt-auto ${
-                plan.name === "Pay As You Go"
-                  ? "bg-[#14A9CC] hover:bg-[#FFC857] hover:text-[#2C3E50] text-white"
-                  : plan.name === "Gold Plan"
-                    ? "bg-[#7E5BA1] hover:bg-[#14A9CC] text-white"
-                    : "bg-[#FFC857] hover:bg-[#14A9CC] hover:text-white text-[#2C3E50]"
-              }`}
-              aria-label={`${plan.cta} for ${plan.name}`}
-            >
-              {plan.cta}
-            </Button>
-            {/* add glow to plan CTAs */}
           </article>
         ))}
+      </div>
+
+      <div className="mt-10 flex justify-center">
+        <Button
+          asChild
+          variant="brand-aqua"
+          className="btn-glow px-10 py-6 text-base"
+          aria-label="Get started with MyCyber Clinics"
+        >
+          <a href="https://app.mycyberclinics.com/signUp">Get Started</a>
+        </Button>
       </div>
 
       {/* Additional Info */}
@@ -135,8 +130,14 @@ export function Pricing() {
         <p className="text-gray-600 mb-6">
           Activates secure access to doctors, consultation booking, CHIOMA, and health education resources. The ₦2,000 is credited toward your first consultation within 30 days and waived for new Gold or Platinum sign-ups.
         </p>
-        <Button variant="brand-aqua" className="btn-glow">
-          Talk to Our Team
+        <Button asChild variant="brand-aqua" className="btn-glow">
+          <a
+            href="https://wa.me/2348012345678?text=Hello%20MyCyber%20Clinics%2C%20I%20need%20help%20with%20a%20consultation."
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Talk to Our Team
+          </a>
         </Button>
       </div>
 

@@ -1,4 +1,3 @@
-import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 import { initializeFirebaseAnalytics } from '../src/lib/firebase';
@@ -8,7 +7,7 @@ import '../src/styles/globals.css';
 // react-router components (they expect a RouterProvider which isn't available during SSR).
 const SpaApp = dynamic(() => import('../src/app/App'), { ssr: false, loading: () => null });
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+export default function MyApp() {
   useEffect(() => {
     void initializeFirebaseAnalytics();
   }, []);

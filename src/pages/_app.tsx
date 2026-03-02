@@ -1,5 +1,4 @@
 ﻿// This file is the entry point for the Next.js application
-import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 import { initializeFirebaseAnalytics } from '../lib/firebase';
@@ -24,7 +23,7 @@ const poppins = Poppins({
   display: 'swap',
 });
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+export default function MyApp() {
   useEffect(() => {
     void initializeFirebaseAnalytics();
 

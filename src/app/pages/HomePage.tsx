@@ -12,7 +12,7 @@ import { Team } from "../components/Team";
 import { BlogPreview } from "../components/BlogPreview";
 import { Contact } from "../components/Contact";
 import { Footer } from "../components/Footer";
-import { ArrowUp, Bot, ChevronLeft, ChevronRight, MessageCircle, X } from "lucide-react";
+import { ArrowUp, ChevronLeft, ChevronRight, MessageCircle, X } from "lucide-react";
 
 export default function HomePage() {
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -140,13 +140,6 @@ export default function HomePage() {
                 </button>
               </div>
               <div className="space-y-2">
-                <a
-                  href="https://app.mycyberclinics.com/conversation"
-                  className="w-full inline-flex items-center gap-2 rounded-lg bg-[#14A9CC] hover:bg-[#48C9B0] text-white px-3 py-2.5 text-sm font-semibold transition-colors"
-                >
-                  <Bot className="w-4 h-4" aria-hidden="true" />
-                  Chat with CHIOMA
-                </a>
                 <a
                   href={whatsappLink}
                   target="_blank"
