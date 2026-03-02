@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "export": "next build && next export",
+    "deploy:static": "npm run export && firebase deploy --only hosting:mycyberclinics-main",
     "lint": "eslint"
   },
   "dependencies": {

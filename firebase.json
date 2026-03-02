@@ -7,18 +7,12 @@
     "rules": "storage.rules"
   },
   "hosting": {
-    "public": "dist",
+    "public": "out",
     "site": "mycyberclinics-main",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
     ]
   }
 }
