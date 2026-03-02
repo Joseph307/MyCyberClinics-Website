@@ -8,14 +8,16 @@ const nextConfig: NextConfig = {
    * `next build` will produce an `out/` directory when `output: 'export'` is set.
    */
   output: "export",
-  // When exporting static HTML (`output: 'export'`) Next's Image Optimization API
-  // is not available. Disable the Image Optimization API so `next/image` works
-  // in the exported site by setting images.unoptimized to true.
-  images: {
-    unoptimized: true,
-  },
   // keep directory-style output so URLs map to folders with index.html
   trailingSlash: true,
+  images: {
+    unoptimized: true,
+    remotePatterns: [
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "mycyberclinics.com" },
+      { protocol: "https", hostname: "i.postimg.cc" },
+    ],
+  },
 };
 
 export default nextConfig;
