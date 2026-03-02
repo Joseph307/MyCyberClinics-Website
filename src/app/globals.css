@@ -8,8 +8,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +22,77 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), var(--font-display), sans-serif;
 }
+
+/* Ensure headings explicitly use the display font (Poppins) */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display), var(--font-sans), sans-serif;
+}
+
+/* Button glow utility (subtle, uses current brand colors) */
+.btn-glow {
+  transition: box-shadow 250ms ease, transform 200ms ease;
+  /* default small elevation */
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+.btn-glow:focus {
+  outline: none;
+  box-shadow: 0 6px 22px rgba(0,0,0,0.08), 0 0 12px rgba(124,58,237,0.12);
+}
+.btn-glow:hover {
+  transform: translateY(-2px);
+  /* additive glow using a soft brand-colored shadow; use CSS variables where possible */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08), 0 0 18px rgba(124,58,237,0.10);
+}
+
+/* Subtle pulse on primary CTAs (controlled via JS/GSAP for better performance) */
+.btn-pulse {
+  will-change: box-shadow, transform, opacity;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .btn-glow, .btn-pulse {
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/* utility class to enforce display font where needed */
+.font-display {
+  font-family: var(--font-display), var(--font-sans), sans-serif;
+}
+
+/* ===== Smooth on-scroll section animations ===== */
+.animate-section {
+  opacity: 0;
+  transform: translateY(18px) scale(0.995);
+  transition: opacity 520ms cubic-bezier(.22,.99,.4,1), transform 520ms cubic-bezier(.22,.99,.4,1);
+  will-change: opacity, transform;
+}
+
+.animate-section.in-view {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* allow small per-element staggering using data-delay in seconds */
+.animate-section[data-delay] {
+  transition-delay: var(--anim-delay, 0s);
+}
+
+/* set CSS variable from data attribute so users can set 'data-delay' inline: style="--anim-delay: .12s" */
+.animate-section[data-delay="0.06"] { --anim-delay: 0.06s; }
+.animate-section[data-delay="0.12"] { --anim-delay: 0.12s; }
+.animate-section[data-delay="0.18"] { --anim-delay: 0.18s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-section, .animate-section.in-view {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+

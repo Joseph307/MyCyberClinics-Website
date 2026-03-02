@@ -1,0 +1,14 @@
+/* Tailwind entry processed by PostCSS+tailwindcss plugin.
+	 Define minimal CSS variables needed by Tailwind's runtime functions
+	 BEFORE the Tailwind directives so the plugin can resolve functions like
+	 --spacing(...) during build. Keep full theme variables in `theme.css`. */
+:root {
+	--spacing: .25rem; /* base spacing unit used by Tailwind spacing() */
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Keep third-party animation utilities if used */
+@import 'tw-animate-css';

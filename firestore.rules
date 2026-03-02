@@ -1,0 +1,60 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.role == "admin";
+    }
+
+    function isEditor() {
+      return isSignedIn() && request.auth.token.role == "editor";
+    }
+
+    function isAdminOrEditor() {
+      return isAdmin() || isEditor();
+    }
+
+    match /blog_posts/{postId} {
+      allow read: if isAdminOrEditor() || resource.data.status == "published";
+      allow create, update: if isAdminOrEditor();
+      allow delete: if isAdmin();
+    }
+
+    match /featured_doctors/{doctorId} {
+      allow read: if isAdminOrEditor() || resource.data.status == "published";
+      allow create, update: if isAdminOrEditor();
+      allow delete: if isAdmin();
+    }
+
+    match /static_pages/{pageId} {
+      allow read: if isAdminOrEditor() || resource.data.status == "published";
+      allow create, update: if isAdminOrEditor();
+      allow delete: if isAdmin();
+    }
+
+    match /site_settings/{docId} {
+      allow read: if isAdminOrEditor();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /media_assets/{assetId} {
+      allow read: if isAdminOrEditor();
+      allow create, update: if isAdminOrEditor();
+      allow delete: if isAdmin();
+    }
+
+    match /audit_logs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isAdminOrEditor();
+      allow update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

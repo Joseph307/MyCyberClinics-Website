@@ -1,0 +1,31 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.role == "admin";
+    }
+
+    function isEditor() {
+      return isSignedIn() && request.auth.token.role == "editor";
+    }
+
+    function isAdminOrEditor() {
+      return isAdmin() || isEditor();
+    }
+
+    match /cms-media/{allPaths=**} {
+      allow read: if true;
+      allow create, update: if isAdminOrEditor();
+      allow delete: if isAdmin();
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

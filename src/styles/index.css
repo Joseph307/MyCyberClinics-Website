@@ -1,0 +1,17 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  /* Use Roboto (--font-sans) for normal body text; fallback to system fonts if variables aren't present. */
+  font-family: var(--font-sans, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  /* Headings should prefer the display font variable, then fall back to the sans variable */
+  font-family: var(--font-display, var(--font-sans, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif));
+}
