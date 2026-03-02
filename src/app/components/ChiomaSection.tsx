@@ -1,4 +1,5 @@
-import { Bot, MessageCircle, Calendar, BookOpen, AlertTriangle } from "lucide-react";
+import Image from "next/image";
+import { MessageCircle, Calendar, BookOpen, AlertTriangle } from "lucide-react";
 import { Button } from "./ui/button";
 import ChiomaChatImage from "../../assets/chioma-chat.png";
 
@@ -26,9 +27,13 @@ export function ChiomaSection() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
         {/* Left Column - Chat Image (replaces live demo) */}
         <div className="relative flex justify-center items-center lg:justify-center">
-          <img
-            src={ChiomaChatImage.src}
+          <Image
+            src={ChiomaChatImage}
             alt="CHIOMA chat screenshot"
+            priority={false}
+            sizes="(min-width: 1024px) 448px, 320px"
+            width={448}
+            height={896}
             className="w-full max-w-xs lg:max-w-md h-auto"
           />
         </div>
@@ -36,10 +41,10 @@ export function ChiomaSection() {
         {/* Right Column - Content */}
         <div>
           <h2 data-reveal id="chioma-heading" className="font-['Univa_Nova',sans-serif] font-bold text-4xl lg:text-5xl text-[#2C3E50] mb-6">
-            Meet CHIOMA, Your Personal Health Assistant
+            Meet Chioma, Your Personal Healthcare Assistant
           </h2>
           <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-            CHIOMA helps you navigate our platform, understand symptoms, and book the right doctor for your needs. Available 24/7 to guide your healthcare journey.
+            Chioma helps you navigate our platform, understand symptoms, and book the right doctor for your needs. Available 24/7 to guide your healthcare journey.
           </p>
 
           {/* Features Grid */}
@@ -81,14 +86,14 @@ export function ChiomaSection() {
               <div>
                 <p className="font-semibold text-[#2C3E50] mb-2">Important Notice</p>
                 <p className="text-sm text-gray-700 leading-relaxed">
-                  CHIOMA provides <strong>guidance and education only</strong> - not medical diagnosis or treatment. Always consult with our licensed doctors for medical advice, prescriptions, and care decisions.
+                  Chioma provides <strong>guidance and education only</strong> - not medical diagnosis or treatment. Always consult with our licensed doctors for medical advice, prescriptions, and care decisions.
                 </p>
               </div>
             </div>
           </div>
 
-          <Button className="bg-[#7E5BA1] hover:bg-[#48C9B0] text-white btn-glow">
-            Chat with CHIOMA
+          <Button asChild className="bg-[#7E5BA1] hover:bg-[#48C9B0] text-white btn-glow">
+            <a href="https://app.mycyberclinics.com/signUp">Chat with Chioma</a>
           </Button>
         </div>
       </div>

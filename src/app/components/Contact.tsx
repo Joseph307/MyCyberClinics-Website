@@ -1,5 +1,5 @@
 import { Button } from "./ui/button";
-import { Mail, Phone, MapPin, MessageSquare, Send } from "lucide-react";
+import { Mail, Phone, MessageSquare, Send } from "lucide-react";
 
 export function Contact() {
   return (
@@ -11,11 +11,11 @@ export function Contact() {
             Get in Touch
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Have questions? We're here to help. Reach out to our support team anytime.
+            Have questions? We&apos;re here to help. Reach out to our support team anytime.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Contact Information */}
           <div>
             <h3 className="font-['Univa_Nova',sans-serif] font-bold text-2xl text-[#2C3E50] mb-6">
@@ -35,7 +35,7 @@ export function Contact() {
                   >
                     support@mycyberclinics.com
                   </a>
-                  <p className="text-sm text-gray-500 mt-1">We'll respond within 24 hours</p>
+                  <p className="text-sm text-gray-500 mt-1">We&apos;ll respond within 24 hours</p>
                 </div>
               </div>
 
@@ -61,7 +61,7 @@ export function Contact() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-[#2C3E50] mb-1">Live Chat</h4>
-                  <p className="text-gray-600">Chat with CHIOMA, our AI assistant</p>
+                  <p className="text-gray-600">Chat with Chioma, our AI healthcare assistant</p>
                   <p className="text-sm text-gray-500 mt-1">Available 24/7 for instant support</p>
                 </div>
               </div>
@@ -80,7 +80,7 @@ export function Contact() {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-[#7E5BA1] text-white rounded-2xl p-8">
+          <div className="bg-[#7E5BA1] text-white rounded-2xl p-8 self-start">
             <h3 className="font-['Univa_Nova',sans-serif] font-bold text-2xl text-white mb-6">
               Send Us a Message
             </h3>
@@ -169,7 +169,7 @@ export function Contact() {
               {/* Privacy Notice */}
               <div className="bg-white rounded-lg p-4 text-xs text-gray-600">
                 <p className="leading-relaxed">
-                  By submitting this form, you agree to our <a href="#" className="text-[#14A9CC] hover:underline">Privacy Policy</a>. We'll only use your information to respond to your inquiry and won't share it with third parties.
+                  By submitting this form, you agree to our <a href="#" className="text-[#14A9CC] hover:underline">Privacy Policy</a>. We&apos;ll only use your information to respond to your inquiry and won&apos;t share it with third parties.
                 </p>
               </div>
 
@@ -189,3 +189,5 @@ export function Contact() {
     </section>
   );
 }
+
+

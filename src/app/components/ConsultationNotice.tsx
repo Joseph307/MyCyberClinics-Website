@@ -117,7 +117,7 @@ export function ConsultationNotice({ isOpen, onClose, onProceed }: ConsultationN
               <div className="flex items-start gap-3">
                 <div className="w-1.5 h-1.5 bg-[#7E5BA1] rounded-full flex-shrink-0 mt-2"></div>
                 <p className="text-sm text-gray-700 leading-relaxed">
-                  Before your consultation, you can view your doctor's full credentials including their MDCN registration number, qualifications, specialization, and years of practice.
+                  Before your consultation, you can view your doctor&apos;s full credentials including their MDCN registration number, qualifications, specialization, and years of practice.
                 </p>
               </div>
               <div className="flex items-start gap-3">

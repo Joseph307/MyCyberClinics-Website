@@ -292,7 +292,10 @@ function BlogManager({ role }: { role: AdminRole }) {
   };
 
   useEffect(() => {
-    void load();
+    const timer = setTimeout(() => {
+      void load();
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const filtered = useMemo(() => {
@@ -522,7 +525,10 @@ function DoctorsManager({ role }: { role: AdminRole }) {
   };
 
   useEffect(() => {
-    void load();
+    const timer = setTimeout(() => {
+      void load();
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const submit = async (event: FormEvent) => {
@@ -720,7 +726,10 @@ function PolicyPagesManager({ role }: { role: AdminRole }) {
   };
 
   useEffect(() => {
-    void load();
+    const timer = setTimeout(() => {
+      void load();
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const submit = async (event: FormEvent) => {
@@ -869,7 +878,10 @@ function SiteSettingsManager({ role }: { role: AdminRole }) {
         setForm(existing);
       }
     };
-    void load();
+    const timer = setTimeout(() => {
+      void load();
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const save = async (event: FormEvent) => {
@@ -1118,7 +1130,10 @@ function MediaLibraryManager({ role }: { role: AdminRole }) {
   };
 
   useEffect(() => {
-    void load();
+    const timer = setTimeout(() => {
+      void load();
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const upload = async (event: FormEvent) => {

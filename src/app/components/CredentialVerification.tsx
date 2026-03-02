@@ -81,7 +81,7 @@ export function CredentialVerification() {
               <div className="w-2 h-2 bg-[#7E5BA1] rounded-full flex-shrink-0 mt-2"></div>
               <div>
                 <p className="text-white/90 leading-relaxed">
-                  <strong className="text-white">You will see their credentials:</strong> Every doctor's profile displays their full name, MDCN registration number, specialization, qualifications, and years of practice.
+                  <strong className="text-white">You will see their credentials:</strong> Every doctor&apos;s profile displays their full name, MDCN registration number, specialization, qualifications, and years of practice.
                 </p>
               </div>
             </div>
@@ -97,7 +97,7 @@ export function CredentialVerification() {
               <div className="w-2 h-2 bg-[#7E5BA1] rounded-full flex-shrink-0 mt-2"></div>
               <div>
                 <p className="text-white/90 leading-relaxed">
-                  <strong className="text-white">Licensed professionals only:</strong> Before any consultation, you'll be informed that you are interacting with a health professional covered by their professional license.
+                  <strong className="text-white">Licensed professionals only:</strong> Before any consultation, you&apos;ll be informed that you are interacting with a health professional covered by their professional license.
                 </p>
               </div>
             </div>
@@ -105,7 +105,7 @@ export function CredentialVerification() {
               <div className="w-2 h-2 bg-[#7E5BA1] rounded-full flex-shrink-0 mt-2"></div>
               <div>
                 <p className="text-white/90 leading-relaxed">
-                  <strong className="text-white">Verified information:</strong> We provide transparent information about each doctor's credentials, professional licenses, and qualifications before you book.
+                  <strong className="text-white">Verified information:</strong> We provide transparent information about each doctor&apos;s credentials, professional licenses, and qualifications before you book.
                 </p>
               </div>
             </div>

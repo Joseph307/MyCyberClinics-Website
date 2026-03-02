@@ -5,22 +5,19 @@ const leadershipTeam = [
   {
     name: "Apham Nnaji",
     role: "Founder",
-    image:
-      "https://mycyberclinics.com/wp-content/uploads/2025/11/Mr.-Apham.png",
+    image: "/images/team/leader-apham.jpg",
     bio: "Apham Nnaji is a proven business executive with 25 years of leadership across global operators, high-growth technology firms, and startups. He has built strong technology foundations for strategic business outcomes and collaborated with boards, customers, and leadership teams to improve enterprise performance. He is the Executive Managing Partner at Soltrite Logistics International Finance and Chairman of the Board for Nnaji Family Foundation. He holds an MBA from the University of Wales and was born in Enugu State, Nigeria.",
   },
   {
     name: "Dr. Chisom Eze",
     role: "Director of Medical Operations",
-    image:
-      "https://mycyberclinics.com/wp-content/uploads/2025/07/WhatsApp-Image-2025-07-05-at-19.27.49_ca660b37-1024x761.jpg",
+    image: "/images/team/leader-chisom.jpg",
     bio: "Dr. Chisom Eze is passionate about integrating technology into healthcare to improve patient outcomes. Trained at Enugu State University, he combines clinical experience with digital health innovation and has worked with NGOs focused on healthcare access. He also contributes to research and public health outreach in underserved communities, with a focus on building a healthcare system that is both advanced and human-centered.",
   },
   {
     name: "Dr. Orji Jeffery Chidozie",
     role: "Chief Medical Officer",
-    image:
-      "https://mycyberclinics.com/wp-content/uploads/2024/08/Dr-731x1024.jpg",
+    image: "/images/team/leader-orji.jpg",
     bio: "Dr. Orji Jeffery Chidozie is an alumnus of Enugu State University College of Medicine, where he also completed housemanship, and later served at the Federal Road Safety Clinic, Abuja. He is focused on using technology to address healthcare access challenges in Nigeria and across Africa, and believes Nigeria's strong, tech-savvy youth population can help drive healthcare transformation.",
   },
 ];
@@ -34,7 +31,7 @@ export function About() {
             About MyCyber Clinics
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            We're on a mission to make quality healthcare accessible to every Nigerian, regardless of location or income level.
+            We&apos;re on a mission to make quality healthcare accessible to every Nigerian, regardless of location or income level.
           </p>
         </div>
 
@@ -98,7 +95,7 @@ export function About() {
                 MyCyber Clinics was founded by healthcare professionals and technology experts who believe that every Nigerian deserves access to quality medical care—instantly, affordably, and from the comfort of home.
               </p>
               <p className="text-white/90 leading-relaxed">
-                Today, we're proud to serve thousands of patients across Nigeria, connecting them with licensed doctors 24/7.
+                Today, we&apos;re proud to serve thousands of patients across Nigeria, connecting them with licensed doctors 24/7.
               </p>
             </div>
           </div>
@@ -125,6 +122,8 @@ export function About() {
                     src={member.image}
                     alt={`${member.name} - ${member.role}`}
                     className="w-full h-full object-contain object-center"
+                    sizes="(min-width: 1024px) 320px, (min-width: 768px) 50vw, 100vw"
+                    loading="eager"
                   />
                 </div>
                 <div className="p-6">
@@ -146,3 +145,6 @@ export function About() {
     </section>
   );
 }
+
+
+

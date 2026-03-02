@@ -1,8 +1,9 @@
+import Image from "next/image";
 import { Link, useRouteError, isRouteErrorResponse } from "react-router";
 import { Button } from "../components/ui/button";
 import { Footer } from "../components/Footer";
 import { AlertCircle, Home } from "lucide-react";
-import logoImage from "../../assets/c8397ab71eb936effba7144da57bfed566604694.png";
+import logoImage from "../../assets/log_o-removebg-cropped.png";
 
 export default function ErrorPage() {
   const error = useRouteError();
@@ -26,10 +27,11 @@ export default function ErrorPage() {
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4" role="banner">
         <nav className="flex items-center justify-between" aria-label="Error page navigation">
           <Link to="/" className="flex items-center gap-3">
-            <img 
-              src={logoImage.src} 
-              alt="MyCyber Clinics - Healthcare meets Technology" 
-              className="h-16 lg:h-20 w-auto"
+            <Image
+              src={logoImage}
+              alt="MyCyber Clinics - Healthcare meets Technology"
+              sizes="(min-width: 1024px) 160px, 140px"
+              className="h-14 lg:h-16 w-auto"
             />
           </Link>
         </nav>

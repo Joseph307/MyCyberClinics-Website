@@ -44,20 +44,20 @@ export const AnimatedSection: React.FC<AnimatedSectionProps> = ({
     return () => {
       try {
         observer.disconnect();
-      } catch (e) {
+      } catch {
         /* ignore */
       }
     };
   }, [threshold, rootMargin, once]);
 
-  return React.createElement(
-    "section",
-    {
-      ref: ref as any,
-      className: `animate-section ${inView ? "in-view" : ""} ${className}`.trim(),
-      "aria-hidden": false,
-    },
-    children
+  return (
+    <section
+      ref={ref}
+      className={`animate-section ${inView ? "in-view" : ""} ${className}`.trim()}
+      aria-hidden={false}
+    >
+      {children}
+    </section>
   );
 };
 
