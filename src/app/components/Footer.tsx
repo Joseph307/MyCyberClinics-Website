@@ -14,7 +14,7 @@ export function Footer() {
               src={logoImage}
               alt="MyCyber Clinics - Healthcare meets Technology"
               sizes="(min-width: 1024px) 280px, 220px"
-              className="h-24 lg:h-28 w-auto"
+              className="h-18 lg:h-22 w-auto"
             />
           </Link>
           <p className="text-base text-white/80 mb-6 leading-relaxed">
