@@ -6,6 +6,7 @@ import {
   Linkedin,
   Youtube,
   Music2,
+  MessageCircle,
   Mail,
   Shield,
 } from "lucide-react";
@@ -90,6 +91,18 @@ export function Footer({ siteSettings }: FooterProps) {
               aria-label="Visit our TikTok page"
             >
               <Music2 className="w-5 h-5 text-white" aria-hidden="true" />
+            </a>
+            <a
+              href={
+                siteSettings.socialWhatsApp ||
+                "https://wa.me/2348012345678?text=Hello%20MyCyber%20Clinics%2C%20I%20need%20help%20with%20a%20consultation."
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
+              aria-label="Start a WhatsApp chat with us"
+            >
+              <MessageCircle className="w-5 h-5 text-white" aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -260,4 +273,3 @@ export function Footer({ siteSettings }: FooterProps) {
     </footer>
   );
 }
-

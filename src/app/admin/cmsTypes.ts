@@ -62,6 +62,7 @@ export type CmsSiteSettings = {
   socialTwitter: string;
   socialYouTube: string;
   socialTikTok: string;
+  socialWhatsApp: string;
   metaTitleDefault: string;
   metaDescriptionDefault: string;
   canonicalBaseUrl: string;
