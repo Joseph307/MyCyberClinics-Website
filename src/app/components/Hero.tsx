@@ -279,50 +279,50 @@ export function Hero({ siteSettings }: HeroProps) {
           <nav className="hidden lg:flex items-center gap-6">
             <a
               href="#about"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base md:text-xl font-medium"
+              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm md:text-lg font-medium"
             >
               About
             </a>
             <a
               href="#services"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base md:text-xl font-medium"
+              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm md:text-lg font-medium"
             >
               Services
             </a>
             <a
               href="#plans"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base md:text-xl font-medium"
+              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm md:text-lg font-medium"
             >
               Pricing
             </a>
             <a
               href="#team"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base md:text-xl font-medium"
+              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm md:text-lg font-medium"
             >
               Doctors
             </a>
             <Link
               to="/blog"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base md:text-xl font-medium"
+              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm md:text-lg font-medium"
             >
               Health Blog
             </Link>
             <a
               href="#contact"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base md:text-xl font-medium"
+              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm md:text-lg font-medium"
             >
               Contact
             </a>
             <Button
               asChild
               variant="brand-gold"
-              className="text-base md:text-xl px-6 py-3"
+              className="text-sm md:text-lg px-6 py-3"
             >
               <a href="https://app.mycyberclinics.com/signIn">Log In</a>
             </Button>
             <Button
               asChild
-              className="bg-[#48C9B0] hover:bg-[#FFC857] text-white text-base md:text-xl px-6 py-3 "
+              className="bg-[#48C9B0] hover:bg-[#FFC857] text-white text-sm md:text-lg px-6 py-3 "
             >
               <a href={signUpUrl}>{primaryCtaText}</a>
             </Button>

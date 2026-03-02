@@ -1,10 +1,4 @@
 import Image from "next/image";
-import { useMemo, useState } from "react";
-import { Calendar, User, ArrowRight, Clock, ArrowLeft, Search } from "lucide-react";
-import { Link } from "react-router";
-import { useBlogArticles, useSiteSettings } from "@/sanity/lib/hooks";
-import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import { Button } from "../components/ui/button";
 import {
   Calendar,
   User,
@@ -15,10 +9,13 @@ import {
   ChevronRight,
   Search,
 } from "lucide-react";
-import { Footer } from "../components/Footer";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { FormEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router";
+import { useBlogArticles, useSiteSettings } from "@/sanity/lib/hooks";
+import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+import { Button } from "../components/ui/button";
+import { Footer } from "../components/Footer";
 import logoImage from "../../assets/log_o-removebg-cropped.png";
 
 export default function BlogPage() {
