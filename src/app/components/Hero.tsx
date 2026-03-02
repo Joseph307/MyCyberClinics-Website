@@ -1,11 +1,67 @@
 "use client";
 
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import Image from "next/image";
+import Link from "next/link";
 import { Button } from "./ui/button";
 import { Shield, Clock, Stethoscope, X, Menu } from "lucide-react";
 import { useState, useEffect } from "react";
-import logoImage from "../../assets/c8397ab71eb936effba7144da57bfed566604694.png";
+// import logoImage from "../../assets/c8397ab71eb936effba7144da57bfed566604694.png";
+import logoImageNew from "../../assets/log_o-removebg-cropped.png";
 import imgHero from "../../assets/618cefd477229e137057ef5ef785eb848fb5df12.png";
+
+type GsapTimelineLike = {
+  from: (target: unknown, vars?: unknown, position?: unknown) => GsapTimelineLike;
+  kill?: () => void;
+};
+
+type GsapLike = {
+  timeline: (vars?: unknown) => GsapTimelineLike;
+  from: (target: unknown, vars?: unknown) => unknown;
+  to: (target: unknown, vars?: unknown) => unknown;
+  utils: {
+    toArray: (selector: string) => Element[];
+  };
+  registerPlugin?: (plugin: unknown) => void;
+  killTweensOf?: (target: unknown) => void;
+};
+
+type ScrollTriggerInstanceLike = {
+  kill: () => void;
+};
+
+type ScrollTriggerLike = {
+  getAll?: () => ScrollTriggerInstanceLike[];
+};
+
+const resolveGsap = (gsapModule: unknown): GsapLike | null => {
+  const moduleObj = gsapModule as { gsap?: unknown; default?: unknown };
+  const candidate = moduleObj.gsap ?? moduleObj.default ?? gsapModule;
+
+  if (!candidate || typeof candidate !== "object") return null;
+
+  const obj = candidate as Record<string, unknown>;
+  const utils = obj.utils as Record<string, unknown> | undefined;
+
+  if (
+    typeof obj.timeline !== "function" ||
+    typeof obj.from !== "function" ||
+    typeof obj.to !== "function" ||
+    !utils ||
+    typeof utils.toArray !== "function"
+  ) {
+    return null;
+  }
+
+  return candidate as GsapLike;
+};
+
+const resolveScrollTrigger = (stModule: unknown): ScrollTriggerLike | null => {
+  const moduleObj = stModule as { ScrollTrigger?: unknown; default?: unknown };
+  const candidate = moduleObj.ScrollTrigger ?? moduleObj.default ?? stModule;
+
+  if (!candidate || typeof candidate !== "object") return null;
+  return candidate as ScrollTriggerLike;
+};
 
 export function Hero() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -28,8 +84,8 @@ export function Hero() {
 
   // GSAP animations for hero and scroll-triggered reveals
   useEffect(() => {
-    let heroTimeline: any = null;
-    let ScrollTrigger: any = null;
+    let heroTimeline: GsapTimelineLike | null = null;
+    let scrollTriggerPlugin: ScrollTriggerLike | null = null;
 
     // don't run on server
     if (typeof window === 'undefined') return;
@@ -41,14 +97,15 @@ export function Hero() {
 
     // dynamic import so SSR doesn't attempt to load GSAP or ScrollTrigger
     import('gsap').then((gsapModule) => {
-      const gsap = gsapModule.gsap || gsapModule.default || gsapModule;
+      const gsap = resolveGsap(gsapModule);
+      if (!gsap) return;
 
       // Try to import ScrollTrigger and register it; ignore if unavailable
       import('gsap/ScrollTrigger')
         .then((stModule) => {
-          ScrollTrigger = (stModule as any).ScrollTrigger || (stModule as any).default || stModule;
-          if (gsap && ScrollTrigger && gsap.registerPlugin) {
-            gsap.registerPlugin(ScrollTrigger);
+          scrollTriggerPlugin = resolveScrollTrigger(stModule);
+          if (scrollTriggerPlugin && gsap.registerPlugin) {
+            gsap.registerPlugin(scrollTriggerPlugin);
           }
 
           try {
@@ -61,7 +118,7 @@ export function Hero() {
 
             // Find all elements marked for reveal with data-reveal and animate them precisely
             const revealEls = gsap.utils.toArray('[data-reveal]');
-            revealEls.forEach((el: any) => {
+            revealEls.forEach((el) => {
               try {
                 gsap.from(el, {
                   scrollTrigger: {
@@ -77,8 +134,8 @@ export function Hero() {
 
                 // find CTAs inside the closest section/container for this reveal element
                 const parent = el.closest('section, main, [role="region"], div') || el.parentElement;
-                const ctas = parent ? parent.querySelectorAll('.btn-glow, .btn-pulse, a.btn-glow, button.btn-glow') : [];
-                if (ctas && ctas.length) {
+                const ctas = parent ? parent.querySelectorAll('.btn-glow, .btn-pulse, a.btn-glow, button.btn-glow') : null;
+                if (ctas && ctas.length > 0) {
                   gsap.from(ctas, {
                     scrollTrigger: {
                       trigger: el,
@@ -104,11 +161,11 @@ export function Hero() {
                     ease: 'sine.inOut',
                   });
                 }
-              } catch (e) {
+              } catch {
                 // ignore individual element animation errors
               }
             });
-          } catch (e) {
+          } catch {
             // swallow animation errors
           }
         })
@@ -128,7 +185,7 @@ export function Hero() {
               repeat: -1,
               ease: 'sine.inOut',
             });
-          } catch (e) {
+          } catch {
             // swallow
           }
         });
@@ -139,14 +196,14 @@ export function Hero() {
     return () => {
       // cleanup: kill timelines and ScrollTrigger instances
       import('gsap').then((gsapModule) => {
-        const g = gsapModule.gsap || gsapModule.default || gsapModule;
+        const g = resolveGsap(gsapModule);
         try {
           if (heroTimeline && heroTimeline.kill) heroTimeline.kill();
           if (g && g.killTweensOf) g.killTweensOf('.btn-pulse');
-          if (ScrollTrigger && ScrollTrigger.getAll) {
-            ScrollTrigger.getAll().forEach((t: any) => t.kill());
+          if (scrollTriggerPlugin && scrollTriggerPlugin.getAll) {
+            scrollTriggerPlugin.getAll().forEach((t) => t.kill());
           }
-        } catch (e) {
+        } catch {
           // ignore
         }
       });
@@ -161,13 +218,16 @@ export function Hero() {
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#ECF0F1] px-6 lg:px-32 py-4" role="banner">
         <nav className="flex items-center justify-between" aria-label="Main navigation">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-3">
-            <img 
-              src={logoImage.src} 
+          <Link href="/" className="flex items-center gap-3">
+            {/* old src: "../../assets/c8397ab71eb936effba7144da57bfed566604694.png" */}
+            <Image
+              src={logoImageNew}
               alt="MyCyber Clinics - Healthcare meets Technology" 
-              className="h-16 lg:h-20 w-auto"
+              priority
+              sizes="(min-width: 1024px) 160px, 140px"
+              className="h-14 lg:h-16 w-auto"
             />
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-6">
@@ -195,12 +255,12 @@ export function Hero() {
             >
               Doctors
             </a>
-            <a
+            <Link
               href="/blog"
               className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm font-medium"
             >
               Health Blog
-            </a>
+            </Link>
             <a
               href="#contact"
               className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm font-medium"
@@ -229,9 +289,12 @@ export function Hero() {
       <section className="relative px-6 lg:px-32 py-24 lg:py-32 overflow-hidden" id="main-content">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
-          <img 
-            src={imgHero.src} 
+          <Image
+            src={imgHero}
             alt="" 
+            fill
+            priority
+            sizes="100vw"
             className="w-full h-full object-cover"
             aria-hidden="true"
           />
@@ -350,13 +413,13 @@ export function Hero() {
               >
                 Doctors
               </a>
-              <a
+              <Link
                 href="/blog"
                 className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Health Blog
-              </a>
+              </Link>
               <a
                 href="#contact"
                 className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm font-medium"
