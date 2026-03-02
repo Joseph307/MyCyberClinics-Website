@@ -1,5 +1,7 @@
+import Image from "next/image";
+import Link from "next/link";
 import { Facebook, Twitter, Instagram, Mail, Shield } from "lucide-react";
-import logoImage from "../../assets/c8397ab71eb936effba7144da57bfed566604694.png";
+import logoImage from "../../assets/log_oo-removebg-cropped.png";
 
 export function Footer() {
   return (
@@ -7,13 +9,14 @@ export function Footer() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         {/* Brand */}
         <div>
-          <a href="/" className="inline-block mb-4">
-            <img 
-              src={logoImage.src} 
-              alt="MyCyber Clinics - Healthcare meets Technology" 
-              className="h-12 w-auto brightness-0 invert"
+          <Link href="/" className="inline-flex items-center mb-4">
+            <Image
+              src={logoImage}
+              alt="MyCyber Clinics - Healthcare meets Technology"
+              sizes="(min-width: 1024px) 280px, 220px"
+              className="h-24 lg:h-28 w-auto"
             />
-          </a>
+          </Link>
           <p className="text-base text-white/80 mb-6 leading-relaxed">
             Accessible, affordable, quality healthcare for Nigeria
           </p>
@@ -69,9 +72,9 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <a href="/blog" className="hover:text-[#FFC857] transition-colors">
+              <Link href="/blog" className="hover:text-[#FFC857] transition-colors">
                 Health Blog
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>

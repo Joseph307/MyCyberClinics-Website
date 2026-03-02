@@ -1,9 +1,10 @@
+import Image from "next/image";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { Button } from "../components/ui/button";
 import { Calendar, User, ArrowLeft, Clock, Share2, Facebook, Twitter, Linkedin } from "lucide-react";
 import { Footer } from "../components/Footer";
 import { Link, useParams } from "react-router";
-import logoImage from "../../assets/c8397ab71eb936effba7144da57bfed566604694.png";
+import logoImage from "../../assets/log_o-removebg-cropped.png";
 
 const allArticles = [
   {
@@ -201,19 +202,17 @@ export default function BlogPostPage() {
         <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4" role="banner">
           <nav className="flex items-center justify-between" aria-label="Blog navigation">
             <Link to="/" className="flex items-center gap-3">
-              <img 
-                src={logoImage.src} 
+              <Image
+                src={logoImage}
                 alt="MyCyber Clinics - Healthcare meets Technology" 
-                className="h-16 lg:h-20 w-auto"
+                sizes="(min-width: 1024px) 160px, 140px"
+                className="h-14 lg:h-16 w-auto"
               />
             </Link>
-            <Link to="/blog">
-              <Button
-                variant="outline"
-                className="border-[#1C227A] text-[#1C227A] hover:bg-[#1C227A] hover:text-white"
-              >
+            <Link to="/">
+              <Button variant="nav" className="btn-glow">
                 <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
-                Back to Blog
+                Back to Home
               </Button>
             </Link>
           </nav>
@@ -224,7 +223,7 @@ export default function BlogPostPage() {
               Article Not Found
             </h1>
             <p className="text-lg text-gray-600 mb-8">
-              The article you're looking for doesn't exist.
+              The article you&apos;re looking for doesn&apos;t exist.
             </p>
             <Link to="/blog">
               <Button className="bg-[#7D1FFF] hover:bg-[#6B1AD9] text-white">
@@ -244,19 +243,17 @@ export default function BlogPostPage() {
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4" role="banner">
         <nav className="flex items-center justify-between" aria-label="Blog navigation">
           <Link to="/" className="flex items-center gap-3">
-            <img 
-              src={logoImage.src} 
+            <Image
+              src={logoImage}
               alt="MyCyber Clinics - Healthcare meets Technology" 
-              className="h-16 lg:h-20 w-auto"
+              sizes="(min-width: 1024px) 160px, 140px"
+              className="h-14 lg:h-16 w-auto"
             />
           </Link>
-          <Link to="/blog">
-            <Button
-              variant="outline"
-              className="border-[#1C227A] text-[#1C227A] hover:bg-[#1C227A] hover:text-white"
-            >
+          <Link to="/">
+            <Button variant="nav" className="btn-glow">
               <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
-              Back to Blog
+              Back to Home
             </Button>
           </Link>
         </nav>
