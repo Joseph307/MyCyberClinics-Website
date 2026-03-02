@@ -9,6 +9,9 @@ import {
   Facebook,
   Twitter,
   Linkedin,
+    Instagram,
+    Youtube,
+    Music2,
 } from "lucide-react";
 import { Link, useParams } from "react-router";
 import { useBlogArticles, useSiteSettings } from "@/sanity/lib/hooks";
@@ -25,6 +28,48 @@ export default function BlogPostPage() {
     () => allArticles.find((entry) => entry.id === id),
     [allArticles, id],
   );
+  const articleUrl =
+    typeof window !== "undefined"
+      ? window.location.href
+      : `https://mycyberclinics.com/blog/${id ?? ""}`;
+  const shareText = `${article?.title ?? "Health Article"} | MyCyber Clinics`;
+
+  const openSharePopup = (url: string) => {
+    if (typeof window === "undefined") return;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const copyArticleLink = async (platform: string) => {
+    try {
+      await navigator.clipboard.writeText(articleUrl);
+      window.alert(`Article link copied. Paste it in ${platform} to share.`);
+    } catch {
+      window.alert("Could not copy automatically. Please copy the page URL from your browser.");
+    }
+  };
+
+  const shareOn = async (platform: "facebook" | "x" | "linkedin" | "instagram" | "youtube" | "tiktok") => {
+    const encodedUrl = encodeURIComponent(articleUrl);
+    const encodedText = encodeURIComponent(shareText);
+
+    if (platform === "facebook") {
+      openSharePopup(`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`);
+      return;
+    }
+
+    if (platform === "x") {
+      openSharePopup(`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`);
+      return;
+    }
+
+    if (platform === "linkedin") {
+      openSharePopup(`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`);
+      return;
+    }
+
+    // Instagram / YouTube / TikTok don't provide simple web share URLs for arbitrary links.
+    await copyArticleLink(platform === "instagram" ? "Instagram" : platform === "youtube" ? "YouTube" : "TikTok");
+  };
 
   if (!article) {
     return (
@@ -72,7 +117,8 @@ export default function BlogPostPage() {
     .slice(0, 2);
 
   return (
-    <div className="min-h-screen bg-white" lang="en">
+  <div className="min-h-screen bg-white" lang="en">
+      {/* Header */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4" role="banner">
         <nav className="flex items-center justify-between" aria-label="Blog navigation">
           <Link to="/" className="flex items-center gap-3">
@@ -93,16 +139,20 @@ export default function BlogPostPage() {
       </header>
 
       <main>
+        {/* Article Header */}
         <article className="py-12 px-6 lg:px-32">
           <div className="max-w-4xl mx-auto">
+            {/* Category Badge */}
             <div className="inline-flex items-center gap-2 bg-[#7D1FFF] text-white px-4 py-2 rounded-full text-sm font-semibold mb-6">
               {article.category}
             </div>
 
+            {/* Title */}
             <h1 className="font-['Univa_Nova',sans-serif] font-bold text-4xl lg:text-5xl text-[#1C227A] mb-6 leading-tight">
               {article.title}
             </h1>
 
+            {/* Meta Information */}
             <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-8 pb-8 border-b border-[#E4E5F6]">
               <div className="flex items-center gap-2">
                 <User className="w-5 h-5" aria-hidden="true" />
@@ -118,6 +168,7 @@ export default function BlogPostPage() {
               </div>
             </div>
 
+            {/* Featured Image */}
             <div className="mb-12 rounded-2xl overflow-hidden">
               <ImageWithFallback
                 src={article.image}
@@ -126,7 +177,8 @@ export default function BlogPostPage() {
               />
             </div>
 
-            <div
+            {/* Article Content */}
+            <div 
               className="prose prose-lg max-w-none mb-12"
               style={{
                 fontFamily: "var(--font-sans, system-ui, -apple-system, Roboto, sans-serif)",
@@ -158,6 +210,7 @@ export default function BlogPostPage() {
               <div dangerouslySetInnerHTML={{ __html: article.content }} />
             </div>
 
+            {/* Share Section */}
             <div className="border-t border-b border-[#E4E5F6] py-8 mb-12">
               <div className="flex items-center justify-between flex-wrap gap-4">
                 <div className="flex items-center gap-2">
@@ -166,27 +219,58 @@ export default function BlogPostPage() {
                 </div>
                 <div className="flex items-center gap-3">
                   <button
+                    type="button"
+                    onClick={() => void shareOn("facebook")}
                     className="p-2 rounded-full border border-[#E4E5F6] hover:bg-[#7D1FFF] hover:text-white hover:border-[#7D1FFF] transition-colors"
                     aria-label="Share on Facebook"
                   >
                     <Facebook className="w-5 h-5" />
                   </button>
                   <button
+                    type="button"
+                    onClick={() => void shareOn("x")}
                     className="p-2 rounded-full border border-[#E4E5F6] hover:bg-[#7D1FFF] hover:text-white hover:border-[#7D1FFF] transition-colors"
-                    aria-label="Share on Twitter"
+                    aria-label="Share on X"
                   >
                     <Twitter className="w-5 h-5" />
                   </button>
                   <button
+                    type="button"
+                    onClick={() => void shareOn("linkedin")}
                     className="p-2 rounded-full border border-[#E4E5F6] hover:bg-[#7D1FFF] hover:text-white hover:border-[#7D1FFF] transition-colors"
                     aria-label="Share on LinkedIn"
                   >
                     <Linkedin className="w-5 h-5" />
                   </button>
+                  <button
+                    type="button"
+                    onClick={() => void shareOn("instagram")}
+                    className="p-2 rounded-full border border-[#E4E5F6] hover:bg-[#7D1FFF] hover:text-white hover:border-[#7D1FFF] transition-colors"
+                    aria-label="Share on Instagram"
+                  >
+                    <Instagram className="w-5 h-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => void shareOn("youtube")}
+                    className="p-2 rounded-full border border-[#E4E5F6] hover:bg-[#7D1FFF] hover:text-white hover:border-[#7D1FFF] transition-colors"
+                    aria-label="Share on YouTube"
+                  >
+                    <Youtube className="w-5 h-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => void shareOn("tiktok")}
+                    className="p-2 rounded-full border border-[#E4E5F6] hover:bg-[#7D1FFF] hover:text-white hover:border-[#7D1FFF] transition-colors"
+                    aria-label="Share on TikTok"
+                  >
+                    <Music2 className="w-5 h-5" />
+                  </button>
                 </div>
               </div>
             </div>
 
+            {/* Related Articles */}
             <div className="mb-12">
               <h2 className="font-['Univa_Nova',sans-serif] font-bold text-2xl text-[#1C227A] mb-6">
                 Related Articles
@@ -227,6 +311,7 @@ export default function BlogPostPage() {
               </div>
             </div>
 
+            {/* Back to Blog CTA */}
             <div className="text-center">
               <Link to="/blog">
                 <Button

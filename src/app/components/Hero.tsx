@@ -279,46 +279,50 @@ export function Hero({ siteSettings }: HeroProps) {
           <nav className="hidden lg:flex items-center gap-6">
             <a
               href="#about"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm font-medium"
+              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base md:text-xl font-medium"
             >
               About
             </a>
             <a
               href="#services"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm font-medium"
+              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base md:text-xl font-medium"
             >
               Services
             </a>
             <a
               href="#plans"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm font-medium"
+              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base md:text-xl font-medium"
             >
               Pricing
             </a>
             <a
               href="#team"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm font-medium"
+              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base md:text-xl font-medium"
             >
               Doctors
             </a>
             <Link
               to="/blog"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm font-medium"
+              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base md:text-xl font-medium"
             >
               Health Blog
             </Link>
             <a
               href="#contact"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm font-medium"
+              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base md:text-xl font-medium"
             >
               Contact
             </a>
-            <Button asChild variant="brand-gold">
+            <Button
+              asChild
+              variant="brand-gold"
+              className="text-base md:text-xl px-6 py-3"
+            >
               <a href="https://app.mycyberclinics.com/signIn">Log In</a>
             </Button>
             <Button
               asChild
-              className="bg-[#48C9B0] hover:bg-[#FFC857] text-white"
+              className="bg-[#48C9B0] hover:bg-[#FFC857] text-white text-base md:text-xl px-6 py-3 "
             >
               <a href={signUpUrl}>{primaryCtaText}</a>
             </Button>
@@ -451,42 +455,42 @@ export function Hero({ siteSettings }: HeroProps) {
             <nav className="flex flex-col gap-4">
               <a
                 href="#about"
-                className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm font-medium"
+                className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 About
               </a>
               <a
                 href="#services"
-                className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm font-medium"
+                className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Services
               </a>
               <a
                 href="#plans"
-                className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm font-medium"
+                className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Pricing
               </a>
               <a
                 href="#team"
-                className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm font-medium"
+                className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Doctors
               </a>
               <Link
                 to="/blog"
-                className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm font-medium"
+                className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Health Blog
               </Link>
               <a
                 href="#contact"
-                className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm font-medium"
+                className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Contact
