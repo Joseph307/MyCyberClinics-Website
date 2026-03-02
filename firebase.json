@@ -13,7 +13,8 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ],
+    ]
+    ,
     "rewrites": [
       {
         "source": "/studio",
