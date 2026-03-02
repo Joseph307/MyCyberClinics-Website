@@ -7,10 +7,13 @@ import {
   ArrowRight,
   Clock,
   ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
   Search,
 } from "lucide-react";
 import { Footer } from "../components/Footer";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { FormEvent } from "react";
 import { Link } from "react-router";
 import logoImage from "../../assets/log_o-removebg-cropped.png";
 
@@ -181,6 +184,9 @@ const categories = [
 export default function BlogPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Articles");
+  const categoryTabsRef = useRef<HTMLDivElement | null>(null);
+  const [canScrollTabsLeft, setCanScrollTabsLeft] = useState(false);
+  const [canScrollTabsRight, setCanScrollTabsRight] = useState(false);
 
   const normalizedQuery = useMemo(
     () => searchQuery.trim().toLowerCase(),
@@ -208,8 +214,71 @@ export default function BlogPage() {
   const featuredArticle = filteredArticles[0] ?? null;
   const remainingArticles = useMemo(() => filteredArticles.slice(1), [filteredArticles]);
 
+  const openEmailComposer = (subject: string, body: string) => {
+    const to = "support@mycyberclinics.com";
+    const encodedSubject = encodeURIComponent(subject);
+    const encodedBody = encodeURIComponent(body);
+    const gmailComposeUrl =
+      `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}` +
+      `&su=${encodedSubject}&body=${encodedBody}`;
+    const mailtoUrl = `mailto:${to}?subject=${encodedSubject}&body=${encodedBody}`;
+
+    const popup = window.open(gmailComposeUrl, "_blank", "noopener,noreferrer");
+    if (!popup) {
+      window.location.href = mailtoUrl;
+    }
+  };
+
+  const handleNewsletterSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get("newsletterEmail") ?? "").trim();
+    const subject = "Newsletter Subscription Request";
+    const body =
+      `Please subscribe this email to MyCyber Clinics health updates:\n\n${email}`;
+    openEmailComposer(subject, body);
+    event.currentTarget.reset();
+  };
+
+  const updateTabArrowState = useCallback(() => {
+    const container = categoryTabsRef.current;
+    if (!container) return;
+
+    const hasLeft = container.scrollLeft > 4;
+    const hasRight =
+      container.scrollLeft + container.clientWidth < container.scrollWidth - 4;
+
+    setCanScrollTabsLeft(hasLeft);
+    setCanScrollTabsRight(hasRight);
+  }, []);
+
+  const scrollCategoryTabs = (direction: "left" | "right") => {
+    const container = categoryTabsRef.current;
+    if (!container) return;
+
+    const distance = direction === "right" ? 240 : -240;
+    container.scrollBy({ left: distance, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    updateTabArrowState();
+
+    const container = categoryTabsRef.current;
+    if (!container) return;
+
+    const handleScroll = () => updateTabArrowState();
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [updateTabArrowState]);
+
   return (
-    <div className="min-h-screen bg-white" lang="en">
+    <div className="min-h-screen bg-white overflow-x-hidden" lang="en">
       {/* Header */}
       <header
         className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4"
@@ -271,27 +340,52 @@ export default function BlogPage() {
         {/* Categories */}
         <section className="py-8 px-6 lg:px-32 bg-[#F1F2FB] border-b border-[#E4E5F6]">
           <div className="max-w-7xl mx-auto">
-            <div
-              className="hide-scrollbar flex items-center gap-3 overflow-x-auto pb-2"
-              role="tablist"
-              aria-label="Article categories"
-            >
-              {categories.map((category) => (
+            <div className="relative overflow-hidden">
+              {canScrollTabsLeft && (
                 <button
-                  key={category}
                   type="button"
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                    selectedCategory === category
-                      ? "bg-[#7D1FFF] text-white"
-                      : "bg-white text-[#1C227A] hover:bg-[#7D1FFF] hover:text-white border border-[#E4E5F6]"
-                  }`}
-                  role="tab"
-                  aria-selected={selectedCategory === category}
+                  onClick={() => scrollCategoryTabs("left")}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white border border-[#E4E5F6] text-[#1C227A] shadow-sm hover:bg-[#7D1FFF] hover:text-white transition-colors"
+                  aria-label="Show previous categories"
                 >
-                  {category}
+                  <ChevronLeft className="w-4 h-4 mx-auto" aria-hidden="true" />
                 </button>
-              ))}
+              )}
+
+              <div
+                ref={categoryTabsRef}
+                className="hide-scrollbar flex items-center gap-3 overflow-x-auto scroll-smooth px-10 pb-4 -mb-4"
+                role="tablist"
+                aria-label="Article categories"
+              >
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    type="button"
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                      selectedCategory === category
+                        ? "bg-[#7D1FFF] text-white"
+                        : "bg-white text-[#1C227A] hover:bg-[#7D1FFF] hover:text-white border border-[#E4E5F6]"
+                    }`}
+                    role="tab"
+                    aria-selected={selectedCategory === category}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+
+              {canScrollTabsRight && (
+                <button
+                  type="button"
+                  onClick={() => scrollCategoryTabs("right")}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white border border-[#E4E5F6] text-[#1C227A] shadow-sm hover:bg-[#7D1FFF] hover:text-white transition-colors"
+                  aria-label="Show more categories"
+                >
+                  <ChevronRight className="w-4 h-4 mx-auto" aria-hidden="true" />
+                </button>
+              )}
             </div>
           </div>
         </section>
@@ -456,13 +550,14 @@ export default function BlogPage() {
               your inbox
             </p>
             <form
-              className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto"
-              onSubmit={(e) => e.preventDefault()}
+              className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto items-center "
+              onSubmit={handleNewsletterSubmit}
             >
               <input
                 type="email"
+                name="newsletterEmail"
                 placeholder="Enter your email"
-                className="flex-1 px-6 py-4 rounded-lg border border-[#E4E5F6] focus:outline-none focus:ring-2 focus:ring-[#7D1FFF]"
+                className="flex-1 px-6 py-4 rounded-lg border border-[#E4E5F6] focus:outline-none focus:ring-2 focus:ring-[#7D1FFF] bg-white text-[#1C227A] caret-[#1C227A] placeholder:text-[#7A8594]"
                 aria-label="Email address for newsletter"
                 required
               />

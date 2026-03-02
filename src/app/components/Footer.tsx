@@ -143,12 +143,22 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-[#FFC857] transition-colors">
+              <a
+                href="https://firebasestorage.googleapis.com/v0/b/my-cyber-clinics/o/documents%2FMyCyberClinics%20Privacy%20Policy.pdf?alt=media&token=f520b697-608d-4808-a4b5-6d02c017049c"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#FFC857] transition-colors"
+              >
                 Privacy Policy
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-[#FFC857] transition-colors">
+              <a
+                href="https://firebasestorage.googleapis.com/v0/b/my-cyber-clinics/o/documents%2FMyCyberclinics%20User%20(Patient)%20Agreement%20(1).pdf?alt=media&token=d9fad5c9-2545-407d-8ef1-9e4a4cfd0493"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#FFC857] transition-colors"
+              >
                 Terms of Service
               </a>
             </li>
@@ -185,10 +195,20 @@ export function Footer() {
             © 2026 MyCyber Clinics. All Rights Reserved.
           </p>
           <div className="flex gap-6 text-base text-white/80">
-            <a href="#" className="hover:text-[#FFC857] transition-colors">
+            <a
+              href="https://firebasestorage.googleapis.com/v0/b/my-cyber-clinics/o/documents%2FMyCyberClinics%20Privacy%20Policy.pdf?alt=media&token=f520b697-608d-4808-a4b5-6d02c017049c"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#FFC857] transition-colors"
+            >
               Privacy Policy
             </a>
-            <a href="#" className="hover:text-[#FFC857] transition-colors">
+            <a
+              href="https://firebasestorage.googleapis.com/v0/b/my-cyber-clinics/o/documents%2FMyCyberclinics%20User%20(Patient)%20Agreement%20(1).pdf?alt=media&token=d9fad5c9-2545-407d-8ef1-9e4a4cfd0493"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#FFC857] transition-colors"
+            >
               Terms of Service
             </a>
             <a href="#" className="hover:text-[#FFC857] transition-colors">
@@ -233,3 +253,4 @@ export function Footer() {
     </footer>
   );
 }
+
