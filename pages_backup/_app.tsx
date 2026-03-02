@@ -12,5 +12,5 @@ export default function MyApp() {
     void initializeFirebaseAnalytics();
   }, []);
 
-  return <SpaApp />;
+  return <SpaApp />; 
 }
