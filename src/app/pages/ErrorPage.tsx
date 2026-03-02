@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Link, useRouteError, isRouteErrorResponse } from "react-router";
+import { fallbackSiteSettings } from "@/sanity/lib/content";
 import { Button } from "../components/ui/button";
 import { Footer } from "../components/Footer";
 import { AlertCircle, Home } from "lucide-react";
@@ -94,7 +95,7 @@ export default function ErrorPage() {
         </div>
       </main>
 
-      <Footer />
+      <Footer siteSettings={fallbackSiteSettings} />
     </div>
   );
 }

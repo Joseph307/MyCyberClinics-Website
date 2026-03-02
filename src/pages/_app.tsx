@@ -2,6 +2,7 @@
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useEffect } from 'react';
+import type { AppProps } from 'next/app';
 import { initializeFirebaseAnalytics } from '../lib/firebase';
 import { Roboto, Poppins } from 'next/font/google';
 import '../app/globals.css'; 
@@ -24,8 +25,14 @@ const poppins = Poppins({
   display: 'swap',
 });
 
-export default function MyApp() {
+export default function MyApp({ Component, pageProps, router }: AppProps) {
+  const isStudioRoute = router.asPath.startsWith('/studio');
+
   useEffect(() => {
+    if (isStudioRoute) {
+      return undefined;
+    }
+
     void initializeFirebaseAnalytics();
 
     // Ensure the font variable classes are applied to the root element so
@@ -38,7 +45,11 @@ export default function MyApp() {
       return () => root.classList.remove(roboto.variable, poppins.variable);
     }
     return undefined;
-  }, []);
+  }, [isStudioRoute]);
+
+  if (isStudioRoute) {
+    return <Component {...pageProps} />;
+  }
 
   return (
     <>

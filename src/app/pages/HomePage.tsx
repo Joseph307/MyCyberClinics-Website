@@ -13,6 +13,7 @@ import { BlogPreview } from "../components/BlogPreview";
 import { Contact } from "../components/Contact";
 import { Footer } from "../components/Footer";
 import { ArrowUp, ChevronLeft, ChevronRight, MessageCircle, X } from "lucide-react";
+import { useBlogArticles, useSiteSettings } from "@/sanity/lib/hooks";
 
 export default function HomePage() {
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -20,6 +21,8 @@ export default function HomePage() {
   const [chatMinimized, setChatMinimized] = useState(false);
   const lastScrollYRef = useRef(0);
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const siteSettings = useSiteSettings();
+  const blogArticles = useBlogArticles(6);
 
   useEffect(() => {
     const hideScrollTopControl = () => {
@@ -65,12 +68,13 @@ export default function HomePage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const whatsappNumber = (siteSettings.contactPhone || "+2348012345678").replace(/\D/g, "");
   const whatsappLink =
-    "https://wa.me/2348012345678?text=Hello%20MyCyber%20Clinics%2C%20I%20need%20help%20with%20a%20consultation.";
+    `https://wa.me/${whatsappNumber}?text=Hello%20MyCyber%20Clinics%2C%20I%20need%20help%20with%20a%20consultation.`;
 
   return (
     <div className="min-h-screen bg-white font-['Karla']" lang="en">
-      <Hero />
+      <Hero siteSettings={siteSettings} />
       <main>
         <AnimatedSection>
           <About />
@@ -105,14 +109,14 @@ export default function HomePage() {
         </AnimatedSection>
 
         <AnimatedSection>
-          <BlogPreview />
+          <BlogPreview articles={blogArticles} />
         </AnimatedSection>
 
         <AnimatedSection>
           <Contact />
         </AnimatedSection>
       </main>
-      <Footer />
+      <Footer siteSettings={siteSettings} />
 
       {chatMinimized ? (
         <button

@@ -8,6 +8,7 @@ import { Link } from "react-router";
 // import logoImage from "../../assets/c8397ab71eb936effba7144da57bfed566604694.png";
 import logoImageNew from "../../assets/log_o-removebg-cropped.png";
 import imgHero from "../../assets/618cefd477229e137057ef5ef785eb848fb5df12.png";
+import type { SiteSettingsContent } from "@/sanity/lib/content";
 
 type GsapTimelineLike = {
   from: (
@@ -67,9 +68,15 @@ const resolveScrollTrigger = (stModule: unknown): ScrollTriggerLike | null => {
   return candidate as ScrollTriggerLike;
 };
 
-export function Hero() {
+type HeroProps = {
+  siteSettings: SiteSettingsContent;
+};
+
+export function Hero({ siteSettings }: HeroProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const signUpUrl = "https://app.mycyberclinics.com/bookAppointmentScreen";
+  const signUpUrl =
+    siteSettings.primaryCtaLink || "https://app.mycyberclinics.com/bookAppointmentScreen";
+  const primaryCtaText = siteSettings.primaryCtaText || "Book Consultation";
 
   // Close mobile menu with Escape key
   useEffect(() => {
@@ -313,7 +320,7 @@ export function Hero() {
               asChild
               className="bg-[#48C9B0] hover:bg-[#FFC857] text-white"
             >
-              <a href={signUpUrl}>Book Consultation</a>
+              <a href={signUpUrl}>{primaryCtaText}</a>
             </Button>
           </nav>
 
@@ -367,7 +374,7 @@ export function Hero() {
               size="lg"
               className="bg-[#7E5BA1] hover:bg-[#FFC857] text-white text-lg px-8 py-6 btn-glow btn-pulse hero-cta"
             >
-              <a href={signUpUrl}>Book a Consultation</a>
+              <a href={signUpUrl}>{primaryCtaText}</a>
             </Button>
             <Button
               asChild
@@ -491,7 +498,7 @@ export function Hero() {
                 asChild
                 className="bg-[#7E5BA1] hover:bg-[#FFC857] text-white"
               >
-                <a href={signUpUrl}>Book Consultation</a>
+                <a href={signUpUrl}>{primaryCtaText}</a>
               </Button>
             </nav>
           </div>
@@ -504,7 +511,7 @@ export function Hero() {
           asChild
           className="w-full bg-[#7E5BA1] hover:bg-[#FFC857] text-white py-4"
         >
-          <a href={signUpUrl}>Book Consultation</a>
+          <a href={signUpUrl}>{primaryCtaText}</a>
         </Button>
       </div>
     </div>
