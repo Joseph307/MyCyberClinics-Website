@@ -1,5 +1,14 @@
 import Image from "next/image";
-import { Facebook, Twitter, Instagram, Mail, Shield } from "lucide-react";
+import {
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin,
+  Youtube,
+  Music2,
+  Mail,
+  Shield,
+} from "lucide-react";
 import { Link } from "react-router";
 import logoImage from "../../assets/log_oo-removebg-cropped.png";
 
@@ -22,25 +31,58 @@ export function Footer() {
           </p>
           <div className="flex gap-3" role="list" aria-label="Social media links">
             <a
-              href="#"
+              href="https://www.facebook.com/share/1GRXXtqaUi/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
               aria-label="Visit our Facebook page"
             >
               <Facebook className="w-5 h-5 text-white" aria-hidden="true" />
             </a>
             <a
-              href="#"
+              href="https://x.com/mycyberclinics?t=QmGm3eSKyGB_yOqoOvx7Rw&s=09"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
-              aria-label="Visit our Twitter page"
+              aria-label="Visit our X page"
             >
               <Twitter className="w-5 h-5 text-white" aria-hidden="true" />
             </a>
             <a
-              href="#"
+              href="https://www.instagram.com/mycyberclinic?igsh=MW9xNmpjcjlnZnE4Zw=="
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
               aria-label="Visit our Instagram page"
             >
               <Instagram className="w-5 h-5 text-white" aria-hidden="true" />
+            </a>
+            <a
+              href="https://www.linkedin.com/company/my-cyberclinics/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
+              aria-label="Visit our LinkedIn page"
+            >
+              <Linkedin className="w-5 h-5 text-white" aria-hidden="true" />
+            </a>
+            <a
+              href="https://youtube.com/@mycyberclinics?si=Isd2nkkntWuQqzwW"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
+              aria-label="Visit our YouTube channel"
+            >
+              <Youtube className="w-5 h-5 text-white" aria-hidden="true" />
+            </a>
+            <a
+              href="https://www.tiktok.com/@mycyberclinics?_t=ZS-90PUltOrbRx&_r=1"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
+              aria-label="Visit our TikTok page"
+            >
+              <Music2 className="w-5 h-5 text-white" aria-hidden="true" />
             </a>
           </div>
         </div>
