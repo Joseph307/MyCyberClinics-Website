@@ -268,6 +268,23 @@ function estimateReadTime(content?: string): string {
   return `${minutes} min read`;
 }
 
+function sanitizeBlogHtml(content?: string): string {
+  const html =
+    content ||
+    "<p>This article is being updated in Sanity. Please check back shortly.</p>";
+
+  return html
+    .replace(/\sstyle=(["'])[\s\S]*?\1/gi, "")
+    .replace(/\sclass=(["'])[\s\S]*?\1/gi, "")
+    .replace(/\s(?:color|bgcolor)=(["'])[\s\S]*?\1/gi, "")
+    .replace(/<font[^>]*>/gi, "")
+    .replace(/<\/font>/gi, "")
+    .replace(
+      /<p>\s*(?:<strong>|<b>)([^<]+)(?:<\/strong>|<\/b>)\s*<\/p>/gi,
+      "<h3>$1</h3>",
+    );
+}
+
 function mapBlogPost(post: BlogPostQueryResult): BlogArticle {
   return {
     id: post.slug || post._id,
@@ -284,9 +301,7 @@ function mapBlogPost(post: BlogPostQueryResult): BlogArticle {
       post.featuredImageUrl ||
       "https://images.unsplash.com/photo-1576091160550-2173dba999ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
     imageAlt: post.featuredImageAlt || post.title || "MyCyber Clinics article image",
-    content:
-      post.content ||
-      "<p>This article is being updated in Sanity. Please check back shortly.</p>",
+    content: sanitizeBlogHtml(post.content),
   };
 }
 
