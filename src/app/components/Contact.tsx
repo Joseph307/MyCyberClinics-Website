@@ -2,6 +2,7 @@ import type { FormEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Mail, Phone, MessageSquare, Send } from "lucide-react";
+import { useSiteSettings } from "@/sanity/lib/hooks";
 
 declare global {
   interface Window {
@@ -22,7 +23,11 @@ declare global {
 }
 
 export function Contact() {
-  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? "";
+  const siteSettings = useSiteSettings();
+  const siteKey =
+    siteSettings.recaptchaSiteKey || process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
+  const contactEmail = siteSettings.contactEmail || "support@mycyberclinics.com";
+  const contactPhone = siteSettings.contactPhone || "+2348012345678";
   const recaptchaContainerRef = useRef<HTMLDivElement | null>(null);
   const recaptchaWidgetIdRef = useRef<number | null>(null);
   const [recaptchaToken, setRecaptchaToken] = useState("");
@@ -79,7 +84,7 @@ export function Contact() {
   }, [siteKey]);
 
   const openEmailComposer = (subject: string, body: string) => {
-    const to = "support@mycyberclinics.com";
+    const to = contactEmail;
     const encodedSubject = encodeURIComponent(subject);
     const encodedBody = encodeURIComponent(body);
     const gmailComposeUrl =
@@ -97,7 +102,9 @@ export function Contact() {
   const handleContactSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!siteKey) {
-      window.alert("reCAPTCHA is not configured. Add NEXT_PUBLIC_RECAPTCHA_SITE_KEY.");
+      window.alert(
+        "reCAPTCHA is not configured. Add a site key in Sanity or NEXT_PUBLIC_RECAPTCHA_SITE_KEY.",
+      );
       return;
     }
     if (!recaptchaToken) {
@@ -151,10 +158,10 @@ export function Contact() {
                 <div>
                   <h4 className="font-semibold text-[#2C3E50] mb-1">Email Us</h4>
                   <a
-                    href="mailto:support@mycyberclinics.com"
+                    href={`mailto:${contactEmail}`}
                     className="text-gray-600 hover:text-[#14A9CC] transition-colors"
                   >
-                    support@mycyberclinics.com
+                    {contactEmail}
                   </a>
                   <p className="text-sm text-gray-500 mt-1">We&apos;ll respond within 24 hours</p>
                 </div>
@@ -167,10 +174,10 @@ export function Contact() {
                 <div>
                   <h4 className="font-semibold text-[#2C3E50] mb-1">Call Us</h4>
                   <a
-                    href="tel:+2348012345678"
+                    href={`tel:${contactPhone}`}
                     className="text-gray-600 hover:text-[#14A9CC] transition-colors"
                   >
-                    +234 801 234 5678
+                    {contactPhone}
                   </a>
                   <p className="text-sm text-gray-500 mt-1">Mon-Fri: 8AM - 8PM, Sat-Sun: 9AM - 5PM</p>
                 </div>
@@ -299,7 +306,8 @@ export function Contact() {
                 <div ref={recaptchaContainerRef} />
                 {!siteKey && (
                   <p className="text-xs text-[#FFE8A1]">
-                    reCAPTCHA not configured. Set <code>NEXT_PUBLIC_RECAPTCHA_SITE_KEY</code>.
+                    reCAPTCHA not configured. Set a site key in Sanity or{" "}
+                    <code>NEXT_PUBLIC_RECAPTCHA_SITE_KEY</code>.
                   </p>
                 )}
               </div>
@@ -319,5 +327,4 @@ export function Contact() {
     </section>
   );
 }
-
 
