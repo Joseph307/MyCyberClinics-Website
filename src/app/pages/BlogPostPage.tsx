@@ -16,18 +16,22 @@ import {
 } from "lucide-react";
 import { Footer } from "../components/Footer";
 import { Link, useParams } from "react-router";
+import { useEffect, useRef } from "react";
 import logoImage from "../../assets/log_o-removebg-cropped.png";
 
 const allArticles = [
   {
     id: 1,
-    title: "Understanding Telemedicine: How Virtual Healthcare Works in Nigeria",
-    excerpt: "Learn how telemedicine is transforming healthcare delivery across Nigeria, making quality medical care accessible to everyone.",
+    title:
+      "Understanding Telemedicine: How Virtual Healthcare Works in Nigeria",
+    excerpt:
+      "Learn how telemedicine is transforming healthcare delivery across Nigeria, making quality medical care accessible to everyone.",
     author: "Dr. Adaeze Okonkwo",
     date: "February 15, 2026",
     readTime: "5 min read",
     category: "Healthcare Technology",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image:
+      "https://images.unsplash.com/photo-1576091160550-2173dba999ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
     content: `
       <p>Telemedicine is revolutionizing healthcare delivery across Nigeria, breaking down geographical barriers and making quality medical care accessible to everyone, regardless of their location.</p>
       
@@ -48,17 +52,19 @@ const allArticles = [
       
       <h2>Getting Started</h2>
       <p>Starting with telemedicine is simple. Book a consultation, connect with a verified doctor, and receive professional medical care—all from your smartphone or computer.</p>
-    `
+    `,
   },
   {
     id: 2,
     title: "5 Common Health Myths Debunked by Medical Professionals",
-    excerpt: "Separating medical facts from fiction. Our doctors explain the truth behind common health misconceptions.",
+    excerpt:
+      "Separating medical facts from fiction. Our doctors explain the truth behind common health misconceptions.",
     author: "Dr. Chinedu Eze",
     date: "February 12, 2026",
     readTime: "7 min read",
     category: "Health Education",
-    image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image:
+      "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
     content: `
       <p>Medical misinformation can lead to poor health decisions. Let's separate fact from fiction with evidence-based medicine.</p>
       
@@ -76,17 +82,19 @@ const allArticles = [
       
       <h2>Myth 5: Feed a Cold, Starve a Fever</h2>
       <p>Your body needs nutrients and hydration whether you have a cold or fever. Proper nutrition supports your immune system during illness.</p>
-    `
+    `,
   },
   {
     id: 3,
     title: "Managing Stress and Mental Health in Modern Nigeria",
-    excerpt: "Practical tips for maintaining mental wellness in today's fast-paced world, from Nigeria's leading mental health professionals.",
+    excerpt:
+      "Practical tips for maintaining mental wellness in today's fast-paced world, from Nigeria's leading mental health professionals.",
     author: "Dr. Oluwaseun Adeleke",
     date: "February 10, 2026",
     readTime: "6 min read",
     category: "Mental Health",
-    image: "https://images.unsplash.com/photo-1544027993-37dbfe43562a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image:
+      "https://images.unsplash.com/photo-1544027993-37dbfe43562a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
     content: `
       <p>Mental health is just as important as physical health. In Nigeria's fast-paced environment, managing stress is crucial for overall wellbeing.</p>
       
@@ -107,17 +115,19 @@ const allArticles = [
       
       <h2>When to Seek Help</h2>
       <p>If stress is interfering with your daily life, relationships, or work, it's time to consult a mental health professional. Our telemedicine platform makes it easy to connect with licensed therapists and psychiatrists.</p>
-    `
+    `,
   },
   {
     id: 4,
     title: "Preventive Healthcare: Why Regular Check-ups Matter",
-    excerpt: "Discover how preventive care can save lives and reduce healthcare costs through early detection and intervention.",
+    excerpt:
+      "Discover how preventive care can save lives and reduce healthcare costs through early detection and intervention.",
     author: "Dr. Adaeze Okonkwo",
     date: "February 8, 2026",
     readTime: "5 min read",
     category: "Preventive Care",
-    image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image:
+      "https://images.unsplash.com/photo-1579684385127-1ef15d508118?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
     content: `
       <p>Prevention is always better than cure. Regular health check-ups can detect problems early when they're most treatable.</p>
       
@@ -138,17 +148,19 @@ const allArticles = [
       
       <h2>Making It Convenient</h2>
       <p>With telemedicine, you can schedule regular check-ups without disrupting your busy schedule. Our doctors can order necessary tests and review results remotely.</p>
-    `
+    `,
   },
   {
     id: 5,
     title: "Understanding Your Prescription: A Patient's Guide",
-    excerpt: "Everything you need to know about reading prescriptions, medication safety, and proper drug usage.",
+    excerpt:
+      "Everything you need to know about reading prescriptions, medication safety, and proper drug usage.",
     author: "Dr. Chinedu Eze",
     date: "February 5, 2026",
     readTime: "8 min read",
     category: "Patient Education",
-    image: "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image:
+      "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
     content: `
       <p>Understanding your prescription is crucial for safe and effective medication use. Let's break down what you need to know.</p>
       
@@ -169,17 +181,19 @@ const allArticles = [
       
       <h2>Generic vs. Brand Name Medications</h2>
       <p>Generic medications contain the same active ingredients as brand-name drugs and are equally effective, often at a lower cost.</p>
-    `
+    `,
   },
   {
     id: 6,
     title: "Nutrition Basics: Eating for Better Health in Nigeria",
-    excerpt: "A practical guide to nutrition and healthy eating habits tailored for Nigerian cuisine and lifestyle.",
+    excerpt:
+      "A practical guide to nutrition and healthy eating habits tailored for Nigerian cuisine and lifestyle.",
     author: "Dr. Oluwaseun Adeleke",
     date: "February 2, 2026",
     readTime: "6 min read",
     category: "Nutrition",
-    image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image:
+      "https://images.unsplash.com/photo-1490645935967-10de6ba17061?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
     content: `
       <p>Good nutrition is the foundation of good health. Learn how to make healthier choices while enjoying Nigerian cuisine.</p>
       
@@ -200,13 +214,14 @@ const allArticles = [
       
       <h2>Nutrition and Disease Prevention</h2>
       <p>A balanced diet can help prevent chronic diseases like diabetes, hypertension, and heart disease.</p>
-    `
-  }
+    `,
+  },
 ];
 
 export default function BlogPostPage() {
   const { id } = useParams();
-  const article = allArticles.find(a => a.id === Number(id));
+  const articleContentRef = useRef<HTMLDivElement | null>(null);
+  const article = allArticles.find((a) => a.id === Number(id));
   const articleUrl =
     typeof window !== "undefined"
       ? window.location.href
@@ -223,42 +238,122 @@ export default function BlogPostPage() {
       await navigator.clipboard.writeText(articleUrl);
       window.alert(`Article link copied. Paste it in ${platform} to share.`);
     } catch {
-      window.alert("Could not copy automatically. Please copy the page URL from your browser.");
+      window.alert(
+        "Could not copy automatically. Please copy the page URL from your browser.",
+      );
     }
   };
 
-  const shareOn = async (platform: "facebook" | "x" | "linkedin" | "instagram" | "youtube" | "tiktok") => {
+  const shareOn = async (
+    platform:
+      | "facebook"
+      | "x"
+      | "linkedin"
+      | "instagram"
+      | "youtube"
+      | "tiktok",
+  ) => {
     const encodedUrl = encodeURIComponent(articleUrl);
     const encodedText = encodeURIComponent(shareText);
 
     if (platform === "facebook") {
-      openSharePopup(`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`);
+      openSharePopup(
+        `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+      );
       return;
     }
 
     if (platform === "x") {
-      openSharePopup(`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`);
+      openSharePopup(
+        `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`,
+      );
       return;
     }
 
     if (platform === "linkedin") {
-      openSharePopup(`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`);
+      openSharePopup(
+        `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+      );
       return;
     }
 
     // Instagram / YouTube / TikTok don't provide simple web share URLs for arbitrary links.
-    await copyArticleLink(platform === "instagram" ? "Instagram" : platform === "youtube" ? "YouTube" : "TikTok");
+    await copyArticleLink(
+      platform === "instagram"
+        ? "Instagram"
+        : platform === "youtube"
+          ? "YouTube"
+          : "TikTok",
+    );
   };
+
+  const sanitizedArticleContent = article
+    ? article.content
+        .replace(/\sstyle=(["'])[\s\S]*?\1/gi, "")
+        .replace(/\scolor=(["'])[\s\S]*?\1/gi, "")
+        .replace(/\sclass=(["'])[\s\S]*?\1/gi, "")
+        .replace(/<\/?font[^>]*>/gi, "")
+        .replace(
+          /<p>\s*(?:<strong>|<b>)([^<]+)(?:<\/strong>|<\/b>)\s*<\/p>/gi,
+          "<h3>$1</h3>",
+        )
+    : "";
+
+  useEffect(() => {
+    const root = articleContentRef.current;
+    if (!root) return;
+
+    const getRgb = (value: string): [number, number, number] | null => {
+      const match = value.match(/\d+/g);
+      if (!match || match.length < 3) return null;
+      return [Number(match[0]), Number(match[1]), Number(match[2])];
+    };
+
+    const luminance = ([r, g, b]: [number, number, number]) =>
+      (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+
+    const nodes = root.querySelectorAll<HTMLElement>("*");
+    nodes.forEach((node) => {
+      const style = window.getComputedStyle(node);
+      const rgb = getRgb(style.color);
+      if (!rgb) return;
+
+      // Force readability for overly light text from imported rich HTML.
+      if (luminance(rgb) >= 0.82) {
+        const tag = node.tagName.toLowerCase();
+        if (/^h[1-6]$/.test(tag)) {
+          node.style.color = "#1C227A";
+          node.style.opacity = "1";
+          return;
+        }
+
+        if (tag === "strong" || tag === "b") {
+          node.style.color = "#1C227A";
+          node.style.opacity = "1";
+          return;
+        }
+
+        node.style.color = "#374151";
+        node.style.opacity = "1";
+      }
+    });
+  }, [sanitizedArticleContent]);
 
   if (!article) {
     return (
-  <div className="min-h-screen bg-white" lang="en">
-        <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4" role="banner">
-          <nav className="flex items-center justify-between" aria-label="Blog navigation">
+      <div className="min-h-screen bg-white" lang="en">
+        <header
+          className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4"
+          role="banner"
+        >
+          <nav
+            className="flex items-center justify-between"
+            aria-label="Blog navigation"
+          >
             <Link to="/" className="flex items-center gap-3">
               <Image
                 src={logoImage}
-                alt="MyCyber Clinics - Healthcare meets Technology" 
+                alt="MyCyber Clinics - Healthcare meets Technology"
                 sizes="(min-width: 1024px) 160px, 140px"
                 className="h-14 lg:h-16 w-auto"
               />
@@ -273,7 +368,10 @@ export default function BlogPostPage() {
         </header>
         <main className="py-20 px-6 lg:px-32">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 style={{ fontFamily: "var(--font-display, var(--font-sans))" }} className="font-bold text-4xl text-[#1C227A] mb-4">
+            <h1
+              style={{ fontFamily: "var(--font-display, var(--font-sans))" }}
+              className="font-bold text-4xl text-[#1C227A] mb-4"
+            >
               Article Not Found
             </h1>
             <p className="text-lg text-gray-600 mb-8">
@@ -292,14 +390,20 @@ export default function BlogPostPage() {
   }
 
   return (
-  <div className="min-h-screen bg-white" lang="en">
+    <div className="min-h-screen bg-white" lang="en">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4" role="banner">
-        <nav className="flex items-center justify-between" aria-label="Blog navigation">
+      <header
+        className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4"
+        role="banner"
+      >
+        <nav
+          className="flex items-center justify-between"
+          aria-label="Blog navigation"
+        >
           <Link to="/" className="flex items-center gap-3">
             <Image
               src={logoImage}
-              alt="MyCyber Clinics - Healthcare meets Technology" 
+              alt="MyCyber Clinics - Healthcare meets Technology"
               sizes="(min-width: 1024px) 160px, 140px"
               className="h-14 lg:h-16 w-auto"
             />
@@ -353,19 +457,35 @@ export default function BlogPostPage() {
             </div>
 
             {/* Article Content */}
-            <div 
+            <div
               className="prose prose-lg max-w-none mb-12"
               style={{
-                fontFamily: 'var(--font-sans, system-ui, -apple-system, Roboto, sans-serif)'
+                fontFamily:
+                  "var(--font-sans, system-ui, -apple-system, Roboto, sans-serif)",
               }}
             >
               <style>{`
+                .prose * {
+                  color: #374151 !important;
+                  opacity: 1 !important;
+                }
+                .prose h1, .prose h2, .prose h3, .prose h4 {
+                  color: #1C227A !important;
+                  opacity: 1 !important;
+                }
                 .prose h2 {
                   font-family: var(--font-display, var(--font-sans));
                   font-weight: bold;
                   color: #1C227A;
                   margin-top: 2rem;
                   margin-bottom: 1rem;
+                }
+                .prose h3, .prose h4 {
+                  font-family: var(--font-display, var(--font-sans));
+                  font-weight: 700;
+                  color: #1C227A !important;
+                  margin-top: 1.5rem;
+                  margin-bottom: 0.75rem;
                 }
                 .prose p {
                   color: #374151;
@@ -382,15 +502,23 @@ export default function BlogPostPage() {
                   margin-bottom: 0.5rem;
                 }
               `}</style>
-              <div dangerouslySetInnerHTML={{ __html: article.content }} />
+              <div
+                ref={articleContentRef}
+                dangerouslySetInnerHTML={{ __html: sanitizedArticleContent }}
+              />
             </div>
 
             {/* Share Section */}
             <div className="border-t border-b border-[#E4E5F6] py-8 mb-12">
               <div className="flex items-center justify-between flex-wrap gap-4">
                 <div className="flex items-center gap-2">
-                  <Share2 className="w-5 h-5 text-[#1C227A]" aria-hidden="true" />
-                  <span className="font-semibold text-[#1C227A]">Share this article:</span>
+                  <Share2
+                    className="w-5 h-5 text-[#1C227A]"
+                    aria-hidden="true"
+                  />
+                  <span className="font-semibold text-[#1C227A]">
+                    Share this article:
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <button
@@ -452,7 +580,10 @@ export default function BlogPostPage() {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {allArticles
-                  .filter(a => a.id !== article.id && a.category === article.category)
+                  .filter(
+                    (a) =>
+                      a.id !== article.id && a.category === article.category,
+                  )
                   .slice(0, 2)
                   .map((relatedArticle) => (
                     <Link
@@ -474,8 +605,13 @@ export default function BlogPostPage() {
                           </h3>
                           <div className="flex items-center gap-3 text-xs text-gray-500">
                             <div className="flex items-center gap-1">
-                              <Calendar className="w-3 h-3" aria-hidden="true" />
-                              <time dateTime={relatedArticle.date}>{relatedArticle.date}</time>
+                              <Calendar
+                                className="w-3 h-3"
+                                aria-hidden="true"
+                              />
+                              <time dateTime={relatedArticle.date}>
+                                {relatedArticle.date}
+                              </time>
                             </div>
                             <div className="flex items-center gap-1">
                               <Clock className="w-3 h-3" aria-hidden="true" />
@@ -492,9 +628,7 @@ export default function BlogPostPage() {
             {/* Back to Blog CTA */}
             <div className="text-center">
               <Link to="/blog">
-                <Button
-                  className="bg-[#1C227A] hover:bg-[#0F1347] text-white px-8 py-6 text-lg"
-                >
+                <Button className="bg-[#1C227A] hover:bg-[#0F1347] text-white px-8 py-6 text-lg">
                   <ArrowLeft className="w-5 h-5 mr-2" aria-hidden="true" />
                   Back to All Articles
                 </Button>
