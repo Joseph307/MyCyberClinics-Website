@@ -1,6 +1,4 @@
 import Image from "next/image";
-import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import { Button } from "../components/ui/button";
 import {
   Calendar,
   User,
@@ -11,179 +9,20 @@ import {
   ChevronRight,
   Search,
 } from "lucide-react";
-import { Footer } from "../components/Footer";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { FormEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router";
+import { useBlogArticles, useSiteSettings } from "@/sanity/lib/hooks";
+import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+import { Button } from "../components/ui/button";
+import { Footer } from "../components/Footer";
 import logoImage from "../../assets/log_o-removebg-cropped.png";
-
-const allArticles = [
-  {
-    id: 1,
-    title:
-      "Understanding Telemedicine: How Virtual Healthcare Works in Nigeria",
-    excerpt:
-      "Learn how telemedicine is transforming healthcare delivery across Nigeria, making quality medical care accessible to everyone.",
-    author: "Dr. Adaeze Okonkwo",
-    date: "February 15, 2026",
-    readTime: "5 min read",
-    category: "Healthcare Technology",
-    image:
-      "https://images.unsplash.com/photo-1576091160550-2173dba999ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-  },
-  {
-    id: 2,
-    title: "5 Common Health Myths Debunked by Medical Professionals",
-    excerpt:
-      "Separating medical facts from fiction. Our doctors explain the truth behind common health misconceptions.",
-    author: "Dr. Chinedu Eze",
-    date: "February 12, 2026",
-    readTime: "7 min read",
-    category: "Health Education",
-    image:
-      "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-  },
-  {
-    id: 3,
-    title: "Managing Stress and Mental Health in Modern Nigeria",
-    excerpt:
-      "Practical tips for maintaining mental wellness in today's fast-paced world, from Nigeria's leading mental health professionals.",
-    author: "Dr. Oluwaseun Adeleke",
-    date: "February 10, 2026",
-    readTime: "6 min read",
-    category: "Mental Health",
-    image:
-      "https://images.unsplash.com/photo-1544027993-37dbfe43562a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-  },
-  {
-    id: 4,
-    title: "Preventive Healthcare: Why Regular Check-ups Matter",
-    excerpt:
-      "Discover how preventive care can save lives and reduce healthcare costs through early detection and intervention.",
-    author: "Dr. Adaeze Okonkwo",
-    date: "February 8, 2026",
-    readTime: "5 min read",
-    category: "Preventive Care",
-    image:
-      "https://images.unsplash.com/photo-1579684385127-1ef15d508118?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-  },
-  {
-    id: 5,
-    title: "Understanding Your Prescription: A Patient's Guide",
-    excerpt:
-      "Everything you need to know about reading prescriptions, medication safety, and proper drug usage.",
-    author: "Dr. Chinedu Eze",
-    date: "February 5, 2026",
-    readTime: "8 min read",
-    category: "Patient Education",
-    image:
-      "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-  },
-  {
-    id: 6,
-    title: "Nutrition Basics: Eating for Better Health in Nigeria",
-    excerpt:
-      "A practical guide to nutrition and healthy eating habits tailored for Nigerian cuisine and lifestyle.",
-    author: "Dr. Oluwaseun Adeleke",
-    date: "February 2, 2026",
-    readTime: "6 min read",
-    category: "Nutrition",
-    image:
-      "https://images.unsplash.com/photo-1490645935967-10de6ba17061?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-  },
-  {
-    id: 7,
-    title: "Diabetes Management: Living Well with Type 2 Diabetes",
-    excerpt:
-      "Comprehensive guide to managing Type 2 diabetes through lifestyle changes, medication, and regular monitoring.",
-    author: "Dr. Chinedu Eze",
-    date: "January 30, 2026",
-    readTime: "9 min read",
-    category: "Chronic Conditions",
-    image:
-      "https://images.unsplash.com/photo-1615486511262-4b8b0a4c92d5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-  },
-  {
-    id: 8,
-    title: "Children's Health: Common Childhood Illnesses Explained",
-    excerpt:
-      "A parent's guide to recognizing, treating, and preventing common childhood illnesses from fevers to colds.",
-    author: "Dr. Adaeze Okonkwo",
-    date: "January 28, 2026",
-    readTime: "7 min read",
-    category: "Pediatrics",
-    image:
-      "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-  },
-  {
-    id: 9,
-    title: "Skin Care in the Nigerian Climate: Expert Advice",
-    excerpt:
-      "Learn how to protect and care for your skin in Nigeria's tropical climate from our dermatology specialists.",
-    author: "Dr. Oluwaseun Adeleke",
-    date: "January 25, 2026",
-    readTime: "6 min read",
-    category: "Dermatology",
-    image:
-      "https://images.unsplash.com/photo-1556228720-195a672e8a03?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-  },
-  {
-    id: 10,
-    title: "Heart Health: Understanding Cardiovascular Disease",
-    excerpt:
-      "Essential information about heart disease prevention, risk factors, and treatment options available in Nigeria.",
-    author: "Dr. Chinedu Eze",
-    date: "January 22, 2026",
-    readTime: "8 min read",
-    category: "Cardiology",
-    image:
-      "https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-  },
-  {
-    id: 11,
-    title: "Women's Health: Essential Screenings and Check-ups",
-    excerpt:
-      "A comprehensive guide to women's health screenings, from mammograms to pap smears and beyond.",
-    author: "Dr. Adaeze Okonkwo",
-    date: "January 20, 2026",
-    readTime: "7 min read",
-    category: "Women's Health",
-    image:
-      "https://images.unsplash.com/photo-1516841273335-e39b37888115?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-  },
-  {
-    id: 12,
-    title: "Sleep Better: Tips for Improving Your Sleep Quality",
-    excerpt:
-      "Science-backed strategies for getting better sleep and improving your overall health and wellbeing.",
-    author: "Dr. Oluwaseun Adeleke",
-    date: "January 18, 2026",
-    readTime: "5 min read",
-    category: "Wellness",
-    image:
-      "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-  },
-];
-
-const categories = [
-  "All Articles",
-  "Healthcare Technology",
-  "Health Education",
-  "Mental Health",
-  "Preventive Care",
-  "Patient Education",
-  "Nutrition",
-  "Chronic Conditions",
-  "Pediatrics",
-  "Dermatology",
-  "Cardiology",
-  "Women's Health",
-  "Wellness",
-];
 
 export default function BlogPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Articles");
+  const allArticles = useBlogArticles(12);
+  const siteSettings = useSiteSettings();
   const categoryTabsRef = useRef<HTMLDivElement | null>(null);
   const [canScrollTabsLeft, setCanScrollTabsLeft] = useState(false);
   const [canScrollTabsRight, setCanScrollTabsRight] = useState(false);
@@ -193,7 +32,14 @@ export default function BlogPage() {
     [searchQuery],
   );
 
-  // Combine search + category into one memoized pass to avoid recomputing on every render.
+  const categories = useMemo(
+    () => [
+      "All Articles",
+      ...Array.from(new Set(allArticles.map((article) => article.category))).sort(),
+    ],
+    [allArticles],
+  );
+
   const filteredArticles = useMemo(() => {
     return allArticles.filter((article) => {
       const matchesCategory =
@@ -209,7 +55,7 @@ export default function BlogPage() {
         article.category.toLowerCase().includes(normalizedQuery)
       );
     });
-  }, [normalizedQuery, selectedCategory]);
+  }, [allArticles, normalizedQuery, selectedCategory]);
 
   const featuredArticle = filteredArticles[0] ?? null;
   const remainingArticles = useMemo(() => filteredArticles.slice(1), [filteredArticles]);
@@ -407,7 +253,7 @@ export default function BlogPage() {
                 <div className="h-80 lg:h-auto overflow-hidden">
                   <ImageWithFallback
                     src={featuredArticle.image}
-                    alt={`Featured: ${featuredArticle.title}`}
+                    alt={featuredArticle.imageAlt}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   />
                 </div>
@@ -457,11 +303,7 @@ export default function BlogPage() {
           </div>
         </section>
 
-        {/* All Articles */}
-        <section
-          className="py-12 px-6 lg:px-32 bg-white"
-          aria-labelledby="all-articles-heading"
-        >
+        <section className="pb-20 px-6 lg:px-32 bg-white" aria-labelledby="all-articles-heading">
           <div className="max-w-7xl mx-auto">
             <h2
               id="all-articles-heading"
@@ -470,22 +312,23 @@ export default function BlogPage() {
               All Articles
             </h2>
             {remainingArticles.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                 {remainingArticles.map((article) => (
                   <article
                     key={article.id}
                     className="bg-white rounded-2xl overflow-hidden border border-[#E4E5F6] hover:border-[#7D1FFF] hover:shadow-xl transition-all group"
                   >
-                    <div className="h-48 overflow-hidden relative">
+                    <div className="h-56 overflow-hidden relative">
                       <ImageWithFallback
                         src={article.image}
-                        alt={`Featured image for: ${article.title}`}
+                        alt={article.imageAlt}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
-                      <div className="absolute top-4 left-4 bg-[#7D1FFF] text-white px-3 py-1 rounded-full text-xs font-semibold">
+                      <div className="absolute top-4 left-4 bg-[#1C227A] text-white px-3 py-1 rounded-full text-xs font-semibold">
                         {article.category}
                       </div>
                     </div>
+
                     <div className="p-6">
                       <h3 className="font-display font-bold text-xl text-[#1C227A] mb-3 leading-tight group-hover:text-[#7D1FFF] transition-colors">
                         {article.title}
@@ -493,6 +336,7 @@ export default function BlogPage() {
                       <p className="text-sm text-gray-600 mb-4 leading-relaxed">
                         {article.excerpt}
                       </p>
+
                       <div className="flex items-center gap-4 text-xs text-gray-500 mb-4 pb-4 border-b border-[#E4E5F6]">
                         <div className="flex items-center gap-1">
                           <User className="w-3 h-3" aria-hidden="true" />
@@ -503,6 +347,7 @@ export default function BlogPage() {
                           <span>{article.readTime}</span>
                         </div>
                       </div>
+
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1 text-xs text-gray-500">
                           <Calendar className="w-3 h-3" aria-hidden="true" />
@@ -510,14 +355,11 @@ export default function BlogPage() {
                         </div>
                         <Link
                           to={`/blog/${article.id}`}
-                          className="text-[#7D1FFF] hover:text-[#6B1AD9] text-sm font-semibold flex items-center gap-1"
-                          aria-label={`Read article: ${article.title}`}
+                          className="text-[#7D1FFF] hover:text-[#1C227A] text-sm font-semibold flex items-center gap-1 group"
+                          aria-label={`Read full article: ${article.title}`}
                         >
                           Read More
-                          <ArrowRight
-                            className="w-4 h-4 group-hover:translate-x-1 transition-transform"
-                            aria-hidden="true"
-                          />
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
                         </Link>
                       </div>
                     </div>
@@ -525,9 +367,8 @@ export default function BlogPage() {
                 ))}
               </div>
             ) : (
-              // Keep this scoped to the cards section so "Featured Article" can still highlight the best match.
               <div className="rounded-2xl border border-[#E4E5F6] bg-[#F1F2FB] p-8 text-center text-[#1C227A]">
-                No additional articles match the current filters.
+                No articles match your search.
               </div>
             )}
           </div>
@@ -575,7 +416,7 @@ export default function BlogPage() {
         </section>
       </main>
 
-      <Footer />
+      <Footer siteSettings={siteSettings} />
     </div>
   );
 }

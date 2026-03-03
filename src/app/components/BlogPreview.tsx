@@ -1,72 +1,14 @@
+import type { BlogArticle } from "@/sanity/lib/content";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Button } from "./ui/button";
 import { Calendar, User, ArrowRight, Clock } from "lucide-react";
 import { Link } from "react-router";
 
-const blogArticles = [
-  {
-    id: 1,
-    title: "Understanding Telemedicine: How Virtual Healthcare Works in Nigeria",
-    excerpt: "Learn how telemedicine is transforming healthcare delivery across Nigeria, making quality medical care accessible to everyone.",
-    author: "Dr. Adaeze Okonkwo",
-    date: "February 15, 2026",
-    readTime: "5 min read",
-    category: "Healthcare Technology",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
-  },
-  {
-    id: 2,
-    title: "5 Common Health Myths Debunked by Medical Professionals",
-    excerpt: "Separating medical facts from fiction. Our doctors explain the truth behind common health misconceptions.",
-    author: "Dr. Chinedu Eze",
-    date: "February 12, 2026",
-    readTime: "7 min read",
-    category: "Health Education",
-    image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
-  },
-  {
-    id: 3,
-    title: "Managing Stress and Mental Health in Modern Nigeria",
-    excerpt: "Practical tips for maintaining mental wellness in today's fast-paced world, from Nigeria's leading mental health professionals.",
-    author: "Dr. Oluwaseun Adeleke",
-    date: "February 10, 2026",
-    readTime: "6 min read",
-    category: "Mental Health",
-    image: "https://images.unsplash.com/photo-1544027993-37dbfe43562a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
-  },
-  {
-    id: 4,
-    title: "Preventive Healthcare: Why Regular Check-ups Matter",
-    excerpt: "Discover how preventive care can save lives and reduce healthcare costs through early detection and intervention.",
-    author: "Dr. Adaeze Okonkwo",
-    date: "February 8, 2026",
-    readTime: "5 min read",
-    category: "Preventive Care",
-    image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
-  },
-  {
-    id: 5,
-    title: "Understanding Your Prescription: A Patient's Guide",
-    excerpt: "Everything you need to know about reading prescriptions, medication safety, and proper drug usage.",
-    author: "Dr. Chinedu Eze",
-    date: "February 5, 2026",
-    readTime: "8 min read",
-    category: "Patient Education",
-    image: "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
-  },
-  {
-    id: 6,
-    title: "Nutrition Basics: Eating for Better Health in Nigeria",
-    excerpt: "A practical guide to nutrition and healthy eating habits tailored for Nigerian cuisine and lifestyle.",
-    author: "Dr. Oluwaseun Adeleke",
-    date: "February 2, 2026",
-    readTime: "6 min read",
-    category: "Nutrition",
-    image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
-  }
-];
+type BlogPreviewProps = {
+  articles: BlogArticle[];
+};
 
-export function BlogPreview() {
+export function BlogPreview({ articles }: BlogPreviewProps) {
   return (
     <section id="blog" className="py-20 px-6 lg:px-32 bg-white" aria-labelledby="blog-heading">
       <div className="max-w-7xl mx-auto">
@@ -82,7 +24,7 @@ export function BlogPreview() {
 
         {/* Blog Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {blogArticles.map((article) => (
+          {articles.map((article) => (
             <article
               key={article.id}
               className="bg-white rounded-2xl overflow-hidden border border-[#ECF0F1] hover:border-[#14A9CC] hover:shadow-xl transition-all group"

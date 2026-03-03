@@ -8,6 +8,7 @@ import { Link } from "react-router";
 // import logoImage from "../../assets/c8397ab71eb936effba7144da57bfed566604694.png";
 import logoImageNew from "../../assets/log_o-removebg-cropped.png";
 import imgHero from "../../assets/618cefd477229e137057ef5ef785eb848fb5df12.png";
+import type { SiteSettingsContent } from "@/sanity/lib/content";
 
 type GsapTimelineLike = {
   from: (
@@ -67,9 +68,15 @@ const resolveScrollTrigger = (stModule: unknown): ScrollTriggerLike | null => {
   return candidate as ScrollTriggerLike;
 };
 
-export function Hero() {
+type HeroProps = {
+  siteSettings: SiteSettingsContent;
+};
+
+export function Hero({ siteSettings }: HeroProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const signUpUrl = "https://app.mycyberclinics.com/bookAppointmentScreen";
+  const signUpUrl =
+    siteSettings.primaryCtaLink || "https://app.mycyberclinics.com/bookAppointmentScreen";
+  const primaryCtaText = siteSettings.primaryCtaText || "Book Consultation";
 
   // Close mobile menu with Escape key
   useEffect(() => {
@@ -272,52 +279,52 @@ export function Hero() {
           <nav className="hidden lg:flex items-center gap-6">
             <a
               href="#about"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base md:text-xl font-medium"
+              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm md:text-lg font-medium"
             >
               About
             </a>
             <a
               href="#services"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base md:text-xl font-medium"
+              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm md:text-lg font-medium"
             >
               Services
             </a>
             <a
               href="#plans"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base md:text-xl font-medium"
+              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm md:text-lg font-medium"
             >
               Pricing
             </a>
             <a
               href="#team"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base md:text-xl font-medium"
+              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm md:text-lg font-medium"
             >
               Doctors
             </a>
             <Link
               to="/blog"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base md:text-xl font-medium"
+              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm md:text-lg font-medium"
             >
               Health Blog
             </Link>
             <a
               href="#contact"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base md:text-xl font-medium"
+              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm md:text-lg font-medium"
             >
               Contact
             </a>
             <Button
               asChild
               variant="brand-gold"
-              className="text-base md:text-xl px-6 py-3"
+              className="text-sm md:text-lg px-6 py-3"
             >
               <a href="https://app.mycyberclinics.com/signIn">Log In</a>
             </Button>
             <Button
               asChild
-              className="bg-[#48C9B0] hover:bg-[#FFC857] text-white text-base md:text-xl px-6 py-3 "
+              className="bg-[#48C9B0] hover:bg-[#FFC857] text-white text-sm md:text-lg px-6 py-3 "
             >
-              <a href={signUpUrl}>Book Consultation</a>
+              <a href={signUpUrl}>{primaryCtaText}</a>
             </Button>
           </nav>
 
@@ -371,7 +378,7 @@ export function Hero() {
               size="lg"
               className="bg-[#7E5BA1] hover:bg-[#FFC857] text-white text-lg px-8 py-6 btn-glow btn-pulse hero-cta"
             >
-              <a href={signUpUrl}>Book a Consultation</a>
+              <a href={signUpUrl}>{primaryCtaText}</a>
             </Button>
             <Button
               asChild
@@ -495,7 +502,7 @@ export function Hero() {
                 asChild
                 className="bg-[#7E5BA1] hover:bg-[#FFC857] text-white"
               >
-                <a href={signUpUrl}>Book Consultation</a>
+                <a href={signUpUrl}>{primaryCtaText}</a>
               </Button>
             </nav>
           </div>
@@ -508,7 +515,7 @@ export function Hero() {
           asChild
           className="w-full bg-[#7E5BA1] hover:bg-[#FFC857] text-white py-4"
         >
-          <a href={signUpUrl}>Book Consultation</a>
+          <a href={signUpUrl}>{primaryCtaText}</a>
         </Button>
       </div>
     </div>

@@ -1,6 +1,5 @@
 import Image from "next/image";
-import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import { Button } from "../components/ui/button";
+import { useMemo } from "react";
 import {
   Calendar,
   User,
@@ -10,11 +9,10 @@ import {
   Facebook,
   Twitter,
   Linkedin,
-  Instagram,
-  Youtube,
-  Music2,
+    Instagram,
+    Youtube,
+    Music2,
 } from "lucide-react";
-import { Footer } from "../components/Footer";
 import { Link, useParams } from "react-router";
 import { useEffect, useRef } from "react";
 import logoImage from "../../assets/log_o-removebg-cropped.png";
@@ -354,6 +352,7 @@ export default function BlogPostPage() {
               <Image
                 src={logoImage}
                 alt="MyCyber Clinics - Healthcare meets Technology"
+                alt="MyCyber Clinics - Healthcare meets Technology"
                 sizes="(min-width: 1024px) 160px, 140px"
                 className="h-14 lg:h-16 w-auto"
               />
@@ -384,10 +383,14 @@ export default function BlogPostPage() {
             </Link>
           </div>
         </main>
-        <Footer />
+        <Footer siteSettings={siteSettings} />
       </div>
     );
   }
+
+  const relatedArticles = allArticles
+    .filter((entry) => entry.id !== article.id && entry.category === article.category)
+    .slice(0, 2);
 
   return (
     <div className="min-h-screen bg-white" lang="en">
@@ -403,6 +406,7 @@ export default function BlogPostPage() {
           <Link to="/" className="flex items-center gap-3">
             <Image
               src={logoImage}
+              alt="MyCyber Clinics - Healthcare meets Technology"
               alt="MyCyber Clinics - Healthcare meets Technology"
               sizes="(min-width: 1024px) 160px, 140px"
               className="h-14 lg:h-16 w-auto"
@@ -451,7 +455,7 @@ export default function BlogPostPage() {
             <div className="mb-12 rounded-2xl overflow-hidden">
               <ImageWithFallback
                 src={article.image}
-                alt={`Featured image for: ${article.title}`}
+                alt={article.imageAlt}
                 className="w-full h-[400px] lg:h-[500px] object-cover"
               />
             </div>
@@ -638,7 +642,7 @@ export default function BlogPostPage() {
         </article>
       </main>
 
-      <Footer />
+      <Footer siteSettings={siteSettings} />
     </div>
   );
 }

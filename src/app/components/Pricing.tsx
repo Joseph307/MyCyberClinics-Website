@@ -1,5 +1,6 @@
 import { Button } from "./ui/button";
 import { Check } from "lucide-react";
+import { useSiteSettings } from "@/sanity/lib/hooks";
 
 const plans = [
   {
@@ -56,6 +57,11 @@ const plans = [
 ];
 
 export function Pricing() {
+  const siteSettings = useSiteSettings();
+  const whatsappLink =
+    siteSettings.socialWhatsApp ||
+    "https://wa.me/2348012345678?text=Hello%20MyCyber%20Clinics%2C%20I%20need%20help%20with%20a%20consultation.";
+
   return (
     <section id="plans" className="py-20 px-6 lg:px-32 bg-[#ECF0F1]">
       <div className="text-center mb-16">
@@ -132,7 +138,7 @@ export function Pricing() {
         </p>
         <Button asChild variant="brand-aqua" className="btn-glow">
           <a
-            href="https://wa.me/2348012345678?text=Hello%20MyCyber%20Clinics%2C%20I%20need%20help%20with%20a%20consultation."
+            href={whatsappLink}
             target="_blank"
             rel="noopener noreferrer"
           >

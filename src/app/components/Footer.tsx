@@ -6,13 +6,21 @@ import {
   Linkedin,
   Youtube,
   Music2,
+  MessageCircle,
   Mail,
   Shield,
 } from "lucide-react";
 import { Link } from "react-router";
 import logoImage from "../../assets/log_oo-removebg-cropped.png";
+import type { SiteSettingsContent } from "@/sanity/lib/content";
 
-export function Footer() {
+type FooterProps = {
+  siteSettings: SiteSettingsContent;
+};
+
+export function Footer({ siteSettings }: FooterProps) {
+  const contactEmail = siteSettings.contactEmail || "support@mycyberclinics.com";
+
   return (
     <footer className="bg-[#48C9B0] text-white py-16 px-6 lg:px-32" role="contentinfo">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
@@ -31,7 +39,7 @@ export function Footer() {
           </p>
           <div className="flex gap-3" role="list" aria-label="Social media links">
             <a
-              href="https://www.facebook.com/share/1GRXXtqaUi/"
+              href={siteSettings.socialFacebook || "https://www.facebook.com/share/1GRXXtqaUi/"}
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
@@ -40,7 +48,7 @@ export function Footer() {
               <Facebook className="w-5 h-5 text-white" aria-hidden="true" />
             </a>
             <a
-              href="https://x.com/mycyberclinics?t=QmGm3eSKyGB_yOqoOvx7Rw&s=09"
+              href={siteSettings.socialTwitter || "https://x.com/mycyberclinics?t=QmGm3eSKyGB_yOqoOvx7Rw&s=09"}
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
@@ -49,7 +57,7 @@ export function Footer() {
               <Twitter className="w-5 h-5 text-white" aria-hidden="true" />
             </a>
             <a
-              href="https://www.instagram.com/mycyberclinic?igsh=MW9xNmpjcjlnZnE4Zw=="
+              href={siteSettings.socialInstagram || "https://www.instagram.com/mycyberclinic?igsh=MW9xNmpjcjlnZnE4Zw=="}
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
@@ -58,7 +66,7 @@ export function Footer() {
               <Instagram className="w-5 h-5 text-white" aria-hidden="true" />
             </a>
             <a
-              href="https://www.linkedin.com/company/my-cyberclinics/"
+              href={siteSettings.socialLinkedIn || "https://www.linkedin.com/company/my-cyberclinics/"}
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
@@ -67,7 +75,7 @@ export function Footer() {
               <Linkedin className="w-5 h-5 text-white" aria-hidden="true" />
             </a>
             <a
-              href="https://youtube.com/@mycyberclinics?si=Isd2nkkntWuQqzwW"
+              href={siteSettings.socialYouTube || "https://youtube.com/@mycyberclinics?si=Isd2nkkntWuQqzwW"}
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
@@ -76,13 +84,25 @@ export function Footer() {
               <Youtube className="w-5 h-5 text-white" aria-hidden="true" />
             </a>
             <a
-              href="https://www.tiktok.com/@mycyberclinics?_t=ZS-90PUltOrbRx&_r=1"
+              href={siteSettings.socialTikTok || "https://www.tiktok.com/@mycyberclinics?_t=ZS-90PUltOrbRx&_r=1"}
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
               aria-label="Visit our TikTok page"
             >
               <Music2 className="w-5 h-5 text-white" aria-hidden="true" />
+            </a>
+            <a
+              href={
+                siteSettings.socialWhatsApp ||
+                "https://wa.me/2348012345678?text=Hello%20MyCyber%20Clinics%2C%20I%20need%20help%20with%20a%20consultation."
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
+              aria-label="Start a WhatsApp chat with us"
+            >
+              <MessageCircle className="w-5 h-5 text-white" aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -172,11 +192,11 @@ export function Footer() {
           </h4>
           <div className="space-y-4">
             <a
-              href="mailto:support@mycyberclinics.com"
+              href={`mailto:${contactEmail}`}
               className="flex items-center gap-2 text-base text-white/80 hover:text-[#FFC857] transition-colors"
             >
               <Mail className="w-4 h-4" aria-hidden="true" />
-              <span>support@mycyberclinics.com</span>
+              <span>{contactEmail}</span>
             </a>
             <div className="bg-[#14A9CC]/20 border border-[#14A9CC]/35 backdrop-blur rounded-lg p-4" role="note" aria-label="Emergency notice">
               <p className="text-sm text-white font-semibold mb-2">Emergency?</p>
@@ -253,4 +273,3 @@ export function Footer() {
     </footer>
   );
 }
-
