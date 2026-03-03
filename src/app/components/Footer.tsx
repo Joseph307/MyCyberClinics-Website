@@ -10,7 +10,7 @@ import {
   Mail,
   Shield,
 } from "lucide-react";
-import { Link } from "react-router";
+import Link from "next/link";
 import logoImage from "../../assets/log_oo-removebg-cropped.png";
 import type { SiteSettingsContent } from "@/sanity/lib/content";
 
@@ -26,7 +26,7 @@ export function Footer({ siteSettings }: FooterProps) {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         {/* Brand */}
         <div>
-          <Link to="/" className="inline-flex items-center mb-4">
+          <Link href="/" className="inline-flex items-center mb-4">
             <Image
               src={logoImage}
               alt="MyCyber Clinics - Healthcare meets Technology"
@@ -134,9 +134,9 @@ export function Footer({ siteSettings }: FooterProps) {
               </a>
             </li>
             <li>
-              <Link to="/blog" className="hover:text-[#FFC857] transition-colors">
-                Health Blog
-              </Link>
+              <Link href="/blog" className="hover:text-[#FFC857] transition-colors">
+                  Health Blog
+                </Link>
             </li>
           </ul>
         </nav>
