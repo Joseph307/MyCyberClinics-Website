@@ -19,14 +19,18 @@ type FooterProps = {
 };
 
 export function Footer({ siteSettings }: FooterProps) {
-  const contactEmail = siteSettings.contactEmail || "support@mycyberclinics.com";
+  const contactEmail =
+    siteSettings.contactEmail || "support@mycyberclinics.com";
 
   return (
-    <footer className="bg-[#48C9B0] text-white py-16 px-6 lg:px-32" role="contentinfo">
+    <footer
+      className="bg-[#48C9B0] text-white py-16 px-6 lg:px-32"
+      role="contentinfo"
+    >
       <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         {/* Brand */}
         <div>
-          <Link href="/" className="inline-flex items-center mb-4">
+          <Link to="/#home" className="inline-flex items-center mb-4">
             <Image
               src={logoImage}
               alt="MyCyber Clinics - Healthcare meets Technology"
@@ -37,9 +41,16 @@ export function Footer({ siteSettings }: FooterProps) {
           <p className="text-base text-white/80 mb-6 leading-relaxed">
             Accessible, affordable, quality healthcare for Nigeria
           </p>
-          <div className="flex gap-3" role="list" aria-label="Social media links">
+          <div
+            className="flex gap-3"
+            role="list"
+            aria-label="Social media links"
+          >
             <a
-              href={siteSettings.socialFacebook || "https://www.facebook.com/share/1GRXXtqaUi/"}
+              href={
+                siteSettings.socialFacebook ||
+                "https://www.facebook.com/share/1GRXXtqaUi/"
+              }
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
@@ -48,7 +59,10 @@ export function Footer({ siteSettings }: FooterProps) {
               <Facebook className="w-5 h-5 text-white" aria-hidden="true" />
             </a>
             <a
-              href={siteSettings.socialTwitter || "https://x.com/mycyberclinics?t=QmGm3eSKyGB_yOqoOvx7Rw&s=09"}
+              href={
+                siteSettings.socialTwitter ||
+                "https://x.com/mycyberclinics?t=QmGm3eSKyGB_yOqoOvx7Rw&s=09"
+              }
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
@@ -57,7 +71,10 @@ export function Footer({ siteSettings }: FooterProps) {
               <Twitter className="w-5 h-5 text-white" aria-hidden="true" />
             </a>
             <a
-              href={siteSettings.socialInstagram || "https://www.instagram.com/mycyberclinic?igsh=MW9xNmpjcjlnZnE4Zw=="}
+              href={
+                siteSettings.socialInstagram ||
+                "https://www.instagram.com/mycyberclinics?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+              }
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
@@ -66,7 +83,10 @@ export function Footer({ siteSettings }: FooterProps) {
               <Instagram className="w-5 h-5 text-white" aria-hidden="true" />
             </a>
             <a
-              href={siteSettings.socialLinkedIn || "https://www.linkedin.com/company/my-cyberclinics/"}
+              href={
+                siteSettings.socialLinkedIn ||
+                "https://www.linkedin.com/company/my-cyberclinics/"
+              }
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
@@ -75,7 +95,10 @@ export function Footer({ siteSettings }: FooterProps) {
               <Linkedin className="w-5 h-5 text-white" aria-hidden="true" />
             </a>
             <a
-              href={siteSettings.socialYouTube || "https://youtube.com/@mycyberclinics?si=Isd2nkkntWuQqzwW"}
+              href={
+                siteSettings.socialYouTube ||
+                "https://youtube.com/@mycyberclinics?si=Isd2nkkntWuQqzwW"
+              }
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
@@ -84,7 +107,10 @@ export function Footer({ siteSettings }: FooterProps) {
               <Youtube className="w-5 h-5 text-white" aria-hidden="true" />
             </a>
             <a
-              href={siteSettings.socialTikTok || "https://www.tiktok.com/@mycyberclinics?_t=ZS-90PUltOrbRx&_r=1"}
+              href={
+                siteSettings.socialTikTok ||
+                "https://www.tiktok.com/@mycyberclinics?_t=ZS-90PUltOrbRx&_r=1"
+              }
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
@@ -102,63 +128,98 @@ export function Footer({ siteSettings }: FooterProps) {
               className="w-10 h-10 bg-white/10 backdrop-blur rounded-lg flex items-center justify-center hover:bg-[#14A9CC] transition-colors"
               aria-label="Start a WhatsApp chat with us"
             >
-              <MessageCircle className="w-5 h-5 text-white" aria-hidden="true" />
+              <MessageCircle
+                className="w-5 h-5 text-white"
+                aria-hidden="true"
+              />
             </a>
           </div>
         </div>
 
         {/* Services */}
         <nav aria-labelledby="footer-services">
-          <h4 id="footer-services" style={{ fontFamily: "var(--font-display, var(--font-sans))" }} className="font-semibold text-xl text-white mb-4">
+          <h4
+            id="footer-services"
+            style={{ fontFamily: "var(--font-display, var(--font-sans))" }}
+            className="font-semibold text-xl text-white mb-4"
+          >
             Services
           </h4>
           <ul className="space-y-3 text-base text-white/80">
             <li>
-              <a href="#how-it-works" className="hover:text-[#FFC857] transition-colors">
+              <a
+                href="#how-it-works"
+                className="hover:text-[#FFC857] transition-colors"
+              >
                 How it Works
               </a>
             </li>
             <li>
-              <a href="#services" className="hover:text-[#FFC857] transition-colors">
+              <a
+                href="#services"
+                className="hover:text-[#FFC857] transition-colors"
+              >
                 Our Services
               </a>
             </li>
             <li>
-              <a href="#plans" className="hover:text-[#FFC857] transition-colors">
+              <a
+                href="#plans"
+                className="hover:text-[#FFC857] transition-colors"
+              >
                 Pricing Plans
               </a>
             </li>
             <li>
-              <a href="#team" className="hover:text-[#FFC857] transition-colors">
+              <a
+                href="#team"
+                className="hover:text-[#FFC857] transition-colors"
+              >
                 Find a Doctor
               </a>
             </li>
             <li>
-              <Link href="/blog" className="hover:text-[#FFC857] transition-colors">
-                  Health Blog
-                </Link>
+              <Link
+                to="/blog"
+                className="hover:text-[#FFC857] transition-colors"
+              >
+                Health Blog
+              </Link>
             </li>
           </ul>
         </nav>
 
         {/* Company */}
         <nav aria-labelledby="footer-company">
-          <h4 id="footer-company" style={{ fontFamily: "var(--font-display, var(--font-sans))" }} className="font-semibold text-xl text-white mb-4">
+          <h4
+            id="footer-company"
+            style={{ fontFamily: "var(--font-display, var(--font-sans))" }}
+            className="font-semibold text-xl text-white mb-4"
+          >
             Company
           </h4>
           <ul className="space-y-3 text-base text-white/80">
             <li>
-              <a href="#about" className="hover:text-[#FFC857] transition-colors">
+              <a
+                href="#about"
+                className="hover:text-[#FFC857] transition-colors"
+              >
                 About Us
               </a>
             </li>
             <li>
-              <a href="#team" className="hover:text-[#FFC857] transition-colors">
+              <a
+                href="#team"
+                className="hover:text-[#FFC857] transition-colors"
+              >
                 Our Team
               </a>
             </li>
             <li>
-              <a href="#contact" className="hover:text-[#FFC857] transition-colors">
+              <a
+                href="#contact"
+                className="hover:text-[#FFC857] transition-colors"
+              >
                 Contact
               </a>
             </li>
@@ -187,7 +248,10 @@ export function Footer({ siteSettings }: FooterProps) {
 
         {/* Contact */}
         <div>
-          <h4 style={{ fontFamily: "var(--font-display, var(--font-sans))" }} className="font-semibold text-xl text-white mb-4">
+          <h4
+            style={{ fontFamily: "var(--font-display, var(--font-sans))" }}
+            className="font-semibold text-xl text-white mb-4"
+          >
             Contact
           </h4>
           <div className="space-y-4">
@@ -198,10 +262,17 @@ export function Footer({ siteSettings }: FooterProps) {
               <Mail className="w-4 h-4" aria-hidden="true" />
               <span>{contactEmail}</span>
             </a>
-            <div className="bg-[#14A9CC]/20 border border-[#14A9CC]/35 backdrop-blur rounded-lg p-4" role="note" aria-label="Emergency notice">
-              <p className="text-sm text-white font-semibold mb-2">Emergency?</p>
+            <div
+              className="bg-[#14A9CC]/20 border border-[#14A9CC]/35 backdrop-blur rounded-lg p-4"
+              role="note"
+              aria-label="Emergency notice"
+            >
+              <p className="text-sm text-white font-semibold mb-2">
+                Emergency?
+              </p>
               <p className="text-sm text-white/80 leading-relaxed">
-                Call 112 or visit your nearest ER. This is not an emergency service.
+                Call 112 or visit your nearest ER. This is not an emergency
+                service.
               </p>
             </div>
           </div>
@@ -244,10 +315,19 @@ export function Footer({ siteSettings }: FooterProps) {
             Health Professional Standards Compliance
           </h5>
           <p className="text-sm text-white leading-relaxed mb-3">
-            <strong>URAC HWS-HPI Standards:</strong> MyCyber Clinics adheres to Health Professional Interaction standards. We verify the current licensure and certification of all health professionals through the Medical and Dental Council of Nigeria (MDCN). Credentials are verified upon hire and re-verified every year at license renewal.
+            <strong>URAC HWS-HPI Standards:</strong> MyCyber Clinics adheres to
+            Health Professional Interaction standards. We verify the current
+            licensure and certification of all health professionals through the
+            Medical and Dental Council of Nigeria (MDCN). Credentials are
+            verified upon hire and re-verified every year at license renewal.
           </p>
           <p className="text-sm text-white leading-relaxed">
-            All health professionals on our platform are required to notify us immediately of any adverse changes in licensure or certification status. We implement systems to ensure adherence to professional ethical principles and provide users with transparent information about credentials, licenses, and qualifications before any consultation.
+            All health professionals on our platform are required to notify us
+            immediately of any adverse changes in licensure or certification
+            status. We implement systems to ensure adherence to professional
+            ethical principles and provide users with transparent information
+            about credentials, licenses, and qualifications before any
+            consultation.
           </p>
         </div>
 
@@ -257,16 +337,17 @@ export function Footer({ siteSettings }: FooterProps) {
             Medical Disclaimer & Privacy Notice
           </h5>
           <p className="text-sm text-white leading-relaxed mb-3">
-            The information provided on this platform is for informational purposes only and does
-            not constitute medical advice. Always seek the advice of your physician or other
-            qualified health provider with any questions you may have regarding a medical
-            condition.
+            The information provided on this platform is for informational
+            purposes only and does not constitute medical advice. Always seek
+            the advice of your physician or other qualified health provider with
+            any questions you may have regarding a medical condition.
           </p>
           <p className="text-sm text-white leading-relaxed">
-            <strong>Privacy & Data Protection:</strong> We are committed to protecting your health
-            information in accordance with international privacy standards. Your data is encrypted
-            and stored securely. We do not sell or share your personal health information with
-            third parties without your explicit consent.
+            <strong>Privacy & Data Protection:</strong> We are committed to
+            protecting your health information in accordance with international
+            privacy standards. Your data is encrypted and stored securely. We do
+            not sell or share your personal health information with third
+            parties without your explicit consent.
           </p>
         </div>
       </div>

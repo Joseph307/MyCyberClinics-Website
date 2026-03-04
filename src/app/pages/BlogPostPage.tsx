@@ -242,15 +242,9 @@ export default function BlogPostPage() {
   if (!article && showNotFound) {
     return (
       <div className="min-h-screen bg-white" lang="en">
-        <header
-          className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4"
-          role="banner"
-        >
-          <nav
-            className="flex items-center justify-between"
-            aria-label="Blog navigation"
-          >
-            <Link href="/" className="flex items-center gap-3">
+        <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4" role="banner">
+          <nav className="flex items-center justify-between" aria-label="Blog navigation">
+            <Link to="/#home" className="flex items-center gap-3">
               <Image
                 src={logoImage}
                 alt="MyCyber Clinics - Healthcare meets Technology"
@@ -328,15 +322,9 @@ export default function BlogPostPage() {
   return (
     <div className="min-h-screen bg-white" lang="en">
       {/* Header */}
-      <header
-        className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4"
-        role="banner"
-      >
-        <nav
-          className="flex items-center justify-between"
-          aria-label="Blog navigation"
-        >
-          <Link href="/" className="flex items-center gap-3">
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4" role="banner">
+        <nav className="flex items-center justify-between" aria-label="Blog navigation">
+          <Link to="/#home" className="flex items-center gap-3">
             <Image
               src={logoImage}
               alt="MyCyber Clinics - Healthcare meets Technology"

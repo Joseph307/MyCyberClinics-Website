@@ -92,9 +92,11 @@ export function ChiomaSection() {
             </div>
           </div>
 
-          <Button asChild className="bg-[#7E5BA1] hover:bg-[#48C9B0] text-white btn-glow">
-            <a href="https://app.mycyberclinics.com/signUp">Chat with Chioma</a>
-          </Button>
+          <div className="flex justify-center lg:justify-start">
+            <Button asChild className="bg-[#7E5BA1] hover:bg-[#48C9B0] text-white btn-glow">
+              <a href="https://app.mycyberclinics.com/signUp">Chat with Chioma</a>
+            </Button>
+          </div>
         </div>
       </div>
     </section>

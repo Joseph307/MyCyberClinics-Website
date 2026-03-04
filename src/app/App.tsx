@@ -172,18 +172,39 @@ export default function App() {
 
     applySeoForPath(router.state.location.pathname);
 
-    let previousLocationKey = router.state.location.key;
+    let previousLocationSignature = `${router.state.location.pathname}${router.state.location.hash ?? ''}`;
+
+    // Handle deep links like /#home on first paint.
+    window.requestAnimationFrame(() => {
+      const initialHash = router.state.location.hash;
+      if (initialHash) {
+        const target = document.getElementById(initialHash.replace('#', ''));
+        if (target) {
+          target.scrollIntoView({ behavior: 'auto', block: 'start' });
+          return;
+        }
+      }
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    });
 
     const unsubscribe = router.subscribe((state) => {
-      const locationChanged = state.location.key !== previousLocationKey;
-      previousLocationKey = state.location.key;
+      const locationSignature = `${state.location.pathname}${state.location.hash ?? ''}`;
+      const locationChanged = locationSignature !== previousLocationSignature;
+      previousLocationSignature = locationSignature;
 
       applySeoForPath(state.location.pathname);
 
       if (!locationChanged) return;
 
-      // Wait for route content to paint, then force top-of-page position.
+      // Wait for route content to paint, then route to hash anchor (if any) or top.
       window.requestAnimationFrame(() => {
+        if (state.location.hash) {
+          const target = document.getElementById(state.location.hash.replace('#', ''));
+          if (target) {
+            target.scrollIntoView({ behavior: 'auto', block: 'start' });
+            return;
+          }
+        }
         window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
       });
     });

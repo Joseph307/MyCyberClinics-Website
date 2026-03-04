@@ -135,7 +135,7 @@ export default function BlogPage() {
           aria-label="Blog navigation"
         >
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3">
+          <Link to="/#home" className="flex items-center gap-3">
             <Image
               src={logoImage}
               alt="MyCyber Clinics - Healthcare meets Technology"

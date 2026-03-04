@@ -11,6 +11,7 @@ declare global {
         container: HTMLElement,
         params: {
           sitekey: string;
+          size?: "normal" | "compact";
           callback: (token: string) => void;
           "expired-callback"?: () => void;
           "error-callback"?: () => void;
@@ -29,8 +30,10 @@ export function Contact() {
   const contactEmail = siteSettings.contactEmail || "support@mycyberclinics.com";
   const contactPhone = siteSettings.contactPhone || "+2348012345678";
   const recaptchaContainerRef = useRef<HTMLDivElement | null>(null);
+  const recaptchaWrapperRef = useRef<HTMLDivElement | null>(null);
   const recaptchaWidgetIdRef = useRef<number | null>(null);
   const [recaptchaToken, setRecaptchaToken] = useState("");
+  const [recaptchaScale, setRecaptchaScale] = useState(1);
 
   useEffect(() => {
     if (!siteKey || typeof window === "undefined") return;
@@ -82,6 +85,20 @@ export function Contact() {
       document.body.appendChild(script);
     }
   }, [siteKey]);
+
+  useEffect(() => {
+    const updateScale = () => {
+      const wrapper = recaptchaWrapperRef.current;
+      if (!wrapper) return;
+      const maxWidth = wrapper.clientWidth;
+      const scale = Math.min(1, maxWidth / 304);
+      setRecaptchaScale(scale);
+    };
+
+    updateScale();
+    window.addEventListener("resize", updateScale);
+    return () => window.removeEventListener("resize", updateScale);
+  }, []);
 
   const openEmailComposer = (subject: string, body: string) => {
     const to = contactEmail;
@@ -303,7 +320,21 @@ export function Contact() {
 
               {/* Submit Button */}
               <div className="space-y-2">
-                <div ref={recaptchaContainerRef} />
+                <div
+                  ref={recaptchaWrapperRef}
+                  className="w-full overflow-hidden"
+                  style={{ height: `${78 * recaptchaScale}px` }}
+                >
+                  <div
+                    style={{
+                      transform: `scale(${recaptchaScale})`,
+                      transformOrigin: "top left",
+                      width: "304px",
+                    }}
+                  >
+                    <div ref={recaptchaContainerRef} />
+                  </div>
+                </div>
                 {!siteKey && (
                   <p className="text-xs text-[#FFE8A1]">
                     reCAPTCHA not configured. Set a site key in Sanity or{" "}

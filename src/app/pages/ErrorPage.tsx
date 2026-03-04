@@ -28,7 +28,7 @@ export default function ErrorPage() {
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4" role="banner">
         <nav className="flex items-center justify-between" aria-label="Error page navigation">
-          <Link href="/" className="flex items-center gap-3">
+          <Link to="/#home" className="flex items-center gap-3">
             <Image
               src={logoImage}
               alt="MyCyber Clinics - Healthcare meets Technology"
