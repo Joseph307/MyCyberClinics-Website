@@ -264,7 +264,7 @@ export function Hero({ siteSettings }: HeroProps) {
           aria-label="Main navigation"
         >
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
+          <Link to="/#home" className="flex items-center gap-3">
             {/* old src: "../../assets/c8397ab71eb936effba7144da57bfed566604694.png" */}
             <Image
               src={logoImageNew}
