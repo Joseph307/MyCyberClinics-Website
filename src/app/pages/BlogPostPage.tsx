@@ -437,7 +437,7 @@ export default function BlogPostPage() {
               `}</style>
               <div ref={articleContentRef}>
                 {portableContent ? (
-                  <PortableText value={portableContent} components={ptComponents} />
+                  <PortableText value={portableContent as any} components={ptComponents} />
                 ) : (
                   <div dangerouslySetInnerHTML={{ __html: sanitizedArticleContent }} />
                 )}

@@ -482,7 +482,7 @@ export function Hero({ siteSettings }: HeroProps) {
                 Doctors
               </a>
               <Link
-                href="/blog"
+                to="/blog"
                 className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >

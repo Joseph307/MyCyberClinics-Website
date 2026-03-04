@@ -1,5 +1,5 @@
 import React from "react";
-import BlogPostPage from "@/app/pages/BlogPostPage";
+import BlogPostClientWrapper from "@/app/components/BlogPostClientWrapper";
 import { fetchBlogArticles } from "@/sanity/lib/content";
 
 // For static export (output: 'export') Next requires enumerating dynamic params.
@@ -17,10 +17,10 @@ export async function generateStaticParams() {
 export default function BlogPostCatchAllPage() {
   // Server component wrapper that mounts the client-only BlogPostPage.
   // BlogPostPage is a client component (it starts with "use client"), so importing
-  // it directly here is valid — Next will render it on the client.
+  // it via the client wrapper ensures it only renders on the browser.
   return (
     <div>
-      <BlogPostPage />
+      <BlogPostClientWrapper />
     </div>
   );
 }

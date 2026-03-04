@@ -1,5 +1,5 @@
 import React from "react";
-import BlogPostPage from "@/app/pages/BlogPostPage";
+import BlogPostClientWrapper from "@/app/components/BlogPostClientWrapper";
 import { fetchBlogArticles } from "@/sanity/lib/content";
 
 // For static export (output: 'export') Next requires enumerating dynamic params.
@@ -16,7 +16,7 @@ export async function generateStaticParams() {
 export default function BlogPostPageRoute() {
   return (
     <div>
-      <BlogPostPage />
+      <BlogPostClientWrapper />
     </div>
   );
 }
