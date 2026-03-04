@@ -112,12 +112,69 @@ const blogPost = defineType({
   fields: [
     defineField({ name: "title", title: "Title", type: "string" }),
     defineField({ name: "excerpt", title: "Excerpt", type: "text", rows: 4 }),
-    defineField({ name: "content", title: "Content", type: "text", rows: 12 }),
-    defineField({ name: "category", title: "Category", type: "string" }),
+    // Rich block content: paragraphs, headings (h1-h4) and image blocks.
+    defineField({
+      name: "content",
+      title: "Content",
+      type: "array",
+      of: [
+        {
+          type: "block",
+          styles: [
+            { title: "Paragraph", value: "normal" },
+            { title: "Heading 1", value: "h1" },
+            { title: "Heading 2", value: "h2" },
+            { title: "Heading 3", value: "h3" },
+            { title: "Heading 4", value: "h4" },
+          ],
+          // Allow editors to insert bulleted or numbered lists from the block editor toolbar.
+          lists: [
+            { title: "Bulleted list", value: "bullet" },
+            { title: "Numbered list", value: "number" },
+          ],
+        },
+        {
+          type: "image",
+          options: { hotspot: true },
+          fields: [
+            defineField({ name: "alt", type: "string", title: "Alt text" }),
+            defineField({ name: "caption", type: "string", title: "Caption" }),
+          ],
+        },
+      ],
+    }),
+    // Category: reference to a `category` document so editors choose from a list
+    // and can create a new category inline via the reference input.
+    defineField({
+      name: "category",
+      title: "Category",
+      type: "reference",
+      to: [{ type: "category" }],
+      description: "Select a category or create a new one using the + button.",
+    }),
     defineField({ name: "tags", title: "Tags", type: "string" }),
-    defineField({ name: "authorName", title: "Author Name", type: "string" }),
-    defineField({ name: "featuredImageUrl", title: "Featured Image URL", type: "url" }),
-    defineField({ name: "featuredImageAlt", title: "Featured Image Alt", type: "string" }),
+    // Author: reference to an `author` document. Create the three default authors
+    // (Kelvin, Elizabeth, Chioma) in the Studio or select an existing author.
+    defineField({
+      name: "author",
+      title: "Author",
+      type: "reference",
+      to: [{ type: "author" }],
+      description:
+        "Select the author for this article. You can create a new author document if needed.",
+    }),
+    // Allow either uploading an image or providing an external URL.
+    defineField({
+      name: "featuredImage",
+      title: "Featured Image (upload)",
+      type: "image",
+      options: { hotspot: true },
+      description: "Upload an image to use as the featured image. You can also provide an external URL below.",
+      fields: [
+        defineField({ name: "alt", type: "string", title: "Alt text" }),
+      ],
+    }),
+    defineField({ name: "featuredImageUrl", title: "Featured Image URL (external)", type: "url", description: "Optional external image URL (used if no uploaded image is provided)" }),
     defineField({
       name: "status",
       title: "Status",
@@ -144,9 +201,44 @@ const blogPost = defineType({
   preview: {
     select: {
       title: "title",
-      subtitle: "authorName",
-      media: "featuredImageUrl",
+      "authorName": "author.name",
+      featuredImage: "featuredImage",
+      featuredImageUrl: "featuredImageUrl",
     },
+    prepare(selection) {
+      const { title, authorName, featuredImage, featuredImageUrl } = selection as any;
+      const media = featuredImage || (featuredImageUrl ? { asset: { _ref: featuredImageUrl } } : undefined);
+      return { title, subtitle: authorName, media };
+    },
+  },
+});
+
+// Category document type for blog post categories
+const category = defineType({
+  name: "category",
+  title: "Category",
+  type: "document",
+  fields: [
+    defineField({ name: "title", title: "Title", type: "string" }),
+    defineField({ name: "slug", title: "Slug", type: "slug", options: { source: "title" } }),
+  ],
+  preview: {
+    select: { title: "title" },
+  },
+});
+
+// Author document type for authors
+const author = defineType({
+  name: "author",
+  title: "Author",
+  type: "document",
+  fields: [
+    defineField({ name: "name", title: "Name", type: "string" }),
+    defineField({ name: "bio", title: "Short Bio", type: "text" }),
+    defineField({ name: "profileImage", title: "Profile Image", type: "image" }),
+  ],
+  preview: {
+    select: { title: "name", media: "profileImage" },
   },
 });
 
@@ -210,6 +302,8 @@ const staticPage = defineType({
         ],
       },
     }),
+    // Legacy HTML content field: keep existing HTML content during migration.
+    defineField({ name: "contentHtml", title: "Content (HTML - legacy)", type: "text", rows: 12, description: "Optional legacy HTML content. Use this only when migrating old posts that store HTML as a string." }),
     defineField({ name: "title", title: "Title", type: "string" }),
     defineField({ name: "content", title: "Content", type: "text", rows: 12 }),
     defineField({
@@ -243,4 +337,13 @@ const mediaAsset = defineType({
   ],
 });
 
-export const schemaTypes = [seoFields, siteSettings, blogPost, doctor, staticPage, mediaAsset];
+export const schemaTypes = [
+  seoFields,
+  siteSettings,
+  category,
+  author,
+  blogPost,
+  doctor,
+  staticPage,
+  mediaAsset,
+];

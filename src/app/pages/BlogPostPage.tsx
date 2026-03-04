@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { PortableText } from "@portabletext/react";
 import {
   Calendar,
   User,
@@ -22,6 +23,7 @@ import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { Button } from "../components/ui/button";
 import { Footer } from "../components/Footer";
 import { useSiteSettings, useBlogArticles } from "@/sanity/lib/hooks";
+import { urlFor } from "@/sanity/lib/client";
 
 export default function BlogPostPage() {
   const params = useParams() as any;
@@ -38,6 +40,7 @@ export default function BlogPostPage() {
   const siteSettings = useSiteSettings();
   const allArticles = useBlogArticles(100);
   const articleContentRef = useRef<HTMLDivElement | null>(null);
+  const [heroImageOverride, setHeroImageOverride] = useState<string | undefined>(undefined);
   const slugify = (s: string) =>
     s
       .toLowerCase()
@@ -147,6 +150,42 @@ export default function BlogPostPage() {
         )
     : "";
 
+  const ptComponents = {
+    types: {
+      image: ({ value }: any) => {
+        // Sanity image blocks often have an `asset` reference (with _ref) rather than a direct URL.
+        // Use the urlFor helper to build a usable CDN URL when needed.
+        const src = value?.asset?.url || value?.url || (value?.asset ? urlFor(value) : undefined);
+        if (!src) return null;
+        return (
+          // eslint-disable-next-line @next/next/no-img-element
+          <figure>
+            <img src={src} alt={value?.alt || value?.caption || ""} style={{ maxWidth: "100%" }} />
+            {value?.caption ? <figcaption>{value.caption}</figcaption> : null}
+          </figure>
+        );
+      },
+    },
+    block: {
+      h1: ({ children }: any) => <h1 className="text-4xl">{children}</h1>,
+      h2: ({ children }: any) => <h2 className="text-3xl">{children}</h2>,
+      h3: ({ children }: any) => <h3 className="text-2xl">{children}</h3>,
+      normal: ({ children }: any) => <p>{children}</p>,
+    },
+    // Render lists created in the Portable Text editor.
+    list: {
+      bullet: ({ children }: any) => (
+        <ul className="list-disc pl-6 mb-4">{children}</ul>
+      ),
+      number: ({ children }: any) => (
+        <ol className="list-decimal pl-6 mb-4">{children}</ol>
+      ),
+    },
+    listItem: {
+      bullet: ({ children }: any) => <li className="mb-1">{children}</li>,
+      number: ({ children }: any) => <li className="mb-1">{children}</li>,
+    },
+  };
   useEffect(() => {
     const root = articleContentRef.current;
     if (!root) return;
@@ -186,6 +225,19 @@ export default function BlogPostPage() {
       }
     });
   }, [sanitizedArticleContent]);
+
+  // If there's no explicit featured image, try to pick the first inline <img>
+  // from the rendered Portable Text content and use it as the hero image.
+  useEffect(() => {
+    if (article?.image) return; // already have a featured image
+    const root = articleContentRef.current;
+    if (!root) return;
+
+    const img = root.querySelector<HTMLImageElement>("img");
+    if (img && img.src) {
+      setHeroImageOverride(img.src);
+    }
+  }, [article, articleContentRef.current]);
 
   if (!article && showNotFound) {
     return (
@@ -334,7 +386,7 @@ export default function BlogPostPage() {
             {/* Featured Image */}
             <div className="mb-12 rounded-2xl overflow-hidden">
               <ImageWithFallback
-                src={article.image}
+                src={heroImageOverride || article.image}
                 alt={`Featured image for: ${article.title}`}
                 className="w-full h-[400px] lg:h-[500px] object-cover"
               />
@@ -386,10 +438,13 @@ export default function BlogPostPage() {
                   margin-bottom: 0.5rem;
                 }
               `}</style>
-              <div
-                ref={articleContentRef}
-                dangerouslySetInnerHTML={{ __html: sanitizedArticleContent }}
-              />
+              <div ref={articleContentRef}>
+                {article.portableContent ? (
+                  <PortableText value={article.portableContent} components={ptComponents} />
+                ) : (
+                  <div dangerouslySetInnerHTML={{ __html: sanitizedArticleContent }} />
+                )}
+              </div>
             </div>
 
             {/* Share Section */}

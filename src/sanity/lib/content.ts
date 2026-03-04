@@ -13,6 +13,10 @@ export type BlogArticle = {
   category: string;
   image: string;
   content: string;
+  /** legacy HTML content from older posts (if present) */
+  contentHtml?: string;
+  /** If the post uses Portable Text, keep the raw portable content here for rendering */
+  portableContent?: any;
   imageAlt: string;
 };
 
@@ -21,10 +25,12 @@ type BlogPostQueryResult = {
   title?: string;
   excerpt?: string;
   content?: string;
+  contentHtml?: string;
   category?: string;
   authorName?: string;
   featuredImageUrl?: string;
   featuredImageAlt?: string;
+  firstContentImage?: string;
   publishAt?: string;
   updatedAt?: string;
   readingTimeMinutes?: number;
@@ -234,15 +240,24 @@ const siteSettingsQuery = `*[_type == "siteSettings"] | order(_updatedAt desc)[0
   updatedAt
 }`;
 
-const blogPostsQuery = `*[_type == "blogPost" && status == "published"] | order(coalesce(publishAt, updatedAt) desc)[0...$limit]{
+// Include documents that are explicitly published OR that have no status field (legacy posts).
+const blogPostsQuery = `*[_type == "blogPost" && (status == "published" || !defined(status) || status == "scheduled")] | order(coalesce(publishAt, updatedAt) desc)[0...$limit]{
   _id,
   title,
   excerpt,
+  // Portable Text content (new editor) or legacy HTML stored here
   content,
-  category,
-  authorName,
-  featuredImageUrl,
-  featuredImageAlt,
+  // Legacy HTML field (kept for migration/backwards compatibility)
+  contentHtml,
+  // Project referenced category and author names when present
+  "category": category->title,
+  "authorName": author->name,
+  // Support both uploaded image (featuredImage.asset->url) and legacy external URL (featuredImageUrl)
+  "featuredImageUrl": coalesce(featuredImage.asset->url, featuredImageUrl),
+  // Prefer uploaded image alt text when present
+  "featuredImageAlt": coalesce(featuredImage.alt, featuredImageAlt),
+  // If the post body has inline image blocks, capture the first image URL as a fallback
+  "firstContentImage": content[_type == "image"][0].asset->url,
   publishAt,
   updatedAt,
   readingTimeMinutes,
@@ -269,6 +284,12 @@ function estimateReadTime(content?: string): string {
 }
 
 function sanitizeBlogHtml(content?: string): string {
+  // If content is not a string (for example, Portable Text arrays),
+  // don't attempt to run string operations on it — return an empty placeholder.
+  if (typeof content !== "string") {
+    return "";
+  }
+
   const html =
     content ||
     "<p>This article is being updated in Sanity. Please check back shortly.</p>";
@@ -295,13 +316,20 @@ function mapBlogPost(post: BlogPostQueryResult): BlogArticle {
     readTime:
       typeof post.readingTimeMinutes === "number"
         ? `${Math.max(1, post.readingTimeMinutes)} min read`
-        : estimateReadTime(post.content),
+        : estimateReadTime(typeof post.content === "string" ? post.content : post.contentHtml),
     category: post.category || "Health Education",
     image:
-      post.featuredImageUrl ||
-      "https://images.unsplash.com/photo-1576091160550-2173dba999ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+        // Choose explicit featured image first, then the first inline image, then a sensible default
+        post.featuredImageUrl || post.firstContentImage ||
+        "https://images.unsplash.com/photo-1576091160550-2173dba999ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
     imageAlt: post.featuredImageAlt || post.title || "MyCyber Clinics article image",
-    content: sanitizeBlogHtml(post.content),
+    // Prefer sanitized new `content` field; if it's not a string (Portable Text),
+  // fall back to legacy HTML `contentHtml` for the HTML renderer.
+  content: sanitizeBlogHtml(typeof post.content === "string" ? post.content : post.contentHtml),
+  contentHtml: typeof post.contentHtml === "string" ? post.contentHtml : undefined,
+  portableContent: typeof post.content === "object" ? post.content : undefined,
+    // Determine the image to use: prefer explicit featuredImage, then first inline image, then legacy external URL
+    // (handled above in `image` property)
   };
 }
 
@@ -330,7 +358,11 @@ export async function fetchBlogArticles(limit = 12): Promise<BlogArticle[]> {
     }
 
     return posts.map(mapBlogPost);
-  } catch {
+  } catch (err) {
+    // Log error so browser console shows why Sanity fetch failed (common cause: CORS or network)
+    // We still return fallback articles to keep the UI usable.
+    // eslint-disable-next-line no-console
+    console.error("fetchBlogArticles error:", err);
     return fallbackBlogArticles.slice(0, limit);
   }
 }

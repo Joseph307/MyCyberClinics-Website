@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { Link, useRouteError, isRouteErrorResponse } from "react-router";
+import Link from "next/link";
+import { useRouteError, isRouteErrorResponse } from "react-router";
 import { fallbackSiteSettings } from "@/sanity/lib/content";
 import { Button } from "../components/ui/button";
 import { Footer } from "../components/Footer";
@@ -27,7 +28,7 @@ export default function ErrorPage() {
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4" role="banner">
         <nav className="flex items-center justify-between" aria-label="Error page navigation">
-          <Link to="/" className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3">
             <Image
               src={logoImage}
               alt="MyCyber Clinics - Healthcare meets Technology"
@@ -75,7 +76,7 @@ export default function ErrorPage() {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/">
+            <Link href="/">
               <Button
                 className="bg-[#1C227A] hover:bg-[#0F1347] text-white px-8 py-6 text-lg"
               >
@@ -83,7 +84,7 @@ export default function ErrorPage() {
                 Go to Homepage
               </Button>
             </Link>
-            <Link to="/blog">
+            <Link href="/blog">
               <Button
                 variant="outline"
                 className="border-[#7D1FFF] text-[#7D1FFF] hover:bg-[#7D1FFF] hover:text-white px-8 py-6 text-lg"
