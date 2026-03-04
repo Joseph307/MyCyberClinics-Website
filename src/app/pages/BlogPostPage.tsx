@@ -39,6 +39,10 @@ type PortableTextChildrenProps = {
   children?: ReactNode;
 };
 
+type ArticlePortableContent = {
+  portableContent?: unknown;
+};
+
 export default function BlogPostPage() {
   const { id } = useParams();
   const siteSettings = useSiteSettings();
@@ -68,6 +72,7 @@ export default function BlogPostPage() {
 
     return undefined;
   }, [id, allArticles]);
+  const portableContent = (article as ArticlePortableContent | undefined)?.portableContent;
   const [showNotFound, setShowNotFound] = useState(false);
 
   useEffect(() => {
@@ -241,7 +246,7 @@ export default function BlogPostPage() {
     if (img && img.src) {
       setHeroImageOverride(img.src);
     }
-  }, [article, articleContentRef.current]);
+  }, [article]);
 
   if (!article && showNotFound) {
     return (
@@ -431,8 +436,8 @@ export default function BlogPostPage() {
                 }
               `}</style>
               <div ref={articleContentRef}>
-                {article.portableContent ? (
-                  <PortableText value={article.portableContent} components={ptComponents} />
+                {portableContent ? (
+                  <PortableText value={portableContent} components={ptComponents} />
                 ) : (
                   <div dangerouslySetInnerHTML={{ __html: sanitizedArticleContent }} />
                 )}

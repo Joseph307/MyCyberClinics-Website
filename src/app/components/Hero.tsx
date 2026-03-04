@@ -302,7 +302,7 @@ export function Hero({ siteSettings }: HeroProps) {
               Doctors
             </a>
             <Link
-              href="/blog"
+              to="/blog"
               className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm md:text-lg font-medium"
             >
               Health Blog
