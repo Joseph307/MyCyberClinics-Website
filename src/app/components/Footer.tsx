@@ -10,7 +10,7 @@ import {
   Mail,
   Shield,
 } from "lucide-react";
-import Link from "next/link";
+import { Link } from "react-router";
 import logoImage from "../../assets/log_oo-removebg-cropped.png";
 import type { SiteSettingsContent } from "@/sanity/lib/content";
 

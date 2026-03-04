@@ -15,9 +15,8 @@ import {
     Youtube,
     Music2,
 } from "lucide-react";
-import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useMemo, useEffect, useRef, useState } from "react";
+import { Link, useParams } from "react-router";
+import { useMemo, useEffect, useRef, useState, type ReactNode } from "react";
 import logoImage from "../../assets/log_o-removebg-cropped.png";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { Button } from "../components/ui/button";
@@ -25,18 +24,23 @@ import { Footer } from "../components/Footer";
 import { useSiteSettings, useBlogArticles } from "@/sanity/lib/hooks";
 import { urlFor } from "@/sanity/lib/client";
 
+type PortableTextImageValue = {
+  asset?: { url?: string };
+  url?: string;
+  alt?: string;
+  caption?: string;
+};
+
+type PortableTextImageProps = {
+  value?: PortableTextImageValue;
+};
+
+type PortableTextChildrenProps = {
+  children?: ReactNode;
+};
+
 export default function BlogPostPage() {
-  const params = useParams() as any;
-  let id: string | undefined;
-  if (params) {
-    const slugParam = params.slug;
-    if (Array.isArray(slugParam)) {
-      // pick the last segment if catch-all provided multiple segments
-      id = slugParam[slugParam.length - 1] ?? String(slugParam[0]);
-    } else {
-      id = slugParam ?? undefined;
-    }
-  }
+  const { id } = useParams();
   const siteSettings = useSiteSettings();
   const allArticles = useBlogArticles(100);
   const articleContentRef = useRef<HTMLDivElement | null>(null);
@@ -152,7 +156,7 @@ export default function BlogPostPage() {
 
   const ptComponents = {
     types: {
-      image: ({ value }: any) => {
+      image: ({ value }: PortableTextImageProps) => {
         // Sanity image blocks often have an `asset` reference (with _ref) rather than a direct URL.
         // Use the urlFor helper to build a usable CDN URL when needed.
         const src = value?.asset?.url || value?.url || (value?.asset ? urlFor(value) : undefined);
@@ -167,23 +171,23 @@ export default function BlogPostPage() {
       },
     },
     block: {
-      h1: ({ children }: any) => <h1 className="text-4xl">{children}</h1>,
-      h2: ({ children }: any) => <h2 className="text-3xl">{children}</h2>,
-      h3: ({ children }: any) => <h3 className="text-2xl">{children}</h3>,
-      normal: ({ children }: any) => <p>{children}</p>,
+      h1: ({ children }: PortableTextChildrenProps) => <h1 className="text-4xl">{children}</h1>,
+      h2: ({ children }: PortableTextChildrenProps) => <h2 className="text-3xl">{children}</h2>,
+      h3: ({ children }: PortableTextChildrenProps) => <h3 className="text-2xl">{children}</h3>,
+      normal: ({ children }: PortableTextChildrenProps) => <p>{children}</p>,
     },
     // Render lists created in the Portable Text editor.
     list: {
-      bullet: ({ children }: any) => (
+      bullet: ({ children }: PortableTextChildrenProps) => (
         <ul className="list-disc pl-6 mb-4">{children}</ul>
       ),
-      number: ({ children }: any) => (
+      number: ({ children }: PortableTextChildrenProps) => (
         <ol className="list-decimal pl-6 mb-4">{children}</ol>
       ),
     },
     listItem: {
-      bullet: ({ children }: any) => <li className="mb-1">{children}</li>,
-      number: ({ children }: any) => <li className="mb-1">{children}</li>,
+      bullet: ({ children }: PortableTextChildrenProps) => <li className="mb-1">{children}</li>,
+      number: ({ children }: PortableTextChildrenProps) => <li className="mb-1">{children}</li>,
     },
   };
   useEffect(() => {
@@ -252,7 +256,7 @@ export default function BlogPostPage() {
                 className="h-14 lg:h-16 w-auto"
               />
             </Link>
-            <Link href="/">
+            <Link to="/">
               <Button variant="nav" className="btn-glow">
                 <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
                 Back to Home
@@ -271,7 +275,7 @@ export default function BlogPostPage() {
             <p className="text-lg text-gray-600 mb-8">
               The article you&apos;re looking for doesn&apos;t exist.
             </p>
-            <Link href="/blog">
+            <Link to="/blog">
               <Button className="bg-[#7D1FFF] hover:bg-[#6B1AD9] text-white">
                 View All Articles
               </Button>
@@ -292,10 +296,10 @@ export default function BlogPostPage() {
           role="banner"
         >
           <nav className="flex items-center justify-between" aria-label="Blog navigation">
-            <Link href="/" className="flex items-center gap-3">
+            <Link to="/#home" className="flex items-center gap-3">
               <Image src={logoImage} alt="MyCyber Clinics - Healthcare meets Technology" sizes="(min-width: 1024px) 160px, 140px" className="h-14 lg:h-16 w-auto" />
             </Link>
-            <Link href="/">
+            <Link to="/">
               <Button variant="nav" className="btn-glow">
                 <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
                 Back to Home
@@ -332,7 +336,7 @@ export default function BlogPostPage() {
               className="h-14 lg:h-16 w-auto"
             />
           </Link>
-          <Link href="/">
+          <Link to="/">
             <Button variant="nav" className="btn-glow">
               <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
               Back to Home
@@ -515,7 +519,7 @@ export default function BlogPostPage() {
                   .map((relatedArticle) => (
                     <Link
                       key={relatedArticle.id}
-                      href={`/blog/${relatedArticle.id}`}
+                      to={`/blog/${relatedArticle.id}`}
                       className="group"
                     >
                       <article className="bg-white rounded-xl overflow-hidden border border-[#E4E5F6] hover:border-[#7D1FFF] hover:shadow-lg transition-all">
@@ -554,7 +558,7 @@ export default function BlogPostPage() {
 
             {/* Back to Blog CTA */}
             <div className="text-center">
-              <Link href="/blog">
+              <Link to="/blog">
                 <Button className="bg-[#1C227A] hover:bg-[#0F1347] text-white px-8 py-6 text-lg">
                   <ArrowLeft className="w-5 h-5 mr-2" aria-hidden="true" />
                   Back to All Articles

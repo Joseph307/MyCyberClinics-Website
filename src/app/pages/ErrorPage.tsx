@@ -1,6 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
-import { useRouteError, isRouteErrorResponse } from "react-router";
+import { Link, useRouteError, isRouteErrorResponse } from "react-router";
 import { fallbackSiteSettings } from "@/sanity/lib/content";
 import { Button } from "../components/ui/button";
 import { Footer } from "../components/Footer";
@@ -76,7 +75,7 @@ export default function ErrorPage() {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/">
+            <Link to="/">
               <Button
                 className="bg-[#1C227A] hover:bg-[#0F1347] text-white px-8 py-6 text-lg"
               >
@@ -84,7 +83,7 @@ export default function ErrorPage() {
                 Go to Homepage
               </Button>
             </Link>
-            <Link href="/blog">
+            <Link to="/blog">
               <Button
                 variant="outline"
                 className="border-[#7D1FFF] text-[#7D1FFF] hover:bg-[#7D1FFF] hover:text-white px-8 py-6 text-lg"

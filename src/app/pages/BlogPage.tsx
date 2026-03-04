@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import type { FormEvent } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
+import { Link } from "react-router";
 import { useBlogArticles, useSiteSettings } from "@/sanity/lib/hooks";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { Button } from "../components/ui/button";
@@ -144,7 +144,7 @@ export default function BlogPage() {
             />
           </Link>
 
-          <Link href="/">
+          <Link to="/">
             <Button variant="nav" className="btn-glow">
               <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
               Back to Home
@@ -284,7 +284,7 @@ export default function BlogPage() {
                     </div>
                   </div>
                   <Link
-                    href={`/blog/${featuredArticle.id}`}
+                    to={`/blog/${featuredArticle.id}`}
                     className="inline-flex"
                     aria-label={`Read full article: ${featuredArticle.title}`}
                   >
@@ -354,7 +354,7 @@ export default function BlogPage() {
                           <time dateTime={article.date}>{article.date}</time>
                         </div>
                         <Link
-                          href={`/blog/${article.id}`}
+                          to={`/blog/${article.id}`}
                           className="text-[#7D1FFF] hover:text-[#1C227A] text-sm font-semibold flex items-center gap-1 group"
                           aria-label={`Read full article: ${article.title}`}
                         >

@@ -2,7 +2,7 @@ import type { BlogArticle } from "@/sanity/lib/content";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Button } from "./ui/button";
 import { Calendar, User, ArrowRight, Clock } from "lucide-react";
-import Link from "next/link";
+import { Link } from "react-router";
 
 type BlogPreviewProps = {
   articles: BlogArticle[];
@@ -69,7 +69,7 @@ export function BlogPreview({ articles }: BlogPreviewProps) {
                     <time dateTime={article.date}>{article.date}</time>
                   </div>
                   <Link
-                    href={`/blog/${article.id}`}
+                    to={`/blog/${article.id}`}
                     className="text-[#14A9CC] hover:text-[#FFC857] text-sm font-semibold flex items-center gap-1 group"
                     aria-label={`Read full article: ${article.title}`}
                   >
@@ -84,7 +84,7 @@ export function BlogPreview({ articles }: BlogPreviewProps) {
 
         {/* View All Button */}
         <div className="text-center">
-          <Link href="/blog">
+          <Link to="/blog">
             <Button
               className="bg-[#48C9B0] hover:bg-[#14A9CC] text-white px-8 py-6 text-lg btn-glow btn-pulse"
               aria-label="View all blog articles"
