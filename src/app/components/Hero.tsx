@@ -6,7 +6,7 @@ import { Shield, Clock, Stethoscope, X, Menu } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
 // import logoImage from "../../assets/c8397ab71eb936effba7144da57bfed566604694.png";
-import logoImageNew from "../../assets/log_o-removebg-cropped.png";
+import logoImageNew from "../../assets/log_o-removebg-cropped.webp";
 import imgHero from "../../assets/618cefd477229e137057ef5ef785eb848fb5df12.png";
 import type { SiteSettingsContent } from "@/sanity/lib/content";
 
