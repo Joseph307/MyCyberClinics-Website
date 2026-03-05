@@ -101,46 +101,7 @@ export function About() {
           </div>
         </div>
 
-        <div className="mt-16">
-          <div className="text-center mb-10">
-            <h3 className="font-['Univa_Nova',sans-serif] font-bold text-3xl lg:text-4xl text-[#2C3E50] mb-3">
-              Meet the Teams Behind the Vision
-            </h3>
-            <p className="text-gray-600 max-w-3xl mx-auto">
-              Leadership and clinical professionals working to transform healthcare delivery in Nigeria.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {leadershipTeam.map((member) => (
-              <article
-                key={member.name}
-                className="bg-[#ECF0F1] rounded-2xl border border-[#7E5BA1]/20 overflow-hidden"
-              >
-                <div className="w-full h-72 bg-white p-4">
-                  <ImageWithFallback
-                    src={member.image}
-                    alt={`${member.name} - ${member.role}`}
-                    className="w-full h-full object-contain object-center"
-                    sizes="(min-width: 1024px) 320px, (min-width: 768px) 50vw, 100vw"
-                    loading="eager"
-                  />
-                </div>
-                <div className="p-6">
-                  <p className="text-xs uppercase tracking-[0.15em] text-[#7E5BA1] font-semibold mb-2">
-                    {member.role}
-                  </p>
-                  <h4 className="font-['Univa_Nova',sans-serif] font-bold text-2xl text-[#2C3E50] mb-3">
-                    {member.name}
-                  </h4>
-                  <p className="text-gray-700 leading-relaxed text-sm">
-                    {member.bio}
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
+        
       </div>
     </section>
   );

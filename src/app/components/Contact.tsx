@@ -2,6 +2,28 @@ import type { FormEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Mail, Phone, MessageSquare, Send } from "lucide-react";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
+
+const leadershipTeam = [
+  {
+    name: "Apham Nnaji",
+    role: "Founder",
+    image: "/images/team/leader-apham.jpg",
+    bio: "Apham Nnaji is a proven business executive with 25 years of leadership across global operators, high-growth technology firms, and startups. He has built strong technology foundations for strategic business outcomes and collaborated with boards, customers, and leadership teams to improve enterprise performance. He is the Executive Managing Partner at Soltrite Logistics International Finance and Chairman of the Board for Nnaji Family Foundation. He holds an MBA from the University of Wales and was born in Enugu State, Nigeria.",
+  },
+  {
+    name: "Dr. Chisom Eze",
+    role: "Director of Medical Operations",
+    image: "/images/team/leader-chisom.jpg",
+    bio: "Dr. Chisom Eze is passionate about integrating technology into healthcare to improve patient outcomes. Trained at Enugu State University, he combines clinical experience with digital health innovation and has worked with NGOs focused on healthcare access. He also contributes to research and public health outreach in underserved communities, with a focus on building a healthcare system that is both advanced and human-centered.",
+  },
+  {
+    name: "Dr. Orji Jeffery Chidozie",
+    role: "Chief Medical Officer",
+    image: "/images/team/leader-orji.jpg",
+    bio: "Dr. Orji Jeffery Chidozie is an alumnus of Enugu State University College of Medicine, where he also completed housemanship, and later served at the Federal Road Safety Clinic, Abuja. He is focused on using technology to address healthcare access challenges in Nigeria and across Africa, and believes Nigeria's strong, tech-savvy youth population can help drive healthcare transformation.",
+  },
+];
 import { useSiteSettings } from "@/sanity/lib/hooks";
 
 declare global {
@@ -28,7 +50,7 @@ export function Contact() {
   const siteKey =
     siteSettings.recaptchaSiteKey || process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
   const contactEmail = siteSettings.contactEmail || "support@mycyberclinics.com";
-  const contactPhone = siteSettings.contactPhone || "+2348012345678";
+  const contactPhone = siteSettings.contactPhone || "+2347073213692";
   const recaptchaContainerRef = useRef<HTMLDivElement | null>(null);
   const recaptchaWrapperRef = useRef<HTMLDivElement | null>(null);
   const recaptchaWidgetIdRef = useRef<number | null>(null);
@@ -150,15 +172,57 @@ export function Contact() {
   return (
     <section id="contact" className="py-20 px-6 lg:px-32 bg-white" aria-labelledby="contact-heading">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h2 data-reveal id="contact-heading" className="font-['Univa_Nova',sans-serif] font-bold text-4xl lg:text-5xl text-[#2C3E50] mb-4">
-            Get in Touch
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Have questions? We&apos;re here to help. Reach out to our support team anytime.
-          </p>
-        </div>
+          {/* Team / Meet the teams - moved to top of contact section */}
+          <div className="mt-4 mb-12">
+            <div className="text-center mb-6">
+              <h3 className="font-['Univa_Nova',sans-serif] font-bold text-3xl lg:text-4xl text-[#2C3E50] mb-3">
+                Meet the Teams Behind the Vision
+              </h3>
+              <p className="text-gray-600 max-w-3xl mx-auto">
+                Leadership and clinical professionals working to transform healthcare delivery in Nigeria.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {leadershipTeam.map((member) => (
+                <article
+                  key={member.name}
+                  className="bg-[#ECF0F1] rounded-2xl border border-[#7E5BA1]/20 overflow-hidden"
+                >
+                  <div className="w-full h-72 bg-white p-4">
+                    <ImageWithFallback
+                      src={member.image}
+                      alt={`${member.name} - ${member.role}`}
+                      className="w-full h-full object-contain object-center"
+                      sizes="(min-width: 1024px) 320px, (min-width: 768px) 50vw, 100vw"
+                      loading="eager"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <p className="text-xs uppercase tracking-[0.15em] text-[#7E5BA1] font-semibold mb-2">
+                      {member.role}
+                    </p>
+                    <h4 className="font-['Univa_Nova',sans-serif] font-bold text-2xl text-[#2C3E50] mb-3">
+                      {member.name}
+                    </h4>
+                    <p className="text-gray-700 leading-relaxed text-sm">
+                      {member.bio}
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          {/* Header */}
+          <div className="text-center mb-16">
+            <h2 data-reveal id="contact-heading" className="font-['Univa_Nova',sans-serif] font-bold text-4xl lg:text-5xl text-[#2C3E50] mb-4">
+              Get in Touch
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              Have questions? We&apos;re here to help. Reach out to our support team anytime.
+            </p>
+          </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Contact Information */}
@@ -196,7 +260,7 @@ export function Contact() {
                   >
                     {contactPhone}
                   </a>
-                  <p className="text-sm text-gray-500 mt-1">Mon-Fri: 8AM - 8PM, Sat-Sun: 9AM - 5PM</p>
+                  <p className="text-sm text-gray-500 mt-1">Mon-Sat: 8AM - 6PM</p>
                 </div>
               </div>
 
@@ -206,7 +270,7 @@ export function Contact() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-[#2C3E50] mb-1">Live Chat</h4>
-                  <p className="text-gray-600">Chat with Chioma, our AI healthcare assistant</p>
+                  <p className="text-gray-600">Chat with Chioma, our Personal healthcare assistant</p>
                   <p className="text-sm text-gray-500 mt-1">Available 24/7 for instant support</p>
                 </div>
               </div>

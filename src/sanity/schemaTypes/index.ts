@@ -112,7 +112,7 @@ const blogPost = defineType({
   fields: [
     defineField({ name: "title", title: "Title", type: "string" }),
     defineField({ name: "excerpt", title: "Excerpt", type: "text", rows: 4 }),
-    // Rich block content: paragraphs, headings (h1-h4) and image blocks.
+    // Rich block content: paragraphs, headings (h1-h4), image blocks and embeds (YouTube).
     defineField({
       name: "content",
       title: "Content",
@@ -139,6 +139,25 @@ const blogPost = defineType({
           fields: [
             defineField({ name: "alt", type: "string", title: "Alt text" }),
             defineField({ name: "caption", type: "string", title: "Caption" }),
+          ],
+        },
+        // YouTube embed block
+        {
+          name: "youtube",
+          title: "YouTube Embed",
+          type: "object",
+          fields: [
+            defineField({
+              name: "url",
+              title: "YouTube URL",
+              type: "url",
+              description: "Paste a YouTube watch or share URL (e.g. https://youtu.be/abc or https://www.youtube.com/watch?v=abc)",
+            }),
+            defineField({
+              name: "caption",
+              title: "Caption",
+              type: "string",
+            }),
           ],
         },
       ],

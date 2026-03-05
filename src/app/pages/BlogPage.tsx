@@ -21,7 +21,8 @@ import logoImage from "../../assets/log_o-removebg-cropped.png";
 export default function BlogPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Articles");
-  const allArticles = useBlogArticles(12);
+  // Fetch a larger batch so we can paginate client-side. Increase if you have many posts.
+  const allArticles = useBlogArticles(100);
   const siteSettings = useSiteSettings();
   const categoryTabsRef = useRef<HTMLDivElement | null>(null);
   const [canScrollTabsLeft, setCanScrollTabsLeft] = useState(false);
@@ -58,7 +59,29 @@ export default function BlogPage() {
   }, [allArticles, normalizedQuery, selectedCategory]);
 
   const featuredArticle = filteredArticles[0] ?? null;
+  // Pagination: show featured article on page 1, then 10 articles per page.
+  const [currentPage, setCurrentPage] = useState(1);
+  const ARTICLES_PER_PAGE = 10;
+
+  useEffect(() => {
+    // Reset to first page whenever filters/search change
+    setCurrentPage(1);
+  }, [normalizedQuery, selectedCategory]);
+
   const remainingArticles = useMemo(() => filteredArticles.slice(1), [filteredArticles]);
+  const totalPages = Math.max(1, Math.ceil(remainingArticles.length / ARTICLES_PER_PAGE));
+
+  const paginatedArticles = useMemo(() => {
+    const start = (currentPage - 1) * ARTICLES_PER_PAGE;
+    return remainingArticles.slice(start, start + ARTICLES_PER_PAGE);
+  }, [remainingArticles, currentPage]);
+
+  // Ensure current page is within bounds if totalPages changes
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [totalPages]);
 
   const openEmailComposer = (subject: string, body: string) => {
     const to = "support@mycyberclinics.com";
@@ -311,9 +334,10 @@ export default function BlogPage() {
             >
               All Articles
             </h2>
-            {remainingArticles.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                {remainingArticles.map((article) => (
+            {(featuredArticle || remainingArticles.length > 0) ? (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                  {paginatedArticles.map((article) => (
                   <article
                     key={article.id}
                     className="bg-white rounded-2xl overflow-hidden border border-[#E4E5F6] hover:border-[#7D1FFF] hover:shadow-xl transition-all group"
@@ -364,8 +388,49 @@ export default function BlogPage() {
                       </div>
                     </div>
                   </article>
-                ))}
-              </div>
+                  ))}
+                </div>
+
+                {/* Pagination controls (hide when only one page) */}
+                {totalPages > 1 && (
+                  <div className="mt-8 flex items-center justify-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                      disabled={currentPage === 1}
+                      className={`w-10 h-10 rounded-lg flex items-center justify-center border ${currentPage === 1 ? "bg-white/60 text-gray-300 cursor-not-allowed border-[#E4E5F6]" : "bg-white border-[#E4E5F6] text-black hover:bg-[#7D1FFF] hover:text-white"}`}
+                      aria-label="Previous page"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </button>
+
+                    {Array.from({ length: totalPages }).map((_, i) => {
+                      const page = i + 1;
+                      return (
+                        <button
+                          key={page}
+                          type="button"
+                          onClick={() => setCurrentPage(page)}
+                          aria-current={currentPage === page ? "page" : undefined}
+                          className={`w-10 h-10 rounded-lg flex items-center justify-center ${currentPage === page ? "bg-[#7D1FFF] text-white" : "bg-white border border-[#E4E5F6] hover:bg-[#7D1FFF] hover:text-white"}`}
+                        >
+                          {page}
+                        </button>
+                      );
+                    })}
+
+                    <button
+                      type="button"
+                      onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                      disabled={currentPage === totalPages}
+                      className={`w-10 h-10 rounded-lg flex items-center justify-center border ${currentPage === totalPages ? "bg-white/60 text-gray-300 cursor-not-allowed border-[#E4E5F6]" : "bg-white border-[#E4E5F6] text-black hover:bg-[#7D1FFF] hover:text-white"}`}
+                      aria-label="Next page"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+              </>
             ) : (
               <div className="rounded-2xl border border-[#E4E5F6] bg-[#F1F2FB] p-8 text-center text-[#1C227A]">
                 No articles match your search.

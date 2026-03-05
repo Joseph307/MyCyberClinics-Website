@@ -174,6 +174,31 @@ export default function BlogPostPage() {
           </figure>
         );
       },
+      // YouTube embed block renderer
+      youtube: ({ value }: { value?: { url?: string; caption?: string } }) => {
+        const url = value?.url || "";
+        // Extract video id from common YouTube URL formats
+        const match = url.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+        const videoId = match ? match[1] : null;
+        if (!videoId) return null;
+
+        const src = `https://www.youtube.com/embed/${videoId}`;
+        return (
+          <div className="w-full my-6">
+            <div className="relative" style={{ paddingTop: "56.25%" }}>
+              <iframe
+                src={src}
+                title={value?.caption || "YouTube video"}
+                className="absolute top-0 left-0 w-full h-full rounded-lg"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+            {value?.caption ? <p className="text-sm text-gray-600 mt-2">{value.caption}</p> : null}
+          </div>
+        );
+      },
     },
     block: {
       h1: ({ children }: PortableTextChildrenProps) => <h1 className="text-4xl">{children}</h1>,

@@ -3,34 +3,34 @@ import { Stethoscope, Award, Heart, Shield, CheckCircle } from "lucide-react";
 
 const teamMembers = [
   {
-    name: "Dr. Adaeze Okonkwo",
+    name: "Dr. Kelechi Adionye",
     role: "General Practitioner",
-    specialty: "Family Medicine",
-    mdcn: "MDCN/2015/48392",
-    qualifications: "MBBS, MPH",
-    experience: "8 years",
-    image: "/images/team/doctor-adaeze.jpg",
-    altText: "Dr. Adaeze Okonkwo, General Practitioner specializing in Family Medicine with 8 years of experience"
+    specialty: "General Medicine",
+    mdcn: "MDCN/R/ 104246",
+    qualifications: "MDCN - Nigeria",
+    experience: "3 years",
+    image: "/images/team/doctor-kelechi.jpg",
+    altText: "Dr. Kelechi Adionye, General practitioner with years of clinical experience, dedicated to providing accurate diagnosis and effective  treatment with empathy and compassion.  Skilled is General medicine. Including but not limited to pediatric care, prenatal, postnatal, health and Post surgical follow up. Focus on listening carefully, explaining clearly, and supporting patients at every stage of their care. So you feel confident, comfortable, and well cared for."
   },
   {
-    name: "Dr. Chinedu Eze",
-    role: "Consultant Physician",
+    name: "Dr. Nwodo Chika Lovette",
+    role: "General Practitioner",
     specialty: "Internal Medicine",
-    mdcn: "MDCN/2012/35187",
+    mdcn: "MDCN/R/102488",
     qualifications: "MBBS, FWACP",
-    experience: "12 years",
-    image: "/images/team/doctor-chinedu.jpg",
-    altText: "Dr. Chinedu Eze, Consultant Physician specializing in Internal Medicine with 12 years of experience"
+    experience: "4 years",
+    image: "/images/team/doctor-nwodo.jpg",
+    altText: "Dr. Nwodo Chika Lovette, General Practitioner specializing in Internal Medicine with 4 years of experience"
   },
   {
-    name: "Dr. Oluwaseun Adeleke",
-    role: "Specialist",
-    specialty: "Dermatology",
-    mdcn: "MDCN/2010/29456",
+    name: "Dr. Harbor Praise",
+    role: "Community Medicine Specialist",
+    specialty: "General Practice",
+    mdcn: "MDCN/R/102152",
     qualifications: "MBBS, FMCDS",
-    experience: "14 years",
-    image: "/images/team/doctor-oluwaseun.jpg",
-    altText: "Dr. Oluwaseun Adeleke, Dermatology Specialist with 14 years of experience"
+    experience: "4 years",
+    image: "/images/team/doctor-harbor.jpg",
+    altText: "Dr. Harbor Praise, Community Medicine Specialist with 4 years of experience"
   }
 ];
 

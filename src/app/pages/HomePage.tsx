@@ -68,7 +68,7 @@ export default function HomePage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const whatsappNumber = (siteSettings.contactPhone || "+2348012345678").replace(/\D/g, "");
+  const whatsappNumber = (siteSettings.contactPhone || "+2347073213692").replace(/\D/g, "");
   const whatsappLink =
     `https://wa.me/${whatsappNumber}?text=Hello%20MyCyber%20Clinics%2C%20I%20need%20help%20with%20a%20consultation.`;
 
