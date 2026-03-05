@@ -117,8 +117,9 @@ export function Contact() {
     }
   };
 
-  const handleContactSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleContactSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const form = event.currentTarget;
     if (!siteKey) {
       window.alert(
         "reCAPTCHA is not configured. Add a site key in Sanity or NEXT_PUBLIC_RECAPTCHA_SITE_KEY.",
@@ -130,7 +131,7 @@ export function Contact() {
       return;
     }
 
-    const formData = new FormData(event.currentTarget);
+    const formData = new FormData(form);
     const name = String(formData.get("name") ?? "").trim();
     const email = String(formData.get("email") ?? "").trim();
     const phone = String(formData.get("phone") ?? "").trim();
@@ -140,12 +141,12 @@ export function Contact() {
     const emailSubject = `Contact Form: ${subject}`;
     const emailBody =
       `Name: ${name}\nEmail: ${email}\nPhone: ${phone || "Not provided"}\n\nMessage:\n${message}`;
-    void trackAnalyticsEvent("contact_form_submit", {
+    await trackAnalyticsEvent("contact_form_submit", {
       source: "contact_section",
       has_phone: phone ? 1 : 0,
     });
     openEmailComposer(emailSubject, emailBody);
-    event.currentTarget.reset();
+    form.reset();
     setRecaptchaToken("");
     if (window.grecaptcha && recaptchaWidgetIdRef.current !== null) {
       window.grecaptcha.reset(recaptchaWidgetIdRef.current);
