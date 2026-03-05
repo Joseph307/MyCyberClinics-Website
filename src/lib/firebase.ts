@@ -30,6 +30,6 @@ export async function initializeFirebaseAnalytics() {
     }
     return getAnalytics(firebaseApp);
   } catch {
-    return null;
+    return null; 
   }
 }
