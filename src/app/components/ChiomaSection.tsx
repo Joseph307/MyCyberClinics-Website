@@ -2,6 +2,7 @@ import Image from "next/image";
 import { MessageCircle, Calendar, BookOpen, AlertTriangle } from "lucide-react";
 import { Button } from "./ui/button";
 import ChiomaChatImage from "../../assets/chioma-chat.png";
+import { trackAnalyticsEvent } from "@/lib/analytics";
 
 const features = [
   {
@@ -22,6 +23,10 @@ const features = [
 ];
 
 export function ChiomaSection() {
+  const trackBookConsultationClick = (location: string) => {
+    void trackAnalyticsEvent("book_consultation_click", { location });
+  };
+
   return (
     <section className="py-12 px-4 lg:py-20 lg:px-32 bg-white" aria-labelledby="chioma-heading">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
@@ -94,7 +99,12 @@ export function ChiomaSection() {
 
           <div className="flex justify-center lg:justify-start">
             <Button asChild className="bg-[#7E5BA1] hover:bg-[#48C9B0] text-white btn-glow">
-              <a href="https://app.mycyberclinics.com/signUp">Chat with Chioma</a>
+              <a
+                href="https://app.mycyberclinics.com/signUp"
+                onClick={() => trackBookConsultationClick("chioma_section_cta")}
+              >
+                Chat with Chioma
+              </a>
             </Button>
           </div>
         </div>

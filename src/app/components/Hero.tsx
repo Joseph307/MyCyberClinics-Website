@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { Shield, Clock, Stethoscope, X, Menu } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
+import { trackAnalyticsEvent } from "@/lib/analytics";
 // import logoImage from "../../assets/c8397ab71eb936effba7144da57bfed566604694.png";
 import logoImageNew from "../../assets/log_o-removebg-cropped.webp";
 import imgHero from "../../assets/618cefd477229e137057ef5ef785eb848fb5df12.png";
@@ -77,6 +78,12 @@ export function Hero({ siteSettings }: HeroProps) {
   const signUpUrl =
     siteSettings.primaryCtaLink || "https://app.mycyberclinics.com/bookAppointmentScreen";
   const primaryCtaText = siteSettings.primaryCtaText || "Book Consultation";
+  const trackLoginClick = (location: string) => {
+    void trackAnalyticsEvent("login_click", { location });
+  };
+  const trackBookConsultationClick = (location: string) => {
+    void trackAnalyticsEvent("book_consultation_click", { location });
+  };
 
   // Close mobile menu with Escape key
   useEffect(() => {
@@ -318,13 +325,23 @@ export function Hero({ siteSettings }: HeroProps) {
               variant="brand-gold"
               className="text-sm md:text-lg px-6 py-3"
             >
-              <a href="https://app.mycyberclinics.com/signIn">Log In</a>
+              <a
+                href="https://app.mycyberclinics.com/signIn"
+                onClick={() => trackLoginClick("hero_nav_desktop")}
+              >
+                Log In
+              </a>
             </Button>
             <Button
               asChild
               className="bg-[#48C9B0] hover:bg-[#FFC857] text-white text-sm md:text-lg px-6 py-3 "
             >
-              <a href={signUpUrl}>{primaryCtaText}</a>
+              <a
+                href={signUpUrl}
+                onClick={() => trackBookConsultationClick("hero_nav_desktop")}
+              >
+                {primaryCtaText}
+              </a>
             </Button>
           </nav>
 
@@ -482,7 +499,7 @@ export function Hero({ siteSettings }: HeroProps) {
                 Doctors
               </a>
               <Link
-                href="/blog"
+                to="/blog"
                 className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >
@@ -496,13 +513,23 @@ export function Hero({ siteSettings }: HeroProps) {
                 Contact
               </a>
               <Button asChild variant="brand-gold">
-                <a href="https://app.mycyberclinics.com/signIn">Log In</a>
+                <a
+                  href="https://app.mycyberclinics.com/signIn"
+                  onClick={() => trackLoginClick("hero_nav_mobile_menu")}
+                >
+                  Log In
+                </a>
               </Button>
               <Button
                 asChild
                 className="bg-[#7E5BA1] hover:bg-[#FFC857] text-white"
               >
-                <a href={signUpUrl}>{primaryCtaText}</a>
+                <a
+                  href={signUpUrl}
+                  onClick={() => trackBookConsultationClick("hero_nav_mobile_menu")}
+                >
+                  {primaryCtaText}
+                </a>
               </Button>
             </nav>
           </div>
@@ -515,7 +542,12 @@ export function Hero({ siteSettings }: HeroProps) {
           asChild
           className="w-full bg-[#7E5BA1] hover:bg-[#FFC857] text-white py-4"
         >
-          <a href={signUpUrl}>{primaryCtaText}</a>
+          <a
+            href={signUpUrl}
+            onClick={() => trackBookConsultationClick("hero_sticky_mobile_cta")}
+          >
+            {primaryCtaText}
+          </a>
         </Button>
       </div>
     </div>

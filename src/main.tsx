@@ -6,5 +6,5 @@ import { initializeFirebaseAnalytics } from "./lib/firebase";
 
 void initializeFirebaseAnalytics();
 
-createRoot(document.getElementById("root")!).render(<App />);
+createRoot(document.getElementById("root")!).render(<App />); 
   

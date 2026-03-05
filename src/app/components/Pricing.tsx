@@ -1,6 +1,7 @@
 import { Button } from "./ui/button";
 import { Check } from "lucide-react";
 import { useSiteSettings } from "@/sanity/lib/hooks";
+import { trackAnalyticsEvent } from "@/lib/analytics";
 
 const plans = [
   {
@@ -61,6 +62,9 @@ export function Pricing() {
   const whatsappLink =
     siteSettings.socialWhatsApp ||
     "https://wa.me/2348012345678?text=Hello%20MyCyber%20Clinics%2C%20I%20need%20help%20with%20a%20consultation.";
+  const trackBookConsultationClick = (location: string) => {
+    void trackAnalyticsEvent("book_consultation_click", { location });
+  };
 
   return (
     <section id="plans" className="py-20 px-6 lg:px-32 bg-[#ECF0F1]">
@@ -124,7 +128,12 @@ export function Pricing() {
           className="btn-glow px-10 py-6 text-base"
           aria-label="Get started with MyCyber Clinics"
         >
-          <a href="https://app.mycyberclinics.com/signUp">Get Started</a>
+          <a
+            href="https://app.mycyberclinics.com/signUp"
+            onClick={() => trackBookConsultationClick("pricing_get_started")}
+          >
+            Get Started
+          </a>
         </Button>
       </div>
 
@@ -141,6 +150,7 @@ export function Pricing() {
             href={whatsappLink}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackBookConsultationClick("pricing_talk_to_team")}
           >
             Talk to Our Team
           </a>

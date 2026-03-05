@@ -1,4 +1,5 @@
 import { Stethoscope, Video, FileText, Clock, Shield, Smartphone, Pill, Users } from "lucide-react";
+import { trackAnalyticsEvent } from "@/lib/analytics";
 
 const services = [
   {
@@ -44,6 +45,9 @@ const services = [
 ];
 
 export function Services() {
+  const trackBookConsultationClick = (location: string) => {
+    void trackAnalyticsEvent("book_consultation_click", { location });
+  };
   return (
     <section id="services" className="py-20 px-6 lg:px-32 bg-[#ECF0F1]" aria-labelledby="services-heading">
       <div className="max-w-7xl mx-auto">
@@ -99,6 +103,7 @@ export function Services() {
           <a
             href="https://app.mycyberclinics.com/"
             className="inline-flex bg-[#7E5BA1] hover:bg-[#FFC857] text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors"
+            onClick={() => trackBookConsultationClick("services_get_started")}
           >
             Get Started for ₦2,000
           </a>
@@ -107,3 +112,4 @@ export function Services() {
     </section>
   );
 }
+

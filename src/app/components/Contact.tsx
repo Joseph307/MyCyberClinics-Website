@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Mail, Phone, MessageSquare, Send } from "lucide-react";
 import { useSiteSettings } from "@/sanity/lib/hooks";
+import { trackAnalyticsEvent } from "@/lib/analytics";
 
 declare global {
   interface Window {
@@ -139,6 +140,10 @@ export function Contact() {
     const emailSubject = `Contact Form: ${subject}`;
     const emailBody =
       `Name: ${name}\nEmail: ${email}\nPhone: ${phone || "Not provided"}\n\nMessage:\n${message}`;
+    void trackAnalyticsEvent("contact_form_submit", {
+      source: "contact_section",
+      has_phone: phone ? 1 : 0,
+    });
     openEmailComposer(emailSubject, emailBody);
     event.currentTarget.reset();
     setRecaptchaToken("");
