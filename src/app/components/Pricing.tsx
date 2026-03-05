@@ -1,7 +1,7 @@
 import { Button } from "./ui/button";
 import { Check } from "lucide-react";
 import { useSiteSettings } from "@/sanity/lib/hooks";
-import { trackAnalyticsEvent } from "@/lib/analytics";
+import { trackEventAndNavigate } from "@/lib/analytics";
 
 const plans = [
   {
@@ -62,9 +62,6 @@ export function Pricing() {
   const whatsappLink =
     siteSettings.socialWhatsApp ||
     "https://wa.me/2348012345678?text=Hello%20MyCyber%20Clinics%2C%20I%20need%20help%20with%20a%20consultation.";
-  const trackBookConsultationClick = (location: string) => {
-    void trackAnalyticsEvent("book_consultation_click", { location });
-  };
 
   return (
     <section id="plans" className="py-20 px-6 lg:px-32 bg-[#ECF0F1]">
@@ -130,7 +127,14 @@ export function Pricing() {
         >
           <a
             href="https://app.mycyberclinics.com/signUp"
-            onClick={() => trackBookConsultationClick("pricing_get_started")}
+            onClick={(e) => {
+              e.preventDefault();
+              void trackEventAndNavigate(
+                "https://app.mycyberclinics.com/signUp",
+                "book_consultation_click",
+                { location: "pricing_get_started" },
+              );
+            }}
           >
             Get Started
           </a>
@@ -150,7 +154,15 @@ export function Pricing() {
             href={whatsappLink}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackBookConsultationClick("pricing_talk_to_team")}
+            onClick={(e) => {
+              e.preventDefault();
+              void trackEventAndNavigate(
+                whatsappLink,
+                "book_consultation_click",
+                { location: "pricing_talk_to_team" },
+                "_blank",
+              );
+            }}
           >
             Talk to Our Team
           </a>

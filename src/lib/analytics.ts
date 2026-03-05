@@ -3,6 +3,7 @@ import { initializeFirebaseAnalytics } from "./firebase";
 
 type AnalyticsParamValue = string | number;
 type AnalyticsParams = Record<string, AnalyticsParamValue>;
+const TRACK_FLUSH_TIMEOUT_MS = 180;
 
 let analyticsPromise: Promise<Analytics | null> | null = null;
 
@@ -26,4 +27,24 @@ export async function trackAnalyticsEvent(
   } catch {
     // Keep UX unaffected if analytics is unavailable.
   }
+}
+
+export async function trackEventAndNavigate(
+  url: string,
+  eventName: string,
+  params: AnalyticsParams = {},
+  target: "_self" | "_blank" = "_self",
+) {
+  const timeout = new Promise((resolve) => {
+    window.setTimeout(resolve, TRACK_FLUSH_TIMEOUT_MS);
+  });
+
+  await Promise.race([trackAnalyticsEvent(eventName, params), timeout]);
+
+  if (target === "_blank") {
+    window.open(url, "_blank", "noopener,noreferrer");
+    return;
+  }
+
+  window.location.href = url;
 }

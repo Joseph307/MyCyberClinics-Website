@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { Shield, Clock, Stethoscope, X, Menu } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, type MouseEvent } from "react";
 import { Link } from "react-router";
-import { trackAnalyticsEvent } from "@/lib/analytics";
+import { trackEventAndNavigate } from "@/lib/analytics";
 // import logoImage from "../../assets/c8397ab71eb936effba7144da57bfed566604694.png";
 import logoImageNew from "../../assets/log_o-removebg-cropped.webp";
 import imgHero from "../../assets/618cefd477229e137057ef5ef785eb848fb5df12.png";
@@ -78,11 +78,14 @@ export function Hero({ siteSettings }: HeroProps) {
   const signUpUrl =
     siteSettings.primaryCtaLink || "https://app.mycyberclinics.com/bookAppointmentScreen";
   const primaryCtaText = siteSettings.primaryCtaText || "Book Consultation";
-  const trackLoginClick = (location: string) => {
-    void trackAnalyticsEvent("login_click", { location });
-  };
-  const trackBookConsultationClick = (location: string) => {
-    void trackAnalyticsEvent("book_consultation_click", { location });
+  const handleTrackedNavigation = (
+    e: MouseEvent<HTMLAnchorElement>,
+    url: string,
+    eventName: string,
+    location: string,
+  ) => {
+    e.preventDefault();
+    void trackEventAndNavigate(url, eventName, { location });
   };
 
   // Close mobile menu with Escape key
@@ -327,7 +330,14 @@ export function Hero({ siteSettings }: HeroProps) {
             >
               <a
                 href="https://app.mycyberclinics.com/signIn"
-                onClick={() => trackLoginClick("hero_nav_desktop")}
+                onClick={(e) =>
+                  handleTrackedNavigation(
+                    e,
+                    "https://app.mycyberclinics.com/signIn",
+                    "login_click",
+                    "hero_nav_desktop",
+                  )
+                }
               >
                 Log In
               </a>
@@ -338,7 +348,14 @@ export function Hero({ siteSettings }: HeroProps) {
             >
               <a
                 href={signUpUrl}
-                onClick={() => trackBookConsultationClick("hero_nav_desktop")}
+                onClick={(e) =>
+                  handleTrackedNavigation(
+                    e,
+                    signUpUrl,
+                    "book_consultation_click",
+                    "hero_nav_desktop",
+                  )
+                }
               >
                 {primaryCtaText}
               </a>
@@ -515,7 +532,14 @@ export function Hero({ siteSettings }: HeroProps) {
               <Button asChild variant="brand-gold">
                 <a
                   href="https://app.mycyberclinics.com/signIn"
-                  onClick={() => trackLoginClick("hero_nav_mobile_menu")}
+                  onClick={(e) =>
+                    handleTrackedNavigation(
+                      e,
+                      "https://app.mycyberclinics.com/signIn",
+                      "login_click",
+                      "hero_nav_mobile_menu",
+                    )
+                  }
                 >
                   Log In
                 </a>
@@ -526,7 +550,14 @@ export function Hero({ siteSettings }: HeroProps) {
               >
                 <a
                   href={signUpUrl}
-                  onClick={() => trackBookConsultationClick("hero_nav_mobile_menu")}
+                  onClick={(e) =>
+                    handleTrackedNavigation(
+                      e,
+                      signUpUrl,
+                      "book_consultation_click",
+                      "hero_nav_mobile_menu",
+                    )
+                  }
                 >
                   {primaryCtaText}
                 </a>
@@ -544,7 +575,14 @@ export function Hero({ siteSettings }: HeroProps) {
         >
           <a
             href={signUpUrl}
-            onClick={() => trackBookConsultationClick("hero_sticky_mobile_cta")}
+            onClick={(e) =>
+              handleTrackedNavigation(
+                e,
+                signUpUrl,
+                "book_consultation_click",
+                "hero_sticky_mobile_cta",
+              )
+            }
           >
             {primaryCtaText}
           </a>
