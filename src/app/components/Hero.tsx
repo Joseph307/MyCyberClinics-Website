@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import { Shield, Clock, Stethoscope, X, Menu } from "lucide-react";
 import { useState, useEffect, type MouseEvent } from "react";
-import { Link } from "react-router";
+import Link from "next/link";
 import { trackEventAndNavigate } from "@/lib/analytics";
 // import logoImage from "../../assets/c8397ab71eb936effba7144da57bfed566604694.png";
 import logoImageNew from "../../assets/log_o-removebg-cropped.webp";
@@ -274,7 +274,7 @@ export function Hero({ siteSettings }: HeroProps) {
           aria-label="Main navigation"
         >
           {/* Logo */}
-          <Link to="/#home" className="flex items-center gap-3">
+          <Link href="/#home" className="flex items-center gap-3">
             {/* old src: "../../assets/c8397ab71eb936effba7144da57bfed566604694.png" */}
             <Image
               src={logoImageNew}
@@ -311,10 +311,7 @@ export function Hero({ siteSettings }: HeroProps) {
             >
               Doctors
             </a>
-            <Link
-              to="/blog"
-              className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm md:text-lg font-medium"
-            >
+            <Link href="/blog" className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-sm md:text-lg font-medium">
               Health Blog
             </Link>
             <a
@@ -516,7 +513,7 @@ export function Hero({ siteSettings }: HeroProps) {
                 Doctors
               </a>
               <Link
-                to="/blog"
+                href="/blog"
                 className="text-[#2C3E50] hover:text-[#FFC857] transition-colors text-base font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >

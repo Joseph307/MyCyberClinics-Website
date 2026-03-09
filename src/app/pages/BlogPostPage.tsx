@@ -11,11 +11,12 @@ import {
   Facebook,
   Twitter,
   Linkedin,
-    Instagram,
-    Youtube,
-    Music2,
+  Instagram,
+  Youtube,
+  Music2,
 } from "lucide-react";
-import { Link, useParams } from "react-router";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useMemo, useEffect, useRef, useState, type ReactNode } from "react";
 import logoImage from "../../assets/log_o-removebg-cropped.png";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
@@ -44,7 +45,9 @@ type ArticlePortableContent = {
 };
 
 export default function BlogPostPage() {
-  const { id } = useParams();
+  // Next's useParams returns an object keyed by the dynamic segment names.
+  const params = useParams() as Record<string, string | string[] | undefined>;
+  const id = (params?.slug as string | undefined) ?? (params?.id as string | undefined);
   const siteSettings = useSiteSettings();
   const allArticles = useBlogArticles(100);
   const articleContentRef = useRef<HTMLDivElement | null>(null);
@@ -277,23 +280,23 @@ export default function BlogPostPage() {
     return (
       <div className="min-h-screen bg-white" lang="en">
         <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4" role="banner">
-          <nav className="flex items-center justify-between" aria-label="Blog navigation">
-            <Link to="/#home" className="flex items-center gap-3">
-              <Image
-                src={logoImage}
-                alt="MyCyber Clinics - Healthcare meets Technology"
-                sizes="(min-width: 1024px) 160px, 140px"
-                className="h-14 lg:h-16 w-auto"
-              />
-            </Link>
-            <Link to="/">
-              <Button variant="nav" className="btn-glow">
-                <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
-                Back to Home
-              </Button>
-            </Link>
-          </nav>
-        </header>
+              <nav className="flex items-center justify-between" aria-label="Blog navigation">
+                <Link href="/#home" className="flex items-center gap-3">
+                  <Image
+                    src={logoImage}
+                    alt="MyCyber Clinics - Healthcare meets Technology"
+                    sizes="(min-width: 1024px) 160px, 140px"
+                    className="h-14 lg:h-16 w-auto"
+                  />
+                </Link>
+                <Link href="/">
+                  <Button variant="nav" className="btn-glow">
+                    <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
+                    Back to Home
+                  </Button>
+                </Link>
+              </nav>
+            </header>
         <main className="py-20 px-6 lg:px-32">
           <div className="max-w-4xl mx-auto text-center">
             <h1
@@ -305,7 +308,7 @@ export default function BlogPostPage() {
             <p className="text-lg text-gray-600 mb-8">
               The article you&apos;re looking for doesn&apos;t exist.
             </p>
-            <Link to="/blog">
+            <Link href="/blog">
               <Button className="bg-[#7D1FFF] hover:bg-[#6B1AD9] text-white">
                 View All Articles
               </Button>
@@ -326,10 +329,10 @@ export default function BlogPostPage() {
           role="banner"
         >
           <nav className="flex items-center justify-between" aria-label="Blog navigation">
-            <Link to="/#home" className="flex items-center gap-3">
+            <Link href="/#home" className="flex items-center gap-3">
               <Image src={logoImage} alt="MyCyber Clinics - Healthcare meets Technology" sizes="(min-width: 1024px) 160px, 140px" className="h-14 lg:h-16 w-auto" />
             </Link>
-            <Link to="/">
+            <Link href="/">
               <Button variant="nav" className="btn-glow">
                 <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
                 Back to Home
@@ -358,7 +361,7 @@ export default function BlogPostPage() {
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4" role="banner">
         <nav className="flex items-center justify-between" aria-label="Blog navigation">
-          <Link to="/#home" className="flex items-center gap-3">
+            <Link href="/#home" className="flex items-center gap-3">
             <Image
               src={logoImage}
               alt="MyCyber Clinics - Healthcare meets Technology"
@@ -366,7 +369,7 @@ export default function BlogPostPage() {
               className="h-14 lg:h-16 w-auto"
             />
           </Link>
-          <Link to="/">
+            <Link href="/">
             <Button variant="nav" className="btn-glow">
               <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
               Back to Home
@@ -549,7 +552,7 @@ export default function BlogPostPage() {
                   .map((relatedArticle) => (
                     <Link
                       key={relatedArticle.id}
-                      to={`/blog/${relatedArticle.id}`}
+                      href={`/blog/${relatedArticle.id}`}
                       className="group"
                     >
                       <article className="bg-white rounded-xl overflow-hidden border border-[#E4E5F6] hover:border-[#7D1FFF] hover:shadow-lg transition-all">
@@ -588,7 +591,7 @@ export default function BlogPostPage() {
 
             {/* Back to Blog CTA */}
             <div className="text-center">
-              <Link to="/blog">
+              <Link href="/blog">
                 <Button className="bg-[#1C227A] hover:bg-[#0F1347] text-white px-8 py-6 text-lg">
                   <ArrowLeft className="w-5 h-5 mr-2" aria-hidden="true" />
                   Back to All Articles

@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import type { FormEvent } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router";
+import Link from "next/link";
 import { useBlogArticles, useSiteSettings } from "@/sanity/lib/hooks";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { Button } from "../components/ui/button";
@@ -158,7 +158,7 @@ export default function BlogPage() {
           aria-label="Blog navigation"
         >
           {/* Logo */}
-          <Link to="/#home" className="flex items-center gap-3">
+          <Link href="/#home" className="flex items-center gap-3">
             <Image
               src={logoImage}
               alt="MyCyber Clinics - Healthcare meets Technology"
@@ -167,7 +167,7 @@ export default function BlogPage() {
             />
           </Link>
 
-          <Link to="/">
+          <Link href="/">
             <Button variant="nav" className="btn-glow">
               <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
               Back to Home
@@ -307,7 +307,7 @@ export default function BlogPage() {
                     </div>
                   </div>
                   <Link
-                    to={`/blog/${featuredArticle.id}`}
+                    href={`/blog/${featuredArticle.id}`}
                     className="inline-flex"
                     aria-label={`Read full article: ${featuredArticle.title}`}
                   >
@@ -378,7 +378,7 @@ export default function BlogPage() {
                           <time dateTime={article.date}>{article.date}</time>
                         </div>
                         <Link
-                          to={`/blog/${article.id}`}
+                          href={`/blog/${article.id}`}
                           className="text-[#7D1FFF] hover:text-[#1C227A] text-sm font-semibold flex items-center gap-1 group"
                           aria-label={`Read full article: ${article.title}`}
                         >
