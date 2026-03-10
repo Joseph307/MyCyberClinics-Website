@@ -10,6 +10,7 @@ const teamMembers = [
     qualifications: "MDCN - Nigeria",
     experience: "3 years",
     image: "/images/team/doctor-kelechi.jpg",
+    imageClassName: "w-full h-full object-cover object-top",
     altText: "Dr. Kelechi Adionye, General practitioner with years of clinical experience, dedicated to providing accurate diagnosis and effective  treatment with empathy and compassion.  Skilled is General medicine. Including but not limited to pediatric care, prenatal, postnatal, health and Post surgical follow up. Focus on listening carefully, explaining clearly, and supporting patients at every stage of their care. So you feel confident, comfortable, and well cared for."
   },
   {
@@ -20,6 +21,7 @@ const teamMembers = [
     qualifications: "MBBS, FWACP",
     experience: "4 years",
     image: "/images/team/doctor-nwodo.jpg",
+    imageClassName: "w-full h-full object-cover object-top",
     altText: "Dr. Nwodo Chika Lovette, General Practitioner specializing in Internal Medicine with 4 years of experience"
   },
   {
@@ -30,6 +32,7 @@ const teamMembers = [
     qualifications: "MBBS, FMCDS",
     experience: "4 years",
     image: "/images/team/doctor-harbor.jpg",
+    imageClassName: "w-full h-full object-cover object-top",
     altText: "Dr. Harbor Praise, Community Medicine Specialist with 4 years of experience"
   }
 ];
@@ -59,11 +62,11 @@ export function Team() {
             key={index}
             className="bg-white rounded-2xl overflow-hidden border-2 border-[#ECF0F1] hover:border-[#14A9CC] hover:shadow-xl transition-all"
           >
-            <div className="h-64 overflow-hidden relative">
+            <div className="h-80 lg:h-96 overflow-hidden relative bg-[#F7F8FA]">
               <ImageWithFallback
                 src={member.image}
                 alt={member.altText}
-                className="w-full h-full object-cover"
+                className={member.imageClassName}
                 sizes="(min-width: 1024px) 360px, (min-width: 768px) 33vw, 100vw"
                 loading={index < 3 ? "eager" : "lazy"}
               />
