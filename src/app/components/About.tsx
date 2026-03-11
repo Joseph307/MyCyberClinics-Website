@@ -84,10 +84,10 @@ export function About() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div>
               <p className="text-white/90 leading-relaxed mb-4">
-                Healthcare in Nigeria faces critical challenges: long wait times at clinics, high consultation costs, limited access to specialists, and the burden of traveling long distances for basic medical advice.
+                Healthcare in Nigeria faces significant challenges, including long wait times at clinics, high consultation costs, limited access to specialists, and the burden of traveling long distances for basic medical advice.
               </p>
               <p className="text-white/90 leading-relaxed">
-                We saw families struggling to afford quality healthcare and professionals too busy to visit a clinic during work hours. We knew technology could bridge this gap.
+                We saw families struggling to afford quality healthcare and professionals too busy to visit a clinic during work hours. We knew technology could bridge this gap. Likewise, so many Nigerians wrongly depend on getting medical advice from their local drugstore or "Chemist Store" to "Mix drugs" for them. This practice contributes to thousands of deaths in Nigeria. We are here to change all that.
               </p>
             </div>
             <div>

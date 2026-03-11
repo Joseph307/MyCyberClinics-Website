@@ -1,0 +1,14 @@
+HTTP/1.1 403 Forbidden
+Connection: keep-alive
+Content-Length: 318
+Content-Type: text/html; charset=UTF-8
+Server: Google Frontend
+Accept-Ranges: bytes
+Date: Wed, 11 Mar 2026 15:04:18 GMT
+X-Served-By: cache-cpt13827-CPT
+X-Cache: MISS
+X-Cache-Hits: 0
+X-Timer: S1773241457.494599,VS0,VE720
+Vary: x-fh-requested-host, accept-encoding
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+

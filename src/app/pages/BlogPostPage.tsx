@@ -45,6 +45,14 @@ type ArticlePortableContent = {
 };
 
 export default function BlogPostPage() {
+  const navigateHome = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // Force a top-level navigation to the pages-router homepage to avoid
+    // client-router mismatches between App and Pages router.
+    if (typeof window !== "undefined") {
+      window.location.href = "/";
+    }
+  };
   // Next's useParams returns an object keyed by the dynamic segment names.
   const params = useParams() as Record<string, string | string[] | undefined>;
   const id = (params?.slug as string | undefined) ?? (params?.id as string | undefined);
@@ -281,20 +289,18 @@ export default function BlogPostPage() {
       <div className="min-h-screen bg-white" lang="en">
         <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4" role="banner">
               <nav className="flex items-center justify-between" aria-label="Blog navigation">
-                <Link href="/#home" className="flex items-center gap-3">
+                <a href="/" onClick={navigateHome} className="flex items-center gap-3">
                   <Image
                     src={logoImage}
                     alt="MyCyber Clinics - Healthcare meets Technology"
                     sizes="(min-width: 1024px) 160px, 140px"
                     className="h-14 lg:h-16 w-auto"
                   />
-                </Link>
-                <Link href="/">
-                  <Button variant="nav" className="btn-glow">
-                    <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
-                    Back to Home
-                  </Button>
-                </Link>
+                </a>
+                <button onClick={navigateHome} className="btn-glow">
+                  <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
+                  Back to Home
+                </button>
               </nav>
             </header>
         <main className="py-20 px-6 lg:px-32">
@@ -329,15 +335,13 @@ export default function BlogPostPage() {
           role="banner"
         >
           <nav className="flex items-center justify-between" aria-label="Blog navigation">
-            <Link href="/#home" className="flex items-center gap-3">
+            <a href="/" onClick={navigateHome} className="flex items-center gap-3">
               <Image src={logoImage} alt="MyCyber Clinics - Healthcare meets Technology" sizes="(min-width: 1024px) 160px, 140px" className="h-14 lg:h-16 w-auto" />
-            </Link>
-            <Link href="/">
-              <Button variant="nav" className="btn-glow">
-                <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
-                Back to Home
-              </Button>
-            </Link>
+            </a>
+            <a href="/" onClick={navigateHome} className="inline-flex items-center gap-2 btn-glow px-4 py-2 rounded-md">
+              <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
+              Back to Home
+            </a>
           </nav>
         </header>
 
@@ -361,20 +365,20 @@ export default function BlogPostPage() {
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4" role="banner">
         <nav className="flex items-center justify-between" aria-label="Blog navigation">
-            <Link href="/#home" className="flex items-center gap-3">
+            <a href="/" onClick={navigateHome} className="flex items-center gap-3">
             <Image
               src={logoImage}
               alt="MyCyber Clinics - Healthcare meets Technology"
               sizes="(min-width: 1024px) 160px, 140px"
               className="h-14 lg:h-16 w-auto"
             />
-          </Link>
-            <Link href="/">
-            <Button variant="nav" className="btn-glow">
-              <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
-              Back to Home
+          </a>
+            <Button variant="nav" className="btn-glow" asChild>
+              <a href="/" onClick={navigateHome}>
+                <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
+                Back to Home
+              </a>
             </Button>
-          </Link>
         </nav>
       </header>
 

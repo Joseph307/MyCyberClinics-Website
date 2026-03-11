@@ -4,10 +4,12 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
   /**
-   * Use the static HTML export feature (replaces `next export`).
-   * `next build` will produce an `out/` directory when `output: 'export'` is set.
+   * Use static HTML export only when explicitly requested via the
+   * NEXT_EXPORT=1 environment variable. When developing locally we must
+   * allow Next to serve API routes (so the Sanity Studio -> Buffer proxy
+   * works). Set NEXT_EXPORT=1 when you want a static export build.
    */
-  output: "export",
+  output: process.env.NEXT_EXPORT === '1' ? 'export' : undefined,
   // keep directory-style output so URLs map to folders with index.html
   trailingSlash: true,
   images: {

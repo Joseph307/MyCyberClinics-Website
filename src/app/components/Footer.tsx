@@ -30,7 +30,7 @@ export function Footer({ siteSettings }: FooterProps) {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         {/* Brand */}
         <div>
-          <Link href="/#home" className="inline-flex items-center mb-4">
+          <Link href="/" className="inline-flex items-center mb-4">
             <Image
               src={logoImage}
               alt="MyCyber Clinics - Healthcare meets Technology"

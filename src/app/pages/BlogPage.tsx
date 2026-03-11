@@ -19,6 +19,10 @@ import { Footer } from "../components/Footer";
 import logoImage from "../../assets/log_o-removebg-cropped.png";
 
 export default function BlogPage() {
+  const navigateHome = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (typeof window !== "undefined") window.location.href = "/";
+  };
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Articles");
   // Fetch a larger batch so we can paginate client-side. Increase if you have many posts.
@@ -158,21 +162,21 @@ export default function BlogPage() {
           aria-label="Blog navigation"
         >
           {/* Logo */}
-          <Link href="/#home" className="flex items-center gap-3">
+          <a href="/" onClick={navigateHome} className="flex items-center gap-3">
             <Image
               src={logoImage}
               alt="MyCyber Clinics - Healthcare meets Technology"
               sizes="(min-width: 1024px) 160px, 140px"
               className="h-14 lg:h-16 w-auto"
             />
-          </Link>
+          </a>
 
-          <Link href="/">
-            <Button variant="nav" className="btn-glow">
+          <Button variant="nav" className="btn-glow" asChild>
+            <a href="/" onClick={(e) => { e.preventDefault(); if (typeof window !== 'undefined') window.location.href = '/'; }}>
               <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
               Back to Home
-            </Button>
-          </Link>
+            </a>
+          </Button>
         </nav>
       </header>
 

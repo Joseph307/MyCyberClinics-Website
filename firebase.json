@@ -1,4 +1,7 @@
 {
+  "functions": {
+    "source": "functions"
+  },
   "firestore": {
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
@@ -23,6 +26,11 @@
       {
         "source": "/studio/**",
         "destination": "/studio/index.html"
+      }
+      ,
+      {
+        "source": "/api/**",
+        "function": "api"
       }
     ]
   }

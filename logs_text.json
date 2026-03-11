@@ -1,0 +1,18 @@
+﻿python.exe : ERROR: (gcloud.logging.read) unrecognized arguments:
+At C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.ps1:114 char:3
++   & "$cloudsdk_python" $run_args_array
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (ERROR: (gcloud....ized arguments::String) [], RemoteEx 
+   ception
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  client
+  does
+  not
+  have
+  permission
+  to
+  get
+  URL OR textPayload:/api/api OR textPayload:/api/buffer
+  To search the help text of gcloud commands, run:
+  gcloud help -- SEARCH_TERMS

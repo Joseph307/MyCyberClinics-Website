@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "mycyberclinics-functions": "file:..",
+    "node-fetch": "^2.6.7"
+  }
+}

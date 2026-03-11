@@ -75,6 +75,10 @@ type HeroProps = {
 
 export function Hero({ siteSettings }: HeroProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigateHome = (e: MouseEvent) => {
+    e.preventDefault();
+    if (typeof window !== "undefined") window.location.href = "/";
+  };
   const signUpUrl =
     siteSettings.primaryCtaLink || "https://app.mycyberclinics.com/bookAppointmentScreen";
   const primaryCtaText = siteSettings.primaryCtaText || "Book Consultation";
@@ -274,7 +278,7 @@ export function Hero({ siteSettings }: HeroProps) {
           aria-label="Main navigation"
         >
           {/* Logo */}
-          <Link href="/#home" className="flex items-center gap-3">
+          <a href="/" onClick={navigateHome} className="flex items-center gap-3">
             {/* old src: "../../assets/c8397ab71eb936effba7144da57bfed566604694.png" */}
             <Image
               src={logoImageNew}
@@ -283,7 +287,7 @@ export function Hero({ siteSettings }: HeroProps) {
               sizes="(min-width: 1024px) 160px, 140px"
               className="h-14 lg:h-16 w-auto"
             />
-          </Link>
+          </a>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-6">
