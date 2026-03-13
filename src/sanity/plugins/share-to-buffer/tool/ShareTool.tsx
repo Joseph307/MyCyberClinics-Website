@@ -19,7 +19,7 @@ export default function ShareTool(): React.ReactElement {
 
     async function loadPosts() {
       try {
-        const q = `*[_type == "blogPost"]{_id, title, excerpt, "slug": seo.slug.current, "image": coalesce(featuredImage.asset->url, featuredImageUrl)}`;
+  const q = `*[_type == "blogPost"]{_id, title, excerpt, "slug": coalesce(slug.current, seo.slug.current), "image": coalesce(featuredImage.asset->url, featuredImageUrl)}`;
         const res = await sanityClient.fetch<Post[]>(q);
         if (mounted) setPosts(res || []);
       } catch (err) {
@@ -33,7 +33,7 @@ export default function ShareTool(): React.ReactElement {
         // Prefer an explicit functions base URL when provided (useful for production when hosting rewrites
         // to functions are not working or blocked). Set NEXT_PUBLIC_FUNCTIONS_BASE_URL to
         // "https://us-central1-my-cyber-clinics.cloudfunctions.net/api" when building.
-        const fnBase = (process.env.NEXT_PUBLIC_FUNCTIONS_BASE_URL as string) || '';
+        const fnBase = (process.env.NEXT_PUBLIC_FUNCTIONS_BASE_URL as string) || 'https://mycyberclinics.vercel.app/api';
         const channelsUrl = isStudioLocal
           ? 'http://localhost:3000/api/buffer/channels/'
           : (fnBase ? `${fnBase.replace(/\/$/, '')}/buffer/channels/` : '/api/buffer/channels/');
@@ -72,7 +72,7 @@ export default function ShareTool(): React.ReactElement {
       const payload = { url, text: `${post.title}  ${post.excerpt ?? ''}`, channelId: selectedChannel, media_url: post.image };
 
       const isStudioLocal = (typeof window !== 'undefined' && window.location.port === '3333');
-      const fnBase = (process.env.NEXT_PUBLIC_FUNCTIONS_BASE_URL as string) || '';
+      const fnBase = (process.env.NEXT_PUBLIC_FUNCTIONS_BASE_URL as string) || 'https://mycyberclinics.vercel.app/api';
       const apiUrl = isStudioLocal
         ? 'http://localhost:3000/api/buffer/share-to-buffer/'
         : (fnBase ? `${fnBase.replace(/\/$/, '')}/buffer/share-to-buffer/` : '/api/buffer/share-to-buffer/');

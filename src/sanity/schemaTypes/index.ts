@@ -1,50 +1,25 @@
 import { defineField, defineType } from "sanity";
+import CanonicalInput from "../components/CanonicalInput";
+import AutoJsonLdInput from "../components/AutoJsonLdInput";
 
 const seoFields = defineType({
   name: "seoFields",
   title: "SEO Fields",
   type: "object",
   fields: [
-    defineField({
-      name: "seoTitle",
-      title: "SEO Title",
-      type: "string",
-    }),
-    defineField({
-      name: "metaDescription",
-      title: "Meta Description",
-      type: "text",
-      rows: 3,
-    }),
+    defineField({ name: "seoTitle", title: "SEO Title", type: "string" }),
+    defineField({ name: "metaDescription", title: "Meta Description", type: "text", rows: 3 }),
     defineField({
       name: "slug",
       title: "Slug",
       type: "slug",
-      options: { source: "seoTitle" },
+      options: { source: "title", maxLength: 96 },
+      description: "Auto-generated from the article title. Used as the public URL segment.",
     }),
-    defineField({
-      name: "canonicalUrl",
-      title: "Canonical URL",
-      type: "url",
-    }),
-    defineField({
-      name: "schemaJsonLd",
-      title: "Structured Data JSON-LD",
-      type: "text",
-      rows: 6,
-    }),
-    defineField({
-      name: "noIndex",
-      title: "Noindex",
-      type: "boolean",
-      initialValue: false,
-    }),
-    defineField({
-      name: "includeInSitemap",
-      title: "Include In Sitemap",
-      type: "boolean",
-      initialValue: true,
-    }),
+    defineField({ name: "canonicalUrl", title: "Canonical URL", type: "url", components: { input: CanonicalInput } }),
+    defineField({ name: "schemaJsonLd", title: "Structured Data JSON-LD", type: "text", rows: 10, components: { input: AutoJsonLdInput } }),
+    defineField({ name: "noIndex", title: "Noindex", type: "boolean", initialValue: false }),
+    defineField({ name: "includeInSitemap", title: "Include In Sitemap", type: "boolean", initialValue: true }),
   ],
 });
 
@@ -65,44 +40,57 @@ const siteSettings = defineType({
     defineField({ name: "socialTikTok", title: "TikTok URL", type: "url" }),
     defineField({ name: "socialWhatsApp", title: "WhatsApp URL", type: "url" }),
     defineField({ name: "metaTitleDefault", title: "Default Meta Title", type: "string" }),
-    defineField({
-      name: "metaDescriptionDefault",
-      title: "Default Meta Description",
-      type: "text",
-      rows: 3,
-    }),
+    defineField({ name: "metaDescriptionDefault", title: "Default Meta Description", type: "text", rows: 3 }),
     defineField({ name: "canonicalBaseUrl", title: "Canonical Base URL", type: "url" }),
     defineField({ name: "robotsTxt", title: "Robots.txt", type: "text", rows: 6 }),
     defineField({ name: "hreflangDefault", title: "Default Hreflang", type: "string" }),
     defineField({ name: "sitemapEnabled", title: "Sitemap Enabled", type: "boolean" }),
     defineField({ name: "recaptchaSiteKey", title: "Recaptcha Site Key", type: "string" }),
-    defineField({
-      name: "contactDestinationEmail",
-      title: "Contact Destination Email",
-      type: "string",
-    }),
-    defineField({
-      name: "contactSuccessMessage",
-      title: "Contact Success Message",
-      type: "text",
-      rows: 3,
-    }),
+    defineField({ name: "contactDestinationEmail", title: "Contact Destination Email", type: "string" }),
+    defineField({ name: "contactSuccessMessage", title: "Contact Success Message", type: "text", rows: 3 }),
     defineField({ name: "primaryCtaText", title: "Primary CTA Text", type: "string" }),
     defineField({ name: "primaryCtaLink", title: "Primary CTA Link", type: "url" }),
     defineField({ name: "gaMeasurementId", title: "GA Measurement ID", type: "string" }),
-    defineField({
-      name: "searchConsoleVerification",
-      title: "Search Console Verification",
-      type: "string",
-    }),
+    defineField({ name: "searchConsoleVerification", title: "Search Console Verification", type: "string" }),
     defineField({ name: "updatedAt", title: "Updated At", type: "datetime" }),
   ],
   preview: {
-    select: {
-      title: "siteTitle",
-      subtitle: "contactEmail",
-    },
+    select: { title: "siteTitle", subtitle: "contactEmail" },
   },
+});
+
+const category = defineType({
+  name: "category",
+  title: "Category",
+  type: "document",
+  fields: [
+    defineField({ name: "title", title: "Title", type: "string" }),
+    defineField({ name: "slug", title: "Slug", type: "slug", options: { source: "title" } }),
+  ],
+  preview: { select: { title: "title" } },
+});
+
+const tag = defineType({
+  name: "tag",
+  title: "Tag",
+  type: "document",
+  fields: [
+    defineField({ name: "title", title: "Title", type: "string" }),
+    defineField({ name: "slug", title: "Slug", type: "slug", options: { source: "title" } }),
+  ],
+  preview: { select: { title: "title" } },
+});
+
+const author = defineType({
+  name: "author",
+  title: "Author",
+  type: "document",
+  fields: [
+    defineField({ name: "name", title: "Name", type: "string" }),
+    defineField({ name: "bio", title: "Short Bio", type: "text" }),
+    defineField({ name: "profileImage", title: "Profile Image", type: "image" }),
+  ],
+  preview: { select: { title: "name", media: "profileImage" } },
 });
 
 const blogPost = defineType({
@@ -112,7 +100,6 @@ const blogPost = defineType({
   fields: [
     defineField({ name: "title", title: "Title", type: "string" }),
     defineField({ name: "excerpt", title: "Excerpt", type: "text", rows: 4 }),
-    // Rich block content: paragraphs, headings (h1-h4), image blocks and embeds (YouTube).
     defineField({
       name: "content",
       title: "Content",
@@ -127,137 +114,31 @@ const blogPost = defineType({
             { title: "Heading 3", value: "h3" },
             { title: "Heading 4", value: "h4" },
           ],
-          // Allow editors to insert bulleted or numbered lists from the block editor toolbar.
-          lists: [
-            { title: "Bulleted list", value: "bullet" },
-            { title: "Numbered list", value: "number" },
-          ],
+          lists: [ { title: "Bulleted list", value: "bullet" }, { title: "Numbered list", value: "number" } ],
         },
-        {
-          type: "image",
-          options: { hotspot: true },
-          fields: [
-            defineField({ name: "alt", type: "string", title: "Alt text" }),
-            defineField({ name: "caption", type: "string", title: "Caption" }),
-          ],
-        },
-        // YouTube embed block
-        {
-          name: "youtube",
-          title: "YouTube Embed",
-          type: "object",
-          fields: [
-            defineField({
-              name: "url",
-              title: "YouTube URL",
-              type: "url",
-              description: "Paste a YouTube watch or share URL (e.g. https://youtu.be/abc or https://www.youtube.com/watch?v=abc)",
-            }),
-            defineField({
-              name: "caption",
-              title: "Caption",
-              type: "string",
-            }),
-          ],
-        },
+        { type: "image", options: { hotspot: true }, fields: [ defineField({ name: "alt", type: "string", title: "Alt text" }), defineField({ name: "caption", type: "string", title: "Caption" }) ] },
+        { name: "youtube", title: "YouTube Embed", type: "object", fields: [ defineField({ name: "url", title: "YouTube URL", type: "url", description: "Paste a YouTube watch or share URL (e.g. https://youtu.be/abc or https://www.youtube.com/watch?v=abc)" }), defineField({ name: "caption", title: "Caption", type: "string" }) ] },
       ],
     }),
-    // Category: reference to a `category` document so editors choose from a list
-    // and can create a new category inline via the reference input.
-    defineField({
-      name: "category",
-      title: "Category",
-      type: "reference",
-      to: [{ type: "category" }],
-      description: "Select a category or create a new one using the + button.",
-    }),
-    defineField({ name: "tags", title: "Tags", type: "string" }),
-    // Author: reference to an `author` document. Create the three default authors
-    // (Kelvin, Elizabeth, Chioma) in the Studio or select an existing author.
-    defineField({
-      name: "author",
-      title: "Author",
-      type: "reference",
-      to: [{ type: "author" }],
-      description:
-        "Select the author for this article. You can create a new author document if needed.",
-    }),
-    // Allow either uploading an image or providing an external URL.
-    defineField({
-      name: "featuredImage",
-      title: "Featured Image (upload)",
-      type: "image",
-      options: { hotspot: true },
-      description: "Upload an image to use as the featured image. You can also provide an external URL below.",
-      fields: [
-        defineField({ name: "alt", type: "string", title: "Alt text" }),
-      ],
-    }),
+    defineField({ name: "category", title: "Category", type: "reference", to: [{ type: "category" }], description: "Select a category or create a new one using the + button." }),
+    defineField({ name: "tags", title: "Tags", type: "array", of: [ { type: "reference", to: [{ type: "tag" }] } ], description: "Select tags or create new ones. Tags are used to generate keywords for JSON-LD." }),
+    defineField({ name: "author", title: "Author", type: "reference", to: [{ type: "author" }], description: "Select the author for this article. You can create a new author document if needed." }),
+    defineField({ name: "featuredImage", title: "Featured Image (upload)", type: "image", options: { hotspot: true }, description: "Upload an image to use as the featured image. You can also provide an external URL below.", fields: [ defineField({ name: "alt", type: "string", title: "Alt text" }) ] }),
     defineField({ name: "featuredImageUrl", title: "Featured Image URL (external)", type: "url", description: "Optional external image URL (used if no uploaded image is provided)" }),
-    defineField({
-      name: "status",
-      title: "Status",
-      type: "string",
-      options: {
-        list: [
-          { title: "Draft", value: "draft" },
-          { title: "Published", value: "published" },
-          { title: "Scheduled", value: "scheduled" },
-        ],
-      },
-      initialValue: "draft",
-    }),
+    defineField({ name: "status", title: "Status", type: "string", options: { list: [ { title: "Draft", value: "draft" }, { title: "Published", value: "published" }, { title: "Scheduled", value: "scheduled" } ] }, initialValue: "draft" }),
     defineField({ name: "publishAt", title: "Publish At", type: "datetime" }),
-    defineField({
-      name: "readingTimeMinutes",
-      title: "Reading Time (Minutes)",
-      type: "number",
-    }),
+    defineField({ name: "readingTimeMinutes", title: "Reading Time (Minutes)", type: "number" }),
     defineField({ name: "seo", title: "SEO", type: "seoFields" }),
     defineField({ name: "createdAt", title: "Created At", type: "datetime" }),
     defineField({ name: "updatedAt", title: "Updated At", type: "datetime" }),
   ],
   preview: {
-    select: {
-      title: "title",
-      "authorName": "author.name",
-      featuredImage: "featuredImage",
-      featuredImageUrl: "featuredImageUrl",
-    },
+    select: { title: "title", authorName: "author.name", featuredImage: "featuredImage", featuredImageUrl: "featuredImageUrl" },
     prepare(selection) {
       const { title, authorName, featuredImage, featuredImageUrl } = selection as any;
       const media = featuredImage || (featuredImageUrl ? { asset: { _ref: featuredImageUrl } } : undefined);
       return { title, subtitle: authorName, media };
     },
-  },
-});
-
-// Category document type for blog post categories
-const category = defineType({
-  name: "category",
-  title: "Category",
-  type: "document",
-  fields: [
-    defineField({ name: "title", title: "Title", type: "string" }),
-    defineField({ name: "slug", title: "Slug", type: "slug", options: { source: "title" } }),
-  ],
-  preview: {
-    select: { title: "title" },
-  },
-});
-
-// Author document type for authors
-const author = defineType({
-  name: "author",
-  title: "Author",
-  type: "document",
-  fields: [
-    defineField({ name: "name", title: "Name", type: "string" }),
-    defineField({ name: "bio", title: "Short Bio", type: "text" }),
-    defineField({ name: "profileImage", title: "Profile Image", type: "image" }),
-  ],
-  preview: {
-    select: { title: "name", media: "profileImage" },
   },
 });
 
@@ -272,11 +153,7 @@ const doctor = defineType({
     defineField({ name: "shortBio", title: "Short Bio", type: "text", rows: 5 }),
     defineField({ name: "mdcnLicense", title: "MDCN License", type: "string" }),
     defineField({ name: "qualifications", title: "Qualifications", type: "string" }),
-    defineField({
-      name: "experienceYears",
-      title: "Experience (Years)",
-      type: "number",
-    }),
+    defineField({ name: "experienceYears", title: "Experience (Years)", type: "number" }),
     defineField({ name: "profileImageUrl", title: "Profile Image URL", type: "url" }),
     defineField({ name: "profileImageAlt", title: "Profile Image Alt", type: "string" }),
     defineField({ name: "linkedinUrl", title: "LinkedIn URL", type: "url" }),
@@ -284,18 +161,7 @@ const doctor = defineType({
     defineField({ name: "twitterUrl", title: "X URL", type: "url" }),
     defineField({ name: "featured", title: "Featured", type: "boolean" }),
     defineField({ name: "displayOrder", title: "Display Order", type: "number" }),
-    defineField({
-      name: "status",
-      title: "Status",
-      type: "string",
-      options: {
-        list: [
-          { title: "Draft", value: "draft" },
-          { title: "Published", value: "published" },
-        ],
-      },
-      initialValue: "draft",
-    }),
+    defineField({ name: "status", title: "Status", type: "string", options: { list: [ { title: "Draft", value: "draft" }, { title: "Published", value: "published" } ] }, initialValue: "draft" }),
     defineField({ name: "seo", title: "SEO", type: "seoFields" }),
     defineField({ name: "createdAt", title: "Created At", type: "datetime" }),
     defineField({ name: "updatedAt", title: "Updated At", type: "datetime" }),
@@ -321,22 +187,10 @@ const staticPage = defineType({
         ],
       },
     }),
-    // Legacy HTML content field: keep existing HTML content during migration.
     defineField({ name: "contentHtml", title: "Content (HTML - legacy)", type: "text", rows: 12, description: "Optional legacy HTML content. Use this only when migrating old posts that store HTML as a string." }),
     defineField({ name: "title", title: "Title", type: "string" }),
     defineField({ name: "content", title: "Content", type: "text", rows: 12 }),
-    defineField({
-      name: "status",
-      title: "Status",
-      type: "string",
-      options: {
-        list: [
-          { title: "Draft", value: "draft" },
-          { title: "Published", value: "published" },
-        ],
-      },
-      initialValue: "draft",
-    }),
+    defineField({ name: "status", title: "Status", type: "string", options: { list: [ { title: "Draft", value: "draft" }, { title: "Published", value: "published" } ] }, initialValue: "draft" }),
     defineField({ name: "seo", title: "SEO", type: "seoFields" }),
     defineField({ name: "createdAt", title: "Created At", type: "datetime" }),
     defineField({ name: "updatedAt", title: "Updated At", type: "datetime" }),
@@ -356,13 +210,4 @@ const mediaAsset = defineType({
   ],
 });
 
-export const schemaTypes = [
-  seoFields,
-  siteSettings,
-  category,
-  author,
-  blogPost,
-  doctor,
-  staticPage,
-  mediaAsset,
-];
+export const schemaTypes = [ seoFields, siteSettings, category, tag, author, blogPost, doctor, staticPage, mediaAsset ];

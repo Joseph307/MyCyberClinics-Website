@@ -172,4 +172,61 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
+// POST /rebuild
+// This endpoint can be called by a Sanity webhook to trigger a CI rebuild via
+// GitHub repository_dispatch. Configure functions config (or env) with
+// github.token, github.owner, github.repo and an optional rebuild.secret.
+app.post('/rebuild', async (req, res) => {
+  try {
+    const cfg = (functions.config && functions.config()) || {};
+    const secret = (cfg.rebuild && cfg.rebuild.secret) || process.env.REBUILD_SECRET;
+    const incoming = req.headers['x-rebuild-secret'] || req.body && req.body.secret;
+    if (secret && incoming !== secret) {
+      console.warn('[functions/rebuild] invalid secret');
+      return res.status(401).json({ error: 'invalid secret' });
+    }
+
+    const ghToken = (cfg.github && cfg.github.token) || process.env.GITHUB_TOKEN;
+    const ghOwner = (cfg.github && cfg.github.owner) || process.env.GITHUB_OWNER;
+    const ghRepo = (cfg.github && cfg.github.repo) || process.env.GITHUB_REPO;
+
+    if (!ghToken || !ghOwner || !ghRepo) {
+      console.error('[functions/rebuild] missing GitHub config', { ghToken: !!ghToken, ghOwner, ghRepo });
+      return res.status(500).json({ error: 'GitHub integration not configured on function' });
+    }
+
+    const payload = {
+      event_type: 'sanity-published',
+      client_payload: {
+        projectId: req.body?.projectId || (cfg.sanity && cfg.sanity.project_id) || null,
+        documentId: req.body?.id || req.body?.documentId || null,
+        type: req.body?.type || null,
+        draft: !!req.body?.draft,
+      }
+    };
+
+    const url = `https://api.github.com/repos/${ghOwner}/${ghRepo}/dispatches`;
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `token ${ghToken}`,
+        Accept: 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!resp.ok) {
+      const text = await resp.text();
+      console.error('[functions/rebuild] GitHub dispatch failed', { status: resp.status, body: text });
+      return res.status(502).json({ error: 'GitHub dispatch failed', status: resp.status, body: text });
+    }
+
+    return res.status(200).json({ ok: true });
+  } catch (err) {
+    console.error('[functions/rebuild] unexpected error', String(err));
+    return res.status(500).json({ error: String(err) });
+  }
+});
+
 exports.api = functions.https.onRequest(app);

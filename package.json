@@ -11,8 +11,9 @@
     "sanity:build": "sanity build",
     "copy:studio": "node ./scripts/copy-studio.js",
     "postexport": "npm run sanity:build && npm run copy:studio",
-  "sitemap:generate": "node ./scripts/generate-sitemap.mjs",
-  "postbuild": "npm run sitemap:generate",
+    "build:studio:vercel": "cross-env NEXT_PUBLIC_FUNCTIONS_BASE_URL=https://mycyberclinics.vercel.app npm run sanity:build && npm run copy:studio",
+    "sitemap:generate": "node ./scripts/generate-sitemap.mjs",
+    "postbuild": "npm run sitemap:generate",
     "deploy:static": "npm run export && firebase deploy --only hosting",
     "lint": "eslint",
     "sanity": "sanity dev"
@@ -80,5 +81,8 @@
     "tailwindcss": "^4.2.1",
     "typescript": "^5",
     "vaul": "^1.1.2"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0"
   }
 }

@@ -261,7 +261,8 @@ const blogPostsQuery = `*[_type == "blogPost" && (status == "published" || !defi
   publishAt,
   updatedAt,
   readingTimeMinutes,
-  "slug": seo.slug.current
+  // Prefer a top-level 'slug' (generated from title). Fall back to 'seo.slug.current' for legacy docs.
+  "slug": coalesce(slug.current, seo.slug.current)
 }`;
 
 function formatDate(value?: string): string {

@@ -16,8 +16,9 @@ export async function generateStaticParams() {
 
 // Server-side metadata for each blog article page. We locate the article by slug
 // and return SEO-friendly metadata including Open Graph data.
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const slug = params?.slug;
+export async function generateMetadata({ params }: { params: any }): Promise<Metadata> {
+  const p = await params;
+  const slug = p?.slug;
   try {
     const [siteSettings, articles] = await Promise.all([
       fetchSiteSettingsContent(),
@@ -50,8 +51,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default async function BlogPostPageRoute({ params }: { params: { slug?: string } }) {
-  const slug = params?.slug;
+export default async function BlogPostPageRoute({ params }: { params: any }) {
+  const p = await params;
+  const slug = p?.slug;
   // Preload site settings and article data for JSON-LD; the client wrapper will
   // still render the interactive article on the client.
   const [siteSettings, articles] = await Promise.all([
