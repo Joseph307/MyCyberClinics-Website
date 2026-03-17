@@ -25,6 +25,7 @@ export default function BlogPage() {
   };
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Articles");
+  const [selectedAuthor, setSelectedAuthor] = useState("All Authors");
   // Fetch a larger batch so we can paginate client-side. Increase if you have many posts.
   const allArticles = useBlogArticles(100);
   const siteSettings = useSiteSettings();
@@ -45,13 +46,24 @@ export default function BlogPage() {
     [allArticles],
   );
 
+  const authors = useMemo(
+    () => [
+      "All Authors",
+      ...Array.from(new Set(allArticles.map((article) => article.author))).sort(),
+    ],
+    [allArticles],
+  );
+
   const filteredArticles = useMemo(() => {
     return allArticles.filter((article) => {
       const matchesCategory =
         selectedCategory === "All Articles" ||
         article.category === selectedCategory;
+      const matchesAuthor =
+        selectedAuthor === "All Authors" || article.author === selectedAuthor;
 
       if (!matchesCategory) return false;
+      if (!matchesAuthor) return false;
       if (!normalizedQuery) return true;
 
       return (
@@ -60,7 +72,7 @@ export default function BlogPage() {
         article.category.toLowerCase().includes(normalizedQuery)
       );
     });
-  }, [allArticles, normalizedQuery, selectedCategory]);
+  }, [allArticles, normalizedQuery, selectedCategory, selectedAuthor]);
 
   const featuredArticle = filteredArticles[0] ?? null;
   // Pagination: show featured article on page 1, then 10 articles per page.
@@ -70,7 +82,7 @@ export default function BlogPage() {
   useEffect(() => {
     // Reset to first page whenever filters/search change
     setCurrentPage(1);
-  }, [normalizedQuery, selectedCategory]);
+  }, [normalizedQuery, selectedCategory, selectedAuthor]);
 
   const remainingArticles = useMemo(() => filteredArticles.slice(1), [filteredArticles]);
   const totalPages = Math.max(1, Math.ceil(remainingArticles.length / ARTICLES_PER_PAGE));
@@ -192,21 +204,45 @@ export default function BlogPage() {
               verified doctors
             </p>
 
-            {/* Search Bar */}
-            <div className="relative max-w-xl mx-auto">
-              <Search
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#7E5BA1]"
-                aria-hidden="true"
-              />
-              <input
-                type="search"
-                placeholder="Search articles..."
-                value={searchQuery}
-                onChange={(event) => setSearchQuery(event.target.value)}
-                className="w-full pl-12 pr-4 py-4 rounded-lg bg-white border border-[#ECF0F1] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#14A9CC] text-[#2C3E50] placeholder:text-[#7A8594]"
-                aria-label="Search blog articles"
-              />
+            {/* Search + Author filter (stacked on mobile, inline on desktop) */}
+            <div className="max-w-5xl mx-auto w-full">
+              <div className="flex flex-col md:flex-row items-stretch md:items-center gap-6">
+                <div className="relative w-full md:w-3/4">
+                  <Search
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#7E5BA1]"
+                    aria-hidden="true"
+                  />
+                  <input
+                    type="search"
+                    placeholder="Search articles..."
+                    value={searchQuery}
+                    onChange={(event) => setSearchQuery(event.target.value)}
+                    className="w-full pl-12 pr-4 py-4 rounded-lg bg-white border border-[#ECF0F1] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#14A9CC] text-[#2C3E50] placeholder:text-[#7A8594]"
+                    aria-label="Search blog articles"
+                  />
+                </div>
+
+                <div className="w-full md:w-1/4">
+                  <label htmlFor="author-select" className="sr-only">
+                    Filter by author
+                  </label>
+                  <select
+                    id="author-select"
+                    value={selectedAuthor}
+                    onChange={(e) => setSelectedAuthor(e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg border border-[#ECF0F1] bg-white text-sm text-[#1C227A] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#7D1FFF]"
+                    aria-label="Filter articles by author"
+                  >
+                    {authors.map((a) => (
+                      <option key={a} value={a}>
+                        {a}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
             </div>
+            
           </div>
         </section>
 

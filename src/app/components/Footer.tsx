@@ -109,7 +109,7 @@ export function Footer({ siteSettings }: FooterProps) {
             <a
               href={
                 siteSettings.socialTikTok ||
-                "https://www.tiktok.com/@mycyberclinics?_t=ZS-90PUltOrbRx&_r=1"
+                "https://www.tiktok.com/@mycyberclinic?_r=1&_t=ZS-94kFXFQnUNI"
               }
               target="_blank"
               rel="noopener noreferrer"
