@@ -15,6 +15,7 @@
     "sitemap:generate": "node ./scripts/generate-sitemap.mjs",
     "postbuild": "npm run sitemap:generate",
     "deploy:static": "npm run export && firebase deploy --only hosting",
+    "check:canonicals": "node ./scripts/check-canonicals.js",
     "lint": "eslint",
     "sanity": "sanity dev"
   },

@@ -4,7 +4,6 @@ import {
   User,
   ArrowRight,
   Clock,
-  ArrowLeft,
   ChevronLeft,
   ChevronRight,
   Search,
@@ -12,11 +11,12 @@ import {
 import type { FormEvent } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { authorToSlug } from "@/lib/slug";
 import { useBlogArticles, useSiteSettings } from "@/sanity/lib/hooks";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { Button } from "../components/ui/button";
 import { Footer } from "../components/Footer";
-import logoImage from "../../assets/log_o-removebg-cropped.png";
+import BlogTopNav from "../components/BlogTopNav";
 
 export default function BlogPage() {
   const navigateHome = (e: React.MouseEvent) => {
@@ -164,33 +164,7 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-white overflow-x-hidden" lang="en">
-      {/* Header */}
-      <header
-        className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E4E5F6] px-6 lg:px-32 py-4"
-        role="banner"
-      >
-        <nav
-          className="flex items-center justify-between"
-          aria-label="Blog navigation"
-        >
-          {/* Logo */}
-          <a href="/" onClick={navigateHome} className="flex items-center gap-3">
-            <Image
-              src={logoImage}
-              alt="MyCyber Clinics - Healthcare meets Technology"
-              sizes="(min-width: 1024px) 160px, 140px"
-              className="h-14 lg:h-16 w-auto"
-            />
-          </a>
-
-          <Button variant="nav" className="btn-glow" asChild>
-            <a href="/" onClick={(e) => { e.preventDefault(); if (typeof window !== 'undefined') window.location.href = '/'; }}>
-              <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
-              Back to Home
-            </a>
-          </Button>
-        </nav>
-      </header>
+      <BlogTopNav />
 
       <main>
         {/* Hero Section */}
@@ -207,7 +181,7 @@ export default function BlogPage() {
             {/* Search + Author filter (stacked on mobile, inline on desktop) */}
             <div className="max-w-5xl mx-auto w-full">
               <div className="flex flex-col md:flex-row items-stretch md:items-center gap-6">
-                <div className="relative w-full md:w-3/4">
+                <div className="relative w-full md:w-full">
                   <Search
                     className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#7E5BA1]"
                     aria-hidden="true"
@@ -222,24 +196,7 @@ export default function BlogPage() {
                   />
                 </div>
 
-                <div className="w-full md:w-1/4">
-                  <label htmlFor="author-select" className="sr-only">
-                    Filter by author
-                  </label>
-                  <select
-                    id="author-select"
-                    value={selectedAuthor}
-                    onChange={(e) => setSelectedAuthor(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg border border-[#ECF0F1] bg-white text-sm text-[#1C227A] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#7D1FFF]"
-                    aria-label="Filter articles by author"
-                  >
-                    {authors.map((a) => (
-                      <option key={a} value={a}>
-                        {a}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                {/* author filter removed — search now spans full width */}
               </div>
             </div>
             
@@ -332,9 +289,15 @@ export default function BlogPage() {
                   </p>
                   <div className="flex items-center gap-4 text-sm text-gray-500 mb-6">
                     <div className="flex items-center gap-1">
-                      <User className="w-4 h-4" aria-hidden="true" />
-                      <span>{featuredArticle.author}</span>
-                    </div>
+                        <User className="w-4 h-4" aria-hidden="true" />
+                        <Link
+                          href={`/authors/${authorToSlug(featuredArticle.author)}`}
+                          className="text-[#1C227A] hover:underline text-sm"
+                          aria-label={`View articles by ${featuredArticle.author}`}
+                        >
+                          {featuredArticle.author}
+                        </Link>
+                      </div>
                     <div className="flex items-center gap-1">
                       <Clock className="w-4 h-4" aria-hidden="true" />
                       <span>{featuredArticle.readTime}</span>
@@ -403,9 +366,15 @@ export default function BlogPage() {
 
                       <div className="flex items-center gap-4 text-xs text-gray-500 mb-4 pb-4 border-b border-[#E4E5F6]">
                         <div className="flex items-center gap-1">
-                          <User className="w-3 h-3" aria-hidden="true" />
-                          <span>{article.author}</span>
-                        </div>
+                            <User className="w-3 h-3" aria-hidden="true" />
+                            <Link
+                              href={`/authors/${authorToSlug(article.author)}`}
+                              className="text-[#1C227A] hover:underline text-xs"
+                              aria-label={`View articles by ${article.author}`}
+                            >
+                              {article.author}
+                            </Link>
+                          </div>
                         <div className="flex items-center gap-1">
                           <Clock className="w-3 h-3" aria-hidden="true" />
                           <span>{article.readTime}</span>

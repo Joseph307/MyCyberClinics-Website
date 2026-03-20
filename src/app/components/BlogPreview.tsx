@@ -3,6 +3,7 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Button } from "./ui/button";
 import { Calendar, User, ArrowRight, Clock } from "lucide-react";
 import Link from "next/link";
+import { authorToSlug } from "@/lib/slug";
 
 type BlogPreviewProps = {
   articles: BlogArticle[];
@@ -55,7 +56,13 @@ export function BlogPreview({ articles }: BlogPreviewProps) {
                 <div className="flex items-center gap-4 text-xs text-gray-500 mb-4 pb-4 border-b border-[#ECF0F1]">
                   <div className="flex items-center gap-1">
                     <User className="w-3 h-3" aria-hidden="true" />
-                    <span>{article.author}</span>
+                    <Link
+                      href={`/authors/${authorToSlug(article.author)}`}
+                      className="text-[#1C227A] hover:underline text-xs"
+                      aria-label={`View articles by ${article.author}`}
+                    >
+                      {article.author}
+                    </Link>
                   </div>
                   <div className="flex items-center gap-1">
                     <Clock className="w-3 h-3" aria-hidden="true" />

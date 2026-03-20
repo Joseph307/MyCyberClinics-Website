@@ -8,6 +8,13 @@ export type BlogArticle = {
   title: string;
   excerpt: string;
   author: string;
+  // optional profile data pulled from referenced author document when available
+  authorProfile?: {
+    name?: string;
+    shortBio?: string;
+    image?: string;
+    slug?: string;
+  };
   date: string;
   readTime: string;
   category: string;
@@ -28,6 +35,7 @@ type BlogPostQueryResult = {
   contentHtml?: string;
   category?: string;
   authorName?: string;
+  authorObj?: { name?: string; shortBio?: string; image?: { asset?: { url?: string } } | string; slug?: string } | null;
   featuredImageUrl?: string;
   featuredImageAlt?: string;
   firstContentImage?: string;
@@ -251,7 +259,10 @@ const blogPostsQuery = `*[_type == "blogPost" && (status == "published" || !defi
   contentHtml,
   // Project referenced category and author names when present
   "category": category->title,
+  // Pull a small author object when present so we can render bios on author pages
   "authorName": author->name,
+  // Coalesce author shortBio from possible legacy fields so posts carry the author's bio when available
+  "authorObj": author->{name, "shortBio": coalesce(shortBio, bio, description, _rawBio), image, "slug": slug.current},
   // Support both uploaded image (featuredImage.asset->url) and legacy external URL (featuredImageUrl)
   "featuredImageUrl": coalesce(featuredImage.asset->url, featuredImageUrl),
   // Prefer uploaded image alt text when present
@@ -308,11 +319,39 @@ function sanitizeBlogHtml(content?: string): string {
 }
 
 function mapBlogPost(post: BlogPostQueryResult): BlogArticle {
+  // Normalize slug values: some legacy posts may contain full URLs in the
+  // slug field (for example `https://.../blog/my-slug`). When that happens
+  // Next.js export will try to create a file/directory with characters like
+  // `:` and `/` (encoded) which breaks on some filesystems. Turn full URLs
+  // into the last path segment and trim slashes for safety.
+  const normalizeSlug = (raw?: string | null) => {
+    if (!raw) return undefined;
+    try {
+      if (/^https?:\/\//i.test(raw)) {
+        const u = new URL(raw);
+        const segs = u.pathname.split("/").filter(Boolean);
+        if (segs.length) return segs[segs.length - 1];
+        return undefined;
+      }
+    } catch (e) {
+      // ignore and fall back to trimming below
+    }
+    return String(raw).replace(/^\/+|\/+$/g, "");
+  };
+
   return {
-    id: post.slug || post._id,
+    id: normalizeSlug(post.slug) || post._id,
     title: post.title || "Untitled Article",
     excerpt: post.excerpt || "",
     author: post.authorName || "MyCyber Clinics",
+    authorProfile: post.authorObj
+      ? {
+          name: post.authorObj.name,
+          shortBio: (post.authorObj as any).shortBio,
+          image: (post.authorObj as any).image,
+          slug: (post.authorObj as any).slug,
+        }
+      : undefined,
     date: formatDate(post.publishAt || post.updatedAt),
     readTime:
       typeof post.readingTimeMinutes === "number"
@@ -347,6 +386,56 @@ export async function fetchSiteSettingsContent(): Promise<SiteSettingsContent> {
     return { ...fallbackSiteSettings, ...document };
   } catch {
     return fallbackSiteSettings;
+  }
+}
+
+// Fetch a single author document by slug. Returns null when not found.
+export async function fetchAuthorBySlug(slug: string): Promise<{ name?: string; shortBio?: string; image?: string | { asset?: { url?: string } }; slug?: string } | null> {
+  if (!slug) return null;
+  try {
+    // Coalesce shortBio or legacy bio field, and prefer uploaded image url or raw image field
+    const q = `*[_type == "author" && slug.current == $slug][0]{name, "shortBio": coalesce(shortBio, bio), "image": coalesce(image.asset->url, image), "slug": slug.current}`;
+    const doc = await sanityClient.fetch(q, { slug });
+    return doc || null;
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error("fetchAuthorBySlug error:", err);
+    return null;
+  }
+}
+
+export type AuthorProfile = {
+  name?: string;
+  shortBio?: string;
+  image?: string | null;
+  slug?: string | null;
+};
+
+// Prefer shortBio but fall back to legacy fields (`bio`, `description`) or raw portable text
+const authorProfileQuery = `*[_type == "author" && (slug.current == $slug || name == $name)][0]{
+  name,
+  "shortBio": coalesce(shortBio, bio, description, _rawBio),
+  "image": coalesce(image.asset->url, image),
+  "slug": slug.current
+}`;
+
+export async function fetchAuthorProfile(slugOrName: { slug?: string; name?: string } | string): Promise<AuthorProfile | null> {
+  try {
+    let params: any = {};
+    if (typeof slugOrName === "string") {
+      params.slug = slugOrName;
+      params.name = slugOrName.replace(/-/g, " ");
+    } else {
+      params.slug = slugOrName.slug;
+      params.name = slugOrName.name;
+    }
+
+    const doc = await sanityClient.fetch<AuthorProfile | null>(authorProfileQuery, params);
+    return doc || null;
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error("fetchAuthorProfile error:", err);
+    return null;
   }
 }
 

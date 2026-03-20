@@ -27,6 +27,13 @@ const poppins = Poppins({
 
 export default function MyApp({ Component, pageProps, router }: AppProps) {
   const isStudioRoute = router.asPath.startsWith('/studio');
+  // Do not mount the SPA on author pages handled by the Pages router.
+  // The SPA is a client-side app that renders a full UI (including the
+  // global blog listing). When visiting server-rendered pages like
+  // `/authors/[author]`, we want to keep the pages router's HTML and avoid
+  // mounting the SPA which would replace it. Skip the SPA when the path
+  // begins with `/authors`.
+  const isAuthorsRoute = router.asPath.startsWith('/authors');
 
   useEffect(() => {
     if (isStudioRoute) {
@@ -47,7 +54,8 @@ export default function MyApp({ Component, pageProps, router }: AppProps) {
     return undefined;
   }, [isStudioRoute]);
 
-  if (isStudioRoute) {
+  if (isStudioRoute || isAuthorsRoute) {
+    // Render the pages-router component directly for studio and author pages.
     return <Component {...pageProps} />;
   }
 
@@ -62,7 +70,9 @@ export default function MyApp({ Component, pageProps, router }: AppProps) {
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#48C9B0" />
-        <link rel="canonical" href="https://mycyberclinics.com/" />
+    {/* Per-page canonical tags are added by individual pages or the client-side router.
+      Avoid a static site-wide canonical here which makes every page point to the
+      homepage (this causes Search Console to mark pages as 'Alternate page with proper canonical tag'). */}
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="MyCyber Clinics" />
         <meta property="og:title" content="MyCyber Clinics | 24/7 Telehealth in Nigeria" />

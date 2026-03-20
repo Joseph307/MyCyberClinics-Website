@@ -19,6 +19,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useMemo, useEffect, useRef, useState, type ReactNode } from "react";
 import logoImage from "../../assets/log_o-removebg-cropped.png";
+import { authorToSlug } from "@/lib/slug";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { Button } from "../components/ui/button";
 import { Footer } from "../components/Footer";
@@ -400,7 +401,9 @@ export default function BlogPostPage() {
             <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-8 pb-8 border-b border-[#E4E5F6]">
               <div className="flex items-center gap-2">
                 <User className="w-5 h-5" aria-hidden="true" />
-                <span>{article.author}</span>
+                <Link href={`/authors/${authorToSlug(article.author)}`} className="text-[#1C227A] hover:underline">
+                  {article.author}
+                </Link>
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-5 h-5" aria-hidden="true" />

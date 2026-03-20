@@ -1,25 +1,19 @@
-import Head from 'next/head';
 import HomePage from '../app/pages/HomePage';
 import { fetchSiteSettingsContent } from '@/sanity/lib/content';
+import SeoHead from '@/lib/SeoHead';
 
 export default function Page({ siteSettings }: { siteSettings?: any }) {
-  const settings = siteSettings ?? { metaTitleDefault: 'MyCyber Clinics', metaDescriptionDefault: 'MyCyber Clinics - telehealth' };
-
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: settings.siteTitle || 'MyCyber Clinics',
-    url: settings.canonicalBaseUrl || 'https://mycyberclinics.com',
-  };
+  const settings = siteSettings ?? { metaTitleDefault: 'MyCyber Clinics', metaDescriptionDefault: 'MyCyber Clinics - telehealth', canonicalBaseUrl: 'https://mycyberclinics.com' };
 
   return (
     <>
-      <Head>
-        <title>{settings.metaTitleDefault}</title>
-        <meta name="description" content={settings.metaDescriptionDefault} />
-        <link rel="canonical" href={settings.canonicalBaseUrl || 'https://mycyberclinics.com'} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      </Head>
+      <SeoHead
+        title={settings.metaTitleDefault}
+        description={settings.metaDescriptionDefault}
+        canonicalBase={settings.canonicalBaseUrl}
+        canonicalPath="/"
+        image={`${settings.canonicalBaseUrl || 'https://mycyberclinics.com'}/images/team/doctor-adaeze.jpg`}
+      />
       <HomePage />
     </>
   );

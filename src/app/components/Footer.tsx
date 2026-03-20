@@ -13,14 +13,15 @@ import {
 import Link from "next/link";
 import logoImage from "../../assets/log_oo-removebg-cropped.png";
 import type { SiteSettingsContent } from "@/sanity/lib/content";
+import { fallbackSiteSettings } from "@/sanity/lib/content";
 
 type FooterProps = {
-  siteSettings: SiteSettingsContent;
+  siteSettings?: SiteSettingsContent | null;
 };
 
 export function Footer({ siteSettings }: FooterProps) {
-  const contactEmail =
-    siteSettings.contactEmail || "support@mycyberclinics.com";
+  const settings = siteSettings || fallbackSiteSettings;
+  const contactEmail = settings.contactEmail || "support@mycyberclinics.com";
 
   return (
     <footer
@@ -48,7 +49,7 @@ export function Footer({ siteSettings }: FooterProps) {
           >
             <a
               href={
-                siteSettings.socialFacebook ||
+                settings.socialFacebook ||
                 "https://www.facebook.com/share/1GRXXtqaUi/"
               }
               target="_blank"
@@ -60,7 +61,7 @@ export function Footer({ siteSettings }: FooterProps) {
             </a>
             <a
               href={
-                siteSettings.socialTwitter ||
+                settings.socialTwitter ||
                 "https://x.com/mycyberclinics?t=QmGm3eSKyGB_yOqoOvx7Rw&s=09"
               }
               target="_blank"
@@ -72,7 +73,7 @@ export function Footer({ siteSettings }: FooterProps) {
             </a>
             <a
               href={
-                siteSettings.socialInstagram ||
+                settings.socialInstagram ||
                 "https://www.instagram.com/mycyberclinics?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
               }
               target="_blank"
@@ -84,7 +85,7 @@ export function Footer({ siteSettings }: FooterProps) {
             </a>
             <a
               href={
-                siteSettings.socialLinkedIn ||
+                settings.socialLinkedIn ||
                 "https://www.linkedin.com/company/my-cyberclinics/"
               }
               target="_blank"
@@ -96,7 +97,7 @@ export function Footer({ siteSettings }: FooterProps) {
             </a>
             <a
               href={
-                siteSettings.socialYouTube ||
+                settings.socialYouTube ||
                 "https://youtube.com/@mycyberclinics?si=Isd2nkkntWuQqzwW"
               }
               target="_blank"
@@ -108,7 +109,7 @@ export function Footer({ siteSettings }: FooterProps) {
             </a>
             <a
               href={
-                siteSettings.socialTikTok ||
+                settings.socialTikTok ||
                 "https://www.tiktok.com/@mycyberclinic?_r=1&_t=ZS-94kFXFQnUNI"
               }
               target="_blank"
@@ -120,7 +121,7 @@ export function Footer({ siteSettings }: FooterProps) {
             </a>
             <a
               href={
-                siteSettings.socialWhatsApp ||
+                settings.socialWhatsApp ||
                 "https://wa.me/2348012345678?text=Hello%20MyCyber%20Clinics%2C%20I%20need%20help%20with%20a%20consultation."
               }
               target="_blank"
