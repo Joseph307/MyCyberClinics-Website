@@ -401,9 +401,8 @@ export default function BlogPostPage() {
             <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-8 pb-8 border-b border-[#E4E5F6]">
               <div className="flex items-center gap-2">
                 <User className="w-5 h-5" aria-hidden="true" />
-                <Link href={`/authors/${authorToSlug(article.author)}`} className="text-[#1C227A] hover:underline">
-                  {article.author}
-                </Link>
+                {/* Link to author removed to disable navigation */}
+                <span className="text-[#1C227A]">{article.author}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-5 h-5" aria-hidden="true" />

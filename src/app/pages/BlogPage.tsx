@@ -290,13 +290,8 @@ export default function BlogPage() {
                   <div className="flex items-center gap-4 text-sm text-gray-500 mb-6">
                     <div className="flex items-center gap-1">
                         <User className="w-4 h-4" aria-hidden="true" />
-                        <Link
-                          href={`/authors/${authorToSlug(featuredArticle.author)}`}
-                          className="text-[#1C227A] hover:underline text-sm"
-                          aria-label={`View articles by ${featuredArticle.author}`}
-                        >
-                          {featuredArticle.author}
-                        </Link>
+                        {/* Link to author removed to disable navigation */}
+                        <span className="text-[#1C227A] text-sm">{featuredArticle.author}</span>
                       </div>
                     <div className="flex items-center gap-1">
                       <Clock className="w-4 h-4" aria-hidden="true" />
@@ -367,13 +362,8 @@ export default function BlogPage() {
                       <div className="flex items-center gap-4 text-xs text-gray-500 mb-4 pb-4 border-b border-[#E4E5F6]">
                         <div className="flex items-center gap-1">
                             <User className="w-3 h-3" aria-hidden="true" />
-                            <Link
-                              href={`/authors/${authorToSlug(article.author)}`}
-                              className="text-[#1C227A] hover:underline text-xs"
-                              aria-label={`View articles by ${article.author}`}
-                            >
-                              {article.author}
-                            </Link>
+                            {/* Link to author removed to disable navigation */}
+                            <span className="text-[#1C227A] text-xs">{article.author}</span>
                           </div>
                         <div className="flex items-center gap-1">
                           <Clock className="w-3 h-3" aria-hidden="true" />
